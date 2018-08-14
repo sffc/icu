@@ -817,7 +817,8 @@ public class NumberFormatTest extends TestFmwk {
                 {"1.00 UAE dirha", "4", "-1", "0", "4"},
                 {"1.00 us dollar", "14", "-1", "14", "-1"},
                 {"1.00 US DOLLAR", "14", "-1", "14", "-1"},
-                {"1.00 usd", "4", "-1", "8", "-1"},
+                // Patch for Android (#13696)
+                // {"1.00 usd", "4", "-1", "8", "-1"},
                 {"1.00 USD", "8", "-1", "8", "-1"},
         };
         ULocale locale = new ULocale("en_US");

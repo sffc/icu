@@ -432,6 +432,21 @@ public class ICUCurrencyDisplayInfoProvider implements CurrencyDisplayInfoProvid
                     array.getValue(0, value);
                     parsingData.symbolToIsoCode.put(value.getString(), isoCode);
                     array.getValue(1, value);
+                    // Patch for Android (#13696): Prevent ISO codes getting into the case-insensitive trie
+                    String longName = value.getString();
+                    if (longName.length() == 3) {
+                        boolean found = true;
+                        for (int ci = 0; ci < 3; ci++) {
+                            char c = longName.charAt(ci);
+                            if (c < 'A' || c > 'Z') {
+                                found = false;
+                            }
+                        }
+                        if (found) {
+                            continue;
+                        }
+                    }
+                    // End Patch for Android
                     parsingData.nameToIsoCode.put(value.getString(), isoCode);
                 }
             }

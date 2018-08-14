@@ -32,6 +32,7 @@ import com.ibm.icu.text.DecimalFormat;
 import com.ibm.icu.text.DecimalFormatSymbols;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.CurrencyAmount;
 import com.ibm.icu.util.ULocale;
 
 /**
@@ -423,6 +424,46 @@ public class NumberFormatRegressionTest extends TestFmwk {
             df.setGroupingUsed(true);
             assertEquals("pat #,##0 then enabled: ", 3, df.getGroupingSize());
             assertEquals("pat #,##0 then enabled: ", "1,111", df.format(1111));
+        }
+    }
+
+    @Test
+    public void TestAndroidCaseSensitiveIsoCode() {
+        // All ISO codes should be parsed case-sensitive for Android.
+        DecimalFormatSymbols US = DecimalFormatSymbols.getInstance(ULocale.US);
+        String input = "lkr44";
+        {
+          DecimalFormat df = new DecimalFormat("¤¤0", US);
+          Number result = df.parse(input, new ParsePosition(0));
+          assertEquals("", null, result);
+          df.setParseStrict(true);
+          result = df.parse(input, new ParsePosition(0));
+          assertEquals("", null, result);
+        }
+        {
+          DecimalFormat df = new DecimalFormat("¤¤0", US);
+          CurrencyAmount result = df.parseCurrency(input, new ParsePosition(0));
+          assertEquals("", null, result);
+          df.setParseStrict(true);
+          result = df.parseCurrency(input, new ParsePosition(0));
+          assertEquals("", null, result);
+        }
+        input = "usd44";
+        {
+          DecimalFormat df = new DecimalFormat("¤¤0", US);
+          Number result = df.parse(input, new ParsePosition(0));
+          assertEquals("", null, result);
+          df.setParseStrict(true);
+          result = df.parse(input, new ParsePosition(0));
+          assertEquals("", null, result);
+        }
+        {
+          DecimalFormat df = new DecimalFormat("¤¤0", US);
+          CurrencyAmount result = df.parseCurrency(input, new ParsePosition(0));
+          assertEquals("", null, result);
+          df.setParseStrict(true);
+          result = df.parseCurrency(input, new ParsePosition(0));
+          assertEquals("", null, result);
         }
     }
 }

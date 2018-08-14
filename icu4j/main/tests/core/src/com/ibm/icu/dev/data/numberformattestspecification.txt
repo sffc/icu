@@ -1056,7 +1056,8 @@ USD (7.92)	-7.92	USD	H
 (7.92)USD	-7.92	USD	H
 USD(7.92)	-7.92	USD	H
 (8) USD	-8	USD
--8 USD	-8	USD
+// Patch for Android (#13696)
+-8 USD	-8	USD	H
 67 USD	67	USD
 53.45$	53.45	USD	CH
 US Dollars 53.45	53.45	USD	H
@@ -1137,7 +1138,8 @@ USD (7.92)	-7.92	USD	H
 (7.92)USD	-7.92	USD	H
 USD(7.92)	-7.92	USD	H
 (8) USD	-8	USD
--8 USD	-8	USD
+// Patch for Android (#13696)
+-8 USD	-8	USD	H
 67 USD	67	USD
 // H throws a NullPointerException on the next case
 53.45$	53.45	USD	CH
@@ -1175,7 +1177,8 @@ USD (7.92)	-7.92	USD	H
 (7.92)USD	-7.92	USD	H
 USD(7.92)	-7.92	USD	H
 (8) USD	-8	USD
--8 USD	-8	USD
+// Patch for Android (#13696)
+-8 USD	-8	USD	H
 67 USD	67	USD
 53.45$	53.45	USD	CH
 US Dollars 53.45	53.45	USD	H
@@ -1197,8 +1200,9 @@ parse	output	outputCurrency	breaks
 53.45	fail	GBP
 £53.45	53.45	GBP
 $53.45	53.45	USD	C
-53.45 USD	53.45	USD
-53.45 GBP	53.45	GBP
+// Patch for Android (#13696)
+53.45 USD	53.45	USD	H
+53.45 GBP	53.45	GBP	H
 USD 53.45	53.45	USD	H
 53.45USD	53.45	USD	H
 USD53.45	53.45	USD
@@ -1213,8 +1217,9 @@ USD (7.92)	-7.92	USD	CHJP
 (7.92)USD	-7.92	USD	CHJP
 USD(7.92)	-7.92	USD	CHJP
 (8) USD	-8	USD	CHJP
--8 USD	-8	USD
-67 USD	67	USD
+// Patch for Android (#13696)
+-8 USD	-8	USD	H
+67 USD	67	USD	H
 53.45$	53.45	USD	CH
 US Dollars 53.45	53.45	USD	H
 53.45 US Dollars	53.45	USD
@@ -1338,7 +1343,8 @@ USD (7.92)	fail	USD
 (7.92)USD	fail	USD
 USD(7.92)	fail	USD
 (8) USD	-8	USD
--8 USD	fail	USD	H
+// Patch for Android (#13696)
+-8 USD	fail	USD
 67 USD	67	USD
 53.45$	fail	USD
 US Dollars 53.45	fail	USD
@@ -1677,10 +1683,11 @@ parse	output	outputCurrency	breaks
 USD123	123	USD
 USD 123	123	USD	H
 // C does not currently accept case-insensitive ISO codes
-usd123	123	USD	C
-usd 123	123	USD	CH
-Usd123	123	USD	C
-Usd 123	123	USD	CH
+// Patch for Android (#13696)
+//usd123	123	USD	C
+//usd 123	123	USD	CH
+//Usd123	123	USD	C
+//Usd 123	123	USD	CH
 US$123	123	USD	C
 us$123	fail	fail
 Us$123	fail	fail
