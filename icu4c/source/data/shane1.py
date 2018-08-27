@@ -2,6 +2,7 @@
 # License & terms of use: http://www.unicode.org/copyright.html
 
 from collections import namedtuple
+import glob as pyglob
 
 ExecutionRequest = namedtuple("ExecutionRequest", ["input_files", "output_files", "tool", "args"])
 
@@ -20,7 +21,8 @@ def main():
     common = {
         "IN_DIR": ".",
         "OUT_DIR": "outdir",
-        "TMP_DIR": "outdir/tmp"
+        "TMP_DIR": "outdir/tmp",
+        "ICUDATA_CHAR": "l" # TODO: What is this?
     }
 
     config = Config()
@@ -139,6 +141,74 @@ def main():
                 )
             )
             for (input_file, output_file, extra_options) in zip(input_files, output_files, extra_optionses)
+        ]
+
+    # NRM Files
+    if config.has_feature("normalization"):
+        input_basenames = ["nfc.nrm", "nfkc_cf.nrm", "nfkc.nrm", "uts46.nrm"] # TODO
+        input_files = ["in/%s" % v for v in input_basenames]
+        output_files = ["%s" % v for v in input_basenames]
+        requests += [
+            ExecutionRequest(
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = "icupkg",
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
+                )
+            )
+            for (input_file, output_file) in zip(input_files, output_files)
+        ]
+
+    # Collation Dependency File (ucadata.icu)
+    # TODO: Enable use of ucadata-implicithan.icu
+    if config.has_feature("coll"):
+        input_file = "in/coll/ucadata-unihan.icu"
+        output_file = "coll/ucadata.icu"
+        requests += [
+            ExecutionRequest(
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = "icupkg",
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
+                )
+            )
+        ]
+
+    # cnvalias.icu
+    # TODO: What is this?
+    if config.has_feature("TODO"):
+        input_file = "mappings/convrtrs.txt"
+        output_file = "cnvalias.icu"
+        requests += [
+            ExecutionRequest(
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = "gencnval",
+                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
+                )
+            )
+        ]
+
+    # Unicode character names
+    if config.has_feature("unames"):
+        input_file = "in/unames.icu"
+        output_file = "unames.icu"
+        requests += [
+            ExecutionRequest(
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = "icupkg",
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
+                )
+            )
         ]
 
     # Misc Data Res Files
