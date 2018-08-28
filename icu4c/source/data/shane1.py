@@ -73,7 +73,6 @@ def main():
         "TMP_DIR": "tmpdir",
         "INDEX_NAME": "res_index",
         "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
-        "GENRB_CLDR_VERSION": "33.1",  # TODO
     }
 
     config = Config()
@@ -391,12 +390,12 @@ def main():
             ]
             # Copy the pool file
             if use_pool_bundle:
-                output_pkg = " {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix)
+                output_pool_file = " {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix)
                 requests += [
                     ExecutionRequest(
-                        dep_files = output_files + [index_res_file],
-                        input_files = output_files + [index_res_file],
-                        output_files = [output_pkg],
+                        dep_files = [],
+                        input_files = [input_pool_file],
+                        output_files = [output_pool_file],
                         tool = "icupkg",
                         args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common,
                             IN_SUB_DIR = sub_dir,
