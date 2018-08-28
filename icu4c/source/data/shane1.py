@@ -4,15 +4,33 @@
 from collections import namedtuple
 import glob as pyglob
 
-ExecutionRequest = namedtuple("ExecutionRequest", ["input_files", "output_files", "tool", "args"])
+ExecutionRequest = namedtuple("ExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args"])
 
 
 class Config(object):
     def has_feature(self, feature_name):
         # TODO
+        if feature_name == "locale_data":
+            return True
         if feature_name == "dictionaries":
             return False
+        return False
+
+    def max_parallel(self):
         return True
+
+    def coll_han_type(self):
+        # Either "unihan" or "implicithan"
+        return "unihan"
+
+
+def glob(pattern):
+    in_dir = "." # TODO
+    result_paths = pyglob.glob("{IN_DIR}/{PATTERN}".format(
+        IN_DIR =in_dir,
+        PATTERN = pattern
+    ))
+    return [v[len(in_dir)+1:] for v in result_paths]
 
 
 def main():
@@ -22,7 +40,7 @@ def main():
         "IN_DIR": ".",
         "OUT_DIR": "outdir",
         "TMP_DIR": "outdir/tmp",
-        "ICUDATA_CHAR": "l" # TODO: What is this?
+        "ICUDATA_CHAR": "l" # TODO: Pull from configure script
     }
 
     config = Config()
@@ -31,15 +49,13 @@ def main():
     build_dirs = [v.format(**common) for v in ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]]
     requests += [
         ExecutionRequest(
+            dep_files = [],
             input_files = [],
             output_files = [],
             tool = "mkinstalldirs",
             args = " ".join(build_dirs)
         )
     ]
-
-    # General-purpose data files
-    # TODO
 
     # CONFUSABLES
     if config.has_feature("confusables"):
@@ -48,6 +64,7 @@ def main():
         cfu = "confusables.cfu"
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [txt1, txt2],
                 output_files = [cfu],
                 tool = "gencfu",
@@ -59,31 +76,63 @@ def main():
             )
         ]
 
-    # CNV Files
-    if config.has_feature("uconv"):
-        input_basenames = ["ibm-912_P100-1995.ucm", "ibm-913_P100-2000.ucm"] # TODO
-        input_files = ["mappings/%s" % v for v in input_basenames]
-        output_files = ["%s.cnv" % v[:-4] for v in input_basenames]
-        # TODO: Do all in one command?
+    # UConv Name Aliases
+    if config.has_feature("cnvalias"):
+        input_file = "mappings/convrtrs.txt"
+        output_file = "cnvalias.icu"
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
-                tool = "makeconv",
-                args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file
+                tool = "gencnval",
+                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
                 )
             )
-            for (input_file, output_file) in zip(input_files, output_files)
         ]
+
+    # UConv Conversion Table Files
+    if config.has_feature("uconv"):
+        input_files = glob("mappings/*.ucm")
+        output_files = ["%s.cnv" % v[9:-4] for v in input_files]
+        if config.max_parallel():
+            # Do each cnv file on its own
+            requests += [
+                ExecutionRequest(
+                    dep_files = [],
+                    input_files = [input_file],
+                    output_files = [output_file],
+                    tool = "makeconv",
+                    args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
+                        INPUT_FILE = input_file
+                    )
+                )
+                for (input_file, output_file) in zip(input_files, output_files)
+            ]
+        else:
+            # Do all cnv files in one command
+            # Faster overall but cannot be parallelized
+            requests += [
+                ExecutionRequest(
+                    dep_files = [],
+                    input_files = input_files,
+                    output_files = output_files,
+                    tool = "makeconv",
+                    args = "-c -d {OUT_DIR} {INPUT_FILES}".format(**common,
+                        INPUT_FILES = " ".join(input_files)
+                    )
+                )
+            ]
 
     # BRK Files
     if config.has_feature("break-iterator"):
-        input_basenames = ["char.txt", "line_loose_cj.txt", "line_loose.txt"] # TODO
-        input_files = ["brkitr/rules/%s" % v for v in input_basenames]
-        output_files = ["brkitr/%s.brk" % v[:-4] for v in input_basenames]
+        input_files = glob("brkitr/rules/*.txt")
+        output_files = ["brkitr/%s.brk" % v[13:-4] for v in input_files]
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "genbrk",
@@ -96,14 +145,13 @@ def main():
         ]
 
     # SPP FILES
-    # TODO: What is this?
     if config.has_feature("string-prep"):
-        input_basenames = ["rfc3491.txt", "rfc3530cs.txt"] # TODO
-        bundle_names = [v[:-4] for v in input_basenames]
-        input_files = ["sprep/%s" % v for v in input_basenames]
-        output_files = ["%s.spp" % v for v in bundle_names]
+        input_files = glob("sprep/*.txt")
+        output_files = ["%s.spp" % v[6:-4] for v in input_files]
+        bundle_names = [v[6:-4] for v in input_files]
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "gensprep",
@@ -118,19 +166,19 @@ def main():
 
     # Dict Files
     if config.has_feature("dictionaries"):
-        input_basenames = ["burmesedict.txt", "cjdict.txt", "khmerdict.txt", "laodict.txt", "thaidict.txt"] # TODO
-        input_files = ["brkitr/dictionaries/%s" % v for v in input_basenames]
-        output_files = ["brkitr/%s.dict" % v[:-4] for v in input_basenames]
+        input_files = glob("brkitr/dictionaries/*.txt")
+        output_files = ["brkitr/%s.dict" % v[20:-4] for v in input_files]
         extra_options_map = {
-            "burmesedict.txt": "--bytes --transform offset-0x1000",
-            "cjdict.txt": "--uchars",
-            "khmerdict.txt": "--bytes --transform offset-0x1780",
-            "laodict.txt": "--bytes --transform offset-0x0e80",
-            "thaidict.txt": "--bytes --transform offset-0x0e00"
+            "brkitr/dictionaries/burmesedict.txt": "--bytes --transform offset-0x1000",
+            "brkitr/dictionaries/cjdict.txt": "--uchars",
+            "brkitr/dictionaries/khmerdict.txt": "--bytes --transform offset-0x1780",
+            "brkitr/dictionaries/laodict.txt": "--bytes --transform offset-0x0e80",
+            "brkitr/dictionaries/thaidict.txt": "--bytes --transform offset-0x0e00"
         }
-        extra_optionses = [extra_options_map[v] for v in input_basenames]
+        extra_optionses = [extra_options_map[v] for v in input_files]
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "gendict",
@@ -145,11 +193,12 @@ def main():
 
     # NRM Files
     if config.has_feature("normalization"):
-        input_basenames = ["nfc.nrm", "nfkc_cf.nrm", "nfkc.nrm", "uts46.nrm"] # TODO
-        input_files = ["in/%s" % v for v in input_basenames]
-        output_files = ["%s" % v for v in input_basenames]
+        input_files = glob("in/*.nrm")
+        input_files.remove("in/nfc.nrm")  # nfc.nrm is pre-compiled into C++
+        output_files = ["%s" % v[3:] for v in input_files]
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
@@ -162,12 +211,12 @@ def main():
         ]
 
     # Collation Dependency File (ucadata.icu)
-    # TODO: Enable use of ucadata-implicithan.icu
     if config.has_feature("coll"):
-        input_file = "in/coll/ucadata-unihan.icu"
+        input_file = "in/coll/ucadata-%s.icu" % config.coll_han_type()
         output_file = "coll/ucadata.icu"
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
@@ -178,29 +227,13 @@ def main():
             )
         ]
 
-    # cnvalias.icu
-    # TODO: What is this?
-    if config.has_feature("TODO"):
-        input_file = "mappings/convrtrs.txt"
-        output_file = "cnvalias.icu"
-        requests += [
-            ExecutionRequest(
-                input_files = [input_file],
-                output_files = [output_file],
-                tool = "gencnval",
-                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
-            )
-        ]
-
-    # Unicode character names
+    # Unicode Character Names
     if config.has_feature("unames"):
         input_file = "in/unames.icu"
         output_file = "unames.icu"
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
@@ -213,17 +246,17 @@ def main():
 
     # Misc Data Res Files
     if config.has_feature("misc"):
-        input_basenames = ["metaZones.txt", "numberingSystems.txt", "supplementalData.txt"] # TODO
-        sub_dir = "misc"
-        input_files = ["%s/%s" % (sub_dir, v) for v in input_basenames]
+        # TODO: Treat each misc file separately
+        input_files = glob("misc/*.txt")
+        input_basenames = [v[5:] for v in input_files]
         output_files = ["%s.res" % v[:-4] for v in input_basenames]
         requests += [
             ExecutionRequest(
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "genrb",
-                args = "-k -q -i {OUT_DIR} -s {IN_DIR}/{SUB_DIR} -d {OUT_DIR} {INPUT_BASENAME}".format(**common,
-                    SUB_DIR = sub_dir,
+                args = "-k -q -i {OUT_DIR} -s {IN_DIR}/misc -d {OUT_DIR} {INPUT_BASENAME}".format(**common,
                     INPUT_BASENAME = input_basename
                 )
             )
@@ -232,22 +265,37 @@ def main():
 
     # Main Locale Data Res Files
     if config.has_feature("locale_data"):
-        input_basenames = ["root.txt", "af.txt", "af_NA.txt", "af_ZA.txt"] # TODO
-        sub_dir = "locales"
-        input_files = ["%s/%s" % (sub_dir, v) for v in input_basenames]
+        input_files = glob("locales/*.txt")
+        input_basenames = [v[8:] for v in input_files]
         output_files = ["%s.res" % v[:-4] for v in input_basenames]
-        requests += [
-            ExecutionRequest(
-                input_files = [input_file],
-                output_files = [output_file],
-                tool = "genrb",
-                args = "--usePoolBundle -k -i {OUT_DIR} -s {IN_DIR}/{SUB_DIR} -d {OUT_DIR} {INPUT_BASENAME}".format(**common,
-                    SUB_DIR = sub_dir,
-                    INPUT_BASENAME = input_basename
+        if config.max_parallel():
+            # Do each res file on its own
+            requests += [
+                ExecutionRequest(
+                    dep_files = [],
+                    input_files = [input_file],
+                    output_files = [output_file],
+                    tool = "genrb",
+                    args = "--usePoolBundle -k -i {OUT_DIR} -s {IN_DIR}/locales -d {OUT_DIR} {INPUT_BASENAME}".format(**common,
+                        INPUT_BASENAME = input_basename
+                    )
                 )
-            )
-            for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
-        ]
+                for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
+            ]
+        else:
+            # Do all res files in one command
+            # Faster overall but cannot be parallelized
+            requests += [
+                ExecutionRequest(
+                    dep_files = [],
+                    input_files = input_files,
+                    output_files = output_files,
+                    tool = "genrb",
+                    args = "--usePoolBundle -k -i {OUT_DIR} -s {IN_DIR}/locales -d {OUT_DIR} {INPUT_BASENAMES}".format(**common,
+                        INPUT_BASENAMES = " ".join(input_basenames)
+                    )
+                )
+            ]
 
     # Specialized Locale Data Res Files
     specialized_sub_dirs = [
@@ -263,22 +311,42 @@ def main():
     ]
     for sub_dir, use_pool_bundle in specialized_sub_dirs:
         if config.has_feature(sub_dir):
-            input_basenames = ["root.txt", "af.txt"] # TODO
-            input_files = ["%s/%s" % (sub_dir, v) for v in input_basenames]
+            dep_files = ["coll/ucadata.icu"] if sub_dir == "coll" else []
+            input_files = glob("%s/*.txt" % sub_dir)
+            input_basenames = [v[len(sub_dir)+1:] for v in input_files]
             output_files = ["%s.res" % v[:-4] for v in input_basenames]
-            requests += [
-                ExecutionRequest(
-                    input_files = [input_file],
-                    output_files = [output_file],
-                    tool = "genrb",
-                    args = "{POOL_BUNDLE} -k -i {OUT_DIR} -s {IN_DIR}/{SUB_DIR} -d {OUT_DIR}/{SUB_DIR} {INPUT_BASENAME}".format(**common,
-                        POOL_BUNDLE = "--usePoolBundle" if use_pool_bundle else "",
-                        SUB_DIR = sub_dir,
-                        INPUT_BASENAME = input_basename
+            if config.max_parallel():
+                # Do each res file on its own
+                requests += [
+                    ExecutionRequest(
+                        dep_files = dep_files,
+                        input_files = [input_file],
+                        output_files = [output_file],
+                        tool = "genrb",
+                        args = "{POOL_BUNDLE} -k -i {OUT_DIR} -s {IN_DIR}/{SUB_DIR} -d {OUT_DIR}/{SUB_DIR} {INPUT_BASENAME}".format(**common,
+                            POOL_BUNDLE = "--usePoolBundle" if use_pool_bundle else "",
+                            SUB_DIR = sub_dir,
+                            INPUT_BASENAME = input_basename
+                        )
                     )
-                )
-                for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
-            ]
+                    for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
+                ]
+            else:
+                # Do all res files in one command
+                # Faster overall but cannot be parallelized
+                requests += [
+                    ExecutionRequest(
+                        dep_files = dep_files,
+                        input_files = input_files,
+                        output_files = output_files,
+                        tool = "genrb",
+                        args = "{POOL_BUNDLE} -k -i {OUT_DIR} -s {IN_DIR}/{SUB_DIR} -d {OUT_DIR}/{SUB_DIR} {INPUT_BASENAMES}".format(**common,
+                            POOL_BUNDLE = "--usePoolBundle" if use_pool_bundle else "",
+                            SUB_DIR = sub_dir,
+                            INPUT_BASENAMES = " ".join(input_basenames)
+                        )
+                    )
+                ]
 
 
     for request in requests:
