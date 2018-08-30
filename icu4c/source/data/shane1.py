@@ -53,7 +53,12 @@ features_group.add_argument(
     choices = AVAILABLE_FEATURES
 )
 
-ExecutionRequest = namedtuple("ExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args"])
+
+SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args", "format_with"])
+
+RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
+
+PrintFileRequest = namedtuple("PrintFileRequest", ["output_file", "content"])
 
 
 class Config(object):
@@ -90,22 +95,43 @@ def glob(pattern):
 
 
 def get_command_lines(request, common_vars):
-    if request.tool == "echo":
-        assert len(request.dep_files) == 0
-        assert len(request.input_files) == 0
-        assert len(request.output_files) == 1
-        output_file = request.output_files[0]
-        cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = output_file)]
+    if isinstance(request, PrintFileRequest):
+        cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = request.output_file)]
         cmds += [
             "echo \"{LINE}\" >> {OUTPUT_FILE}".format(**common_vars,
-                OUTPUT_FILE = output_file,
+                OUTPUT_FILE = request.output_file,
                 LINE = line.replace("\"", "\\\"")
             )
-            for line in request.args.split("\n")]
+            for line in request.content.split("\n")]
         return cmds
+
     if request.tool == "mkinstalldirs":
         return ["sh ../mkinstalldirs {ARGS}".format(ARGS = request.args)]
-    return ["../bin/{TOOL} {ARGS}".format(TOOL = request.tool, ARGS = request.args)]
+
+    template = "../bin/{TOOL} {{ARGS}}".format(TOOL = request.tool)
+    if isinstance(request, RepeatedExecutionRequest):
+        cmds = []
+        # dictionary of lists to list of dictionaries:
+        # https://stackoverflow.com/a/33046935/1407170
+        ld = [dict(zip(request.repeat_with, t)) for t in zip(*request.repeat_with.values())]
+        if not ld:
+            # No special options given in repeat_with
+            ld = [{} for _ in range(len(request.input_files))]
+        for iter_vars, input_file, output_file in zip(ld, request.input_files, request.output_files):
+            cmds.append(template.format(ARGS = request.args.format(**common_vars, **request.format_with, **iter_vars,
+                INPUT_FILE = input_file,
+                OUTPUT_FILE = output_file
+            )))
+        return cmds
+
+    if isinstance(request, SingleExecutionRequest):
+        return [template.format(ARGS = request.args.format(**common_vars, **request.format_with,
+            INPUT_FILES = request.input_files,
+            INPUT_FILES_SPACED = " ".join(request.input_files),
+            OUTPUT_FILES = request.output_files,
+        ))]
+
+    assert False
 
 
 def generate_index_file(locales, cldr_version, common_vars):
@@ -138,12 +164,13 @@ def main():
     # DIRECTORIES
     build_dirs = [v.format(**common) for v in ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]]
     requests += [
-        ExecutionRequest(
+        SingleExecutionRequest(
             dep_files = [],
             input_files = [],
             output_files = [],
             tool = "mkinstalldirs",
-            args = " ".join(build_dirs)
+            args = " ".join(build_dirs),
+            format_with = {}
         )
     ]
 
@@ -153,16 +180,13 @@ def main():
         txt2 = "unidata/confusablesWholeScript.txt"
         cfu = "confusables.cfu"
         requests += [
-            ExecutionRequest(
+            SingleExecutionRequest(
                 dep_files = [],
                 input_files = [txt1, txt2],
                 output_files = [cfu],
                 tool = "gencfu",
-                args = "-c -i {OUT_DIR} -r {IN_DIR}/{TXT1} -w {IN_DIR}/{TXT2} -o {OUT_DIR}/{CFU}".format(**common,
-                    TXT1 = txt1,
-                    TXT2 = txt2,
-                    CFU = cfu
-                )
+                args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} -o {OUT_DIR}/{OUTPUT_FILES[0]}",
+                format_with = {}
             )
         ]
 
@@ -171,15 +195,13 @@ def main():
         input_file = "mappings/convrtrs.txt"
         output_file = "cnvalias.icu"
         requests += [
-            ExecutionRequest(
+            SingleExecutionRequest(
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "gencnval",
-                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
+                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILES[0]}",
+                format_with = {}
             )
         ]
 
@@ -190,29 +212,27 @@ def main():
         if config.max_parallel():
             # Do each cnv file on its own
             requests += [
-                ExecutionRequest(
+                MultiExecutionRequest(
                     dep_files = [],
-                    input_files = [input_file],
-                    output_files = [output_file],
+                    input_files = input_files,
+                    output_files = output_files,
                     tool = "makeconv",
-                    args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}".format(**common,
-                        INPUT_FILE = input_file
-                    )
+                    args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}",
+                    format_with = {},
+                    repeat_with = {}
                 )
-                for (input_file, output_file) in zip(input_files, output_files)
             ]
         else:
             # Do all cnv files in one command
             # Faster overall but cannot be parallelized
             requests += [
-                ExecutionRequest(
+                SingleExecutionRequest(
                     dep_files = [],
                     input_files = input_files,
                     output_files = output_files,
                     tool = "makeconv",
-                    args = "-c -d {OUT_DIR} {INPUT_FILES}".format(**common,
-                        INPUT_FILES = " ".join(input_files)
-                    )
+                    args = "-c -d {OUT_DIR} {INPUT_FILES_SPACED}",
+                    format_with = {}
                 )
             ]
 
@@ -221,17 +241,15 @@ def main():
         input_files = glob("brkitr/rules/*.txt")
         output_files = ["brkitr/%s.brk" % v[13:-4] for v in input_files]
         requests += [
-            ExecutionRequest(
+            RepeatedExecutionRequest(
                 dep_files = [],
-                input_files = [input_file],
-                output_files = [output_file],
+                input_files = input_files,
+                output_files = output_files,
                 tool = "genbrk",
-                args = "-c -i {IN_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
+                args = "-c -i {IN_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
+                format_with = {},
+                repeat_with = {}
             )
-            for (input_file, output_file) in zip(input_files, output_files)
         ]
 
     # SPP FILES
@@ -240,18 +258,17 @@ def main():
         output_files = ["%s.spp" % v[6:-4] for v in input_files]
         bundle_names = [v[6:-4] for v in input_files]
         requests += [
-            ExecutionRequest(
+            RepeatedExecutionRequest(
                 dep_files = [],
-                input_files = [input_file],
-                output_files = [output_file],
+                input_files = input_files,
+                output_files = output_files,
                 tool = "gensprep",
-                args = "-d {OUT_DIR} -i {OUT_DIR} -s {IN_DIR}/sprep -b {BUNDLE_NAME} -m {IN_DIR}/unidata -u 3.2.0 {BUNDLE_NAME}.txt".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file,
-                    BUNDLE_NAME = bundle_name
-                )
+                args = "-d {OUT_DIR} -i {OUT_DIR} -s {IN_DIR}/sprep -b {BUNDLE_NAME} -m {IN_DIR}/unidata -u 3.2.0 {BUNDLE_NAME}.txt",
+                format_with = {},
+                repeat_with = {
+                    "BUNDLE_NAME": bundle_names
+                }
             )
-            for (input_file, output_file, bundle_name) in zip(input_files, output_files, bundle_names)
         ]
 
     # Dict Files
@@ -267,18 +284,17 @@ def main():
         }
         extra_optionses = [extra_options_map[v] for v in input_files]
         requests += [
-            ExecutionRequest(
+            RepeatedExecutionRequest(
                 dep_files = [],
-                input_files = [input_file],
-                output_files = [output_file],
+                input_files = input_files,
+                output_files = output_files,
                 tool = "gendict",
-                args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file,
-                    EXTRA_OPTIONS = extra_options
-                )
+                args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
+                format_with = {},
+                repeat_with = {
+                    "EXTRA_OPTIONS": extra_optionses
+                }
             )
-            for (input_file, output_file, extra_options) in zip(input_files, output_files, extra_optionses)
         ]
 
     # NRM Files
@@ -287,17 +303,15 @@ def main():
         input_files.remove("in/nfc.nrm")  # nfc.nrm is pre-compiled into C++
         output_files = ["%s" % v[3:] for v in input_files]
         requests += [
-            ExecutionRequest(
+            RepeatedExecutionRequest(
                 dep_files = [],
-                input_files = [input_file],
-                output_files = [output_file],
+                input_files = input_files,
+                output_files = output_files,
                 tool = "icupkg",
-                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
+                format_with = {},
+                repeat_with = {}
             )
-            for (input_file, output_file) in zip(input_files, output_files)
         ]
 
     # Collation Dependency File (ucadata.icu)
@@ -305,15 +319,13 @@ def main():
         input_file = "in/coll/ucadata-%s.icu" % config.coll_han_type()
         output_file = "coll/ucadata.icu"
         requests += [
-            ExecutionRequest(
+            SingleExecutionRequest(
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
-                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
+                format_with = {}
             )
         ]
 
@@ -322,15 +334,13 @@ def main():
         input_file = "in/unames.icu"
         output_file = "unames.icu"
         requests += [
-            ExecutionRequest(
+            SingleExecutionRequest(
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
-                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}".format(**common,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
-                )
+                args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
+                format_with = {}
             )
         ]
 
@@ -341,16 +351,17 @@ def main():
         input_basenames = [v[5:] for v in input_files]
         output_files = ["%s.res" % v[:-4] for v in input_basenames]
         requests += [
-            ExecutionRequest(
+            RepeatedExecutionRequest(
                 dep_files = [],
-                input_files = [input_file],
-                output_files = [output_file],
+                input_files = input_files,
+                output_files = output_files,
                 tool = "genrb",
-                args = "-k -q -i {OUT_DIR} -s {IN_DIR}/misc -d {OUT_DIR} {INPUT_BASENAME}".format(**common,
-                    INPUT_BASENAME = input_basename
-                )
+                args = "-k -q -i {OUT_DIR} -s {IN_DIR}/misc -d {OUT_DIR} {INPUT_BASENAME}",
+                format_with = {},
+                repeat_with = {
+                    "INPUT_BASENAME": input_basenames
+                }
             )
-            for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
         ]
 
     # Specialized Locale Data Res Files
@@ -383,35 +394,38 @@ def main():
             if config.max_parallel():
                 # Do each res file on its own
                 requests += [
-                    ExecutionRequest(
-                        dep_files = dep_files,
-                        input_files = [input_file] + [input_pool_file],
-                        output_files = [output_file],
+                    RepeatedExecutionRequest(
+                        dep_files = dep_files + [input_pool_file],
+                        input_files = input_files,
+                        output_files = output_files,
                         tool = "genrb",
-                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}".format(**common,
-                            EXTRA_OPTIONS = extra_options,
-                            IN_SUB_DIR = sub_dir,
-                            OUT_PREFIX = out_prefix,
-                            INPUT_BASENAME = input_basename
-                        )
+                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}",
+                        format_with = {
+                            "EXTRA_OPTIONS": extra_options,
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix
+                        },
+                        repeat_with = {
+                            "INPUT_BASENAME": input_basenames,
+                        }
                     )
-                    for (input_file, output_file, input_basename) in zip(input_files, output_files, input_basenames)
                 ]
             else:
                 # Do all res files in one command
                 # Faster overall but cannot be parallelized
                 requests += [
-                    ExecutionRequest(
-                        dep_files = dep_files,
-                        input_files = input_files + [input_pool_file],
+                    SingleExecutionRequest(
+                        dep_files = dep_files + [input_pool_file],
+                        input_files = input_files,
                         output_files = output_files,
                         tool = "genrb",
-                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES}".format(**common,
-                            EXTRA_OPTIONS = extra_options,
-                            IN_SUB_DIR = sub_dir,
-                            OUT_PREFIX = out_prefix,
-                            INPUT_BASENAMES = " ".join(input_basenames)
-                        )
+                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        format_with = {
+                            "EXTRA_OPTIONS": extra_options,
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix,
+                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
+                        }
                     )
                 ]
             # Generate index txt file
@@ -424,41 +438,40 @@ def main():
                 #locales = list(sorted(v[:-4] for v in mk_values["CURR_SOURCE"].split(" ")))
                 index_file_txt = "{TMP_DIR}/{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir)
                 requests += [
-                    ExecutionRequest(
-                        dep_files = [],
-                        input_files = [],
-                        output_files = [index_file_txt],
-                        tool = "echo",
-                        args = generate_index_file(locales, cldr_version, common)
+                    PrintFileRequest(
+                        output_file = index_file_txt,
+                        content = generate_index_file(locales, cldr_version, common)
                     )
                 ]
-            # Generate index res file
-            index_res_file = "{OUT_DIR}/{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix)
-            requests += [
-                ExecutionRequest(
-                    dep_files = [index_file_txt],
-                    input_files = [],
-                    output_files = [index_res_file],
-                    tool = "genrb",
-                    args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt".format(**common,
-                        IN_SUB_DIR = sub_dir,
-                        OUT_PREFIX = out_prefix
+                # Generate index res file
+                index_res_file = "{OUT_DIR}/{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix)
+                requests += [
+                    SingleExecutionRequest(
+                        dep_files = [index_file_txt],
+                        input_files = [],
+                        output_files = [index_res_file],
+                        tool = "genrb",
+                        args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt",
+                        format_with = {
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix
+                        }
                     )
-                )
-            ]
+                ]
             # Copy the pool file
             if use_pool_bundle:
                 output_pool_file = " {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix)
                 requests += [
-                    ExecutionRequest(
+                    SingleExecutionRequest(
                         dep_files = [],
                         input_files = [input_pool_file],
                         output_files = [output_pool_file],
                         tool = "icupkg",
-                        args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common,
-                            IN_SUB_DIR = sub_dir,
-                            OUT_PREFIX = out_prefix
-                        )
+                        args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res",
+                        format_with = {
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix
+                        }
                     )
                 ]
 
