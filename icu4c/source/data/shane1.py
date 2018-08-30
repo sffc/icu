@@ -54,11 +54,13 @@ features_group.add_argument(
 )
 
 
-SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args", "format_with"])
+SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with"])
 
-RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
+RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
 
-PrintFileRequest = namedtuple("PrintFileRequest", ["output_file", "content"])
+PrintFileRequest = namedtuple("PrintFileRequest", ["name", "output_file", "content"])
+
+MakeRule = namedtuple("MakeRule", ["name", "dep_files", "input_files", "output_files", "cmds"])
 
 
 class Config(object):
@@ -94,7 +96,23 @@ def glob(pattern):
     return [v[len(in_dir)+1:] for v in result_paths]
 
 
-def get_command_lines(request, common_vars):
+def repeated_execution_request_looper(request):
+    # dictionary of lists to list of dictionaries:
+    # https://stackoverflow.com/a/33046935/1407170
+    ld = [dict(zip(request.repeat_with, t)) for t in zip(*request.repeat_with.values())]
+    if not ld:
+        # No special options given in repeat_with
+        ld = [{} for _ in range(len(request.input_files))]
+    return zip(ld, request.input_files, request.output_files)
+
+
+def get_command_lines(requests, common_vars):
+    cmds = []
+    for request in requests:
+        cmds += get_command_lines_helper(request, common_vars)
+    return "\n".join(cmds)
+
+def get_command_lines_helper(request, common_vars):
     if isinstance(request, PrintFileRequest):
         cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = request.output_file)]
         cmds += [
@@ -111,13 +129,7 @@ def get_command_lines(request, common_vars):
     template = "../bin/{TOOL} {{ARGS}}".format(TOOL = request.tool)
     if isinstance(request, RepeatedExecutionRequest):
         cmds = []
-        # dictionary of lists to list of dictionaries:
-        # https://stackoverflow.com/a/33046935/1407170
-        ld = [dict(zip(request.repeat_with, t)) for t in zip(*request.repeat_with.values())]
-        if not ld:
-            # No special options given in repeat_with
-            ld = [{} for _ in range(len(request.input_files))]
-        for iter_vars, input_file, output_file in zip(ld, request.input_files, request.output_files):
+        for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
             cmds.append(template.format(ARGS = request.args.format(**common_vars, **request.format_with, **iter_vars,
                 INPUT_FILE = input_file,
                 OUTPUT_FILE = output_file
@@ -127,11 +139,131 @@ def get_command_lines(request, common_vars):
     if isinstance(request, SingleExecutionRequest):
         return [template.format(ARGS = request.args.format(**common_vars, **request.format_with,
             INPUT_FILES = request.input_files,
-            INPUT_FILES_SPACED = " ".join(request.input_files),
             OUTPUT_FILES = request.output_files,
         ))]
 
     assert False
+
+
+def get_gnumake_rules(requests, common_vars):
+    make_rules = []
+    for request in requests:
+        make_rules += get_gnumake_rules_helper(request, common_vars)
+    
+    # Print the Makefile.
+    makefile_string = """## Makefile for ICU data
+## Copyright (C) 2018 and later: Unicode, Inc. and others.
+
+## Source directory information
+srcdir = {SRCDIR}
+top_srcdir = {TOP_SRCDIR}
+
+# So that you have $(top_builddir)/config.status
+top_builddir = {TOP_BUILDDIR}
+
+## All the flags and other definitions are included here.
+include $(top_builddir)/icudefs.mk
+
+""".format(
+        # TODO
+        SRCDIR = ".",
+        TOP_SRCDIR = "..",
+        TOP_BUILDDIR = ".."
+    )
+
+    # Common Variables
+    for key, value in common_vars.items():
+        makefile_string += "{KEY} = {VALUE}\n".format(
+            KEY = key,
+            VALUE = value
+        )
+    makefile_string += "\n"
+
+    # Custom Variables
+    all_out_vars = []
+    for rule in make_rules:
+        if rule.name == "dirs":
+            continue
+        makefile_string += "{NAME}_IN = {FILES_SPACED}\n".format(
+            NAME = rule.name.upper(),
+            FILES_SPACED = " ".join(rule.input_files)
+        )
+        makefile_string += "{NAME}_DEPS = {FILES_SPACED}\n".format(
+            NAME = rule.name.upper(),
+            FILES_SPACED = " ".join(rule.dep_files)
+        )
+        makefile_string += "{NAME}_OUT = {FILES_SPACED}\n".format(
+            NAME = rule.name.upper(),
+            FILES_SPACED = " ".join(rule.output_files)
+        )
+        all_out_vars.append("$(OUT_DIR)/$({NAME}_OUT)".format(
+            NAME = rule.name.upper(),
+        ))
+        makefile_string += "\n"
+    makefile_string += "ALL_OUT = %s\n\n" % " ".join(all_out_vars)
+
+    # Main Commands
+    for rule in make_rules:
+        if rule.name == "dirs":
+            header_line = "dirs:"
+        else:
+            header_line = "$(OUT_DIR)/$({NAME}_OUT): $(IN_DIR)/$({NAME}_IN) $(TMP_DIR)/$({NAME}_DEP) | dirs".format(
+                NAME = rule.name.upper()
+            )
+        makefile_string += "{HEADER_LINE}\n{RULE_LINES}\n\n".format(
+            HEADER_LINE = header_line,
+            RULE_LINES = "\n".join("\t%s" % cmd for cmd in rule.cmds)
+        )
+
+    # Main Target
+    makefile_string += "all: $(ALL_OUT)\n\n"
+
+    return makefile_string
+
+def get_gnumake_rules_helper(request, common_vars):
+    if isinstance(request, PrintFileRequest):
+        # TODO
+        return []
+
+    common_vars_mak = { k: "$(%s)" % k for k in common_vars.keys() }
+
+    if request.tool == "mkinstalldirs":
+        template = "sh ../mkinstalldirs {ARGS}"
+    else:
+        template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool)
+
+    if isinstance(request, SingleExecutionRequest):
+        cmd = template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with,
+            INPUT_FILES = request.input_files,
+            OUTPUT_FILES = request.output_files,
+        ))
+        return [
+            MakeRule(
+                name = request.name,
+                dep_files = request.dep_files,
+                input_files = request.input_files,
+                output_files = request.output_files,
+                cmds = [cmd]
+            )
+        ]
+
+    if isinstance(request, RepeatedExecutionRequest):
+        rules = []
+        for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
+            name_suffix = input_file[input_file.rfind("/")+1:input_file.rfind(".")]
+            rules.append(MakeRule(
+                name = "%s_%s" % (request.name, name_suffix),
+                dep_files = request.dep_files,
+                input_files = [input_file],
+                output_files = [output_file],
+                cmds = [template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with, **iter_vars,
+                    INPUT_FILE = input_file,
+                    OUTPUT_FILE = output_file
+                ))]
+            ))
+        return rules
+
+    return []
 
 
 def generate_index_file(locales, cldr_version, common_vars):
@@ -165,6 +297,7 @@ def main():
     build_dirs = [v.format(**common) for v in ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]]
     requests += [
         SingleExecutionRequest(
+            name = "dirs",
             dep_files = [],
             input_files = [],
             output_files = [],
@@ -181,6 +314,7 @@ def main():
         cfu = "confusables.cfu"
         requests += [
             SingleExecutionRequest(
+                name = "confusables",
                 dep_files = [],
                 input_files = [txt1, txt2],
                 output_files = [cfu],
@@ -196,6 +330,7 @@ def main():
         output_file = "cnvalias.icu"
         requests += [
             SingleExecutionRequest(
+                name = "cnvalias",
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
@@ -213,6 +348,7 @@ def main():
             # Do each cnv file on its own
             requests += [
                 MultiExecutionRequest(
+                    name = "uconv",
                     dep_files = [],
                     input_files = input_files,
                     output_files = output_files,
@@ -227,12 +363,15 @@ def main():
             # Faster overall but cannot be parallelized
             requests += [
                 SingleExecutionRequest(
+                    name = "uconv",
                     dep_files = [],
                     input_files = input_files,
                     output_files = output_files,
                     tool = "makeconv",
                     args = "-c -d {OUT_DIR} {INPUT_FILES_SPACED}",
-                    format_with = {}
+                    format_with = {
+                        "INPUT_FILES_SPACED": " ".join(input_files)
+                    }
                 )
             ]
 
@@ -242,6 +381,7 @@ def main():
         output_files = ["brkitr/%s.brk" % v[13:-4] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
+                name = "brkitr_brk",
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
@@ -259,6 +399,7 @@ def main():
         bundle_names = [v[6:-4] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
+                name = "stringprep",
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
@@ -285,6 +426,7 @@ def main():
         extra_optionses = [extra_options_map[v] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
+                name = "dictionaries",
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
@@ -304,6 +446,7 @@ def main():
         output_files = ["%s" % v[3:] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
+                name = "normalization",
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
@@ -320,6 +463,7 @@ def main():
         output_file = "coll/ucadata.icu"
         requests += [
             SingleExecutionRequest(
+                name = "coll_ucadata",
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
@@ -335,6 +479,7 @@ def main():
         output_file = "unames.icu"
         requests += [
             SingleExecutionRequest(
+                name = "unames",
                 dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
@@ -352,6 +497,7 @@ def main():
         output_files = ["%s.res" % v[:-4] for v in input_basenames]
         requests += [
             RepeatedExecutionRequest(
+                name = "misc",
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
@@ -390,11 +536,12 @@ def main():
             else:
                 input_files = glob("%s/*.txt" % sub_dir)
             input_basenames = [v[len(sub_dir)+1:] for v in input_files]
-            output_files = ["%s%s" % (out_prefix, v[:-4]) for v in input_basenames]
+            output_files = ["%s%s.res" % (out_prefix, v[:-4]) for v in input_basenames]
             if config.max_parallel():
                 # Do each res file on its own
                 requests += [
                     RepeatedExecutionRequest(
+                        name = "%s_res" % sub_dir,
                         dep_files = dep_files + [input_pool_file],
                         input_files = input_files,
                         output_files = output_files,
@@ -415,6 +562,7 @@ def main():
                 # Faster overall but cannot be parallelized
                 requests += [
                     SingleExecutionRequest(
+                        name = "%s_res" % sub_dir,
                         dep_files = dep_files + [input_pool_file],
                         input_files = input_files,
                         output_files = output_files,
@@ -439,6 +587,7 @@ def main():
                 index_file_txt = "{TMP_DIR}/{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir)
                 requests += [
                     PrintFileRequest(
+                        name = "%s_index_txt" % sub_dir,
                         output_file = index_file_txt,
                         content = generate_index_file(locales, cldr_version, common)
                     )
@@ -447,6 +596,7 @@ def main():
                 index_res_file = "{OUT_DIR}/{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix)
                 requests += [
                     SingleExecutionRequest(
+                        name = "%s_index_res" % sub_dir,
                         dep_files = [index_file_txt],
                         input_files = [],
                         output_files = [index_res_file],
@@ -463,6 +613,7 @@ def main():
                 output_pool_file = " {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix)
                 requests += [
                     SingleExecutionRequest(
+                        name = "%s_pool" % sub_dir,
                         dep_files = [],
                         input_files = [input_pool_file],
                         output_files = [output_pool_file],
@@ -476,9 +627,11 @@ def main():
                 ]
 
 
-    for request in requests:
-        command_lines = get_command_lines(request, common)
-        for command_line in command_lines:
-            print(command_line)
+    if args.format == "bash":
+        print(get_command_lines(requests, common))
+    elif args.format == "gnumake":
+        print(get_gnumake_rules(requests, common))
+    else:
+        print("Format not supported: %s" % args.format)
 
 main()
