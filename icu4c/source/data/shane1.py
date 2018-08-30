@@ -1,26 +1,83 @@
 # Copyright (C) 2016 and later: Unicode, Inc. and others.
 # License & terms of use: http://www.unicode.org/copyright.html
 
+import argparse
 from collections import namedtuple
 import glob as pyglob
 from distutils.sysconfig import parse_makefile
+
+AVAILABLE_FEATURES = ["confusables", "cnvalias", "uconv", "brkitr", "stringprep", "dictionaries", "normalization", "coll", "unames", "misc", "locales", "curr", "lang", "region", "zone", "unit", "rbnf", "translit"]
+
+flag_parser = argparse.ArgumentParser(
+    description = """Generates rules for building ICU binary data files from text
+and other input files in source control.
+
+You can select features using either the --whitelist or --blacklist option.
+Available features include:
+
+{AVAILABLE_FEATURES}
+""".format(AVAILABLE_FEATURES = "\n".join("    %s" % v for v in AVAILABLE_FEATURES)),
+    formatter_class = argparse.RawDescriptionHelpFormatter
+)
+flag_parser.add_argument(
+    "--format",
+    help = "How to output the rules to run to build ICU data.",
+    choices = ["bash", "gnumake", "nmake"],
+    default = "bash"
+)
+flag_parser.add_argument(
+    "--seqmode",
+    help = "Whether to optimize rules to be run sequentially (fewer threads) or in parallel (many threads).",
+    choices = ["sequential", "parallel"],
+    default = "sequential"
+)
+flag_parser.add_argument(
+    "--collation_ucadata",
+    help = "Which data set to use for ucadata in collation.",
+    choices = ["unihan", "implicithan"],
+    default = "unihan"
+)
+features_group = flag_parser.add_mutually_exclusive_group()
+features_group.add_argument(
+    "--blacklist",
+    metavar = "FEATURE",
+    help = "A list of one or more features to disable; all others will be enabled by default. New users should favor a blacklist to ensure important data is not left out.",
+    nargs = "+",
+    choices = AVAILABLE_FEATURES
+)
+features_group.add_argument(
+    "--whitelist",
+    metavar = "FEATURE",
+    help = "A list of one or more features to enable; all others will be disabled by default.",
+    nargs = "+",
+    choices = AVAILABLE_FEATURES
+)
 
 ExecutionRequest = namedtuple("ExecutionRequest", ["dep_files", "input_files", "output_files", "tool", "args"])
 
 
 class Config(object):
+
+    def __init__(self, args):
+        if args.whitelist:
+            self._feature_set = set(args.whitelist)
+        elif args.blacklist:
+            self._feature_set = set(AVAILABLE_FEATURES) - set(args.blacklist)
+        else:
+            self._feature_set = set(AVAILABLE_FEATURES)
+        self._max_parallel = (args.seqmode == "parallel")
+        self._coll_han_type = args.collation_ucadata
+
     def has_feature(self, feature_name):
-        # TODO
-        # if feature_name == "dictionaries":
-        #     return False
-        return True
+        assert feature_name in AVAILABLE_FEATURES
+        return feature_name in self._feature_set
 
     def max_parallel(self):
-        return True
+        return self._max_parallel
 
     def coll_han_type(self):
         # Either "unihan" or "implicithan"
-        return "unihan"
+        return self._coll_han_type
 
 
 def glob(pattern):
@@ -65,6 +122,9 @@ def generate_index_file(locales, cldr_version, common_vars):
 
 
 def main():
+    args = flag_parser.parse_args()
+    config = Config(args)
+
     requests = []
 
     common = {
@@ -74,8 +134,6 @@ def main():
         "INDEX_NAME": "res_index",
         "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
     }
-
-    config = Config()
 
     # DIRECTORIES
     build_dirs = [v.format(**common) for v in ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]]
@@ -159,7 +217,7 @@ def main():
             ]
 
     # BRK Files
-    if config.has_feature("break-iterator"):
+    if config.has_feature("brkitr"):
         input_files = glob("brkitr/rules/*.txt")
         output_files = ["brkitr/%s.brk" % v[13:-4] for v in input_files]
         requests += [
@@ -177,7 +235,7 @@ def main():
         ]
 
     # SPP FILES
-    if config.has_feature("string-prep"):
+    if config.has_feature("stringprep"):
         input_files = glob("sprep/*.txt")
         output_files = ["%s.spp" % v[6:-4] for v in input_files]
         bundle_names = [v[6:-4] for v in input_files]
