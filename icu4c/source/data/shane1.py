@@ -127,10 +127,14 @@ def get_command_lines(requests, common_vars):
 
 def get_command_lines_helper(request, common_vars):
     if isinstance(request, PrintFileRequest):
-        cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = request.output_file.filename)]
+        output_path = "{DIRNAME}/{FILENAME}".format(
+            DIRNAME = dir_for(request.output_file).format(**common_vars),
+            FILENAME = request.output_file.filename,
+        )
+        cmds = ["rm -f {OUTPUT_PATH}".format(**common_vars, OUTPUT_PATH = output_path)]
         cmds += [
-            "echo \"{LINE}\" >> {OUTPUT_FILE}".format(**common_vars,
-                OUTPUT_FILE = request.output_file.filename,
+            "echo \"{LINE}\" >> {OUTPUT_PATH}".format(**common_vars,
+                OUTPUT_PATH = output_path,
                 LINE = line.replace("\"", "\\\"")
             )
             for line in request.content.split("\n")]
@@ -194,7 +198,7 @@ include $(top_builddir)/icudefs.mk
         make_rules += get_gnumake_rules_helper(request, **kwargs)
 
     # All output files, for "all" command
-    all_output_files = set(file for rule in make_rules for file in rule.output_files)
+    all_output_files = set(file for rule in make_rules for file in rule.output_files if isinstance(file, OutFile))
     makefile_string += "ALL_OUT = %s\n\n" % files_to_makefile(sorted(all_output_files), **kwargs)
 
     # Variables for print commands
@@ -209,11 +213,22 @@ include $(top_builddir)/icudefs.mk
     for rule in make_rules:
         if rule.name == "dirs":
             header_line = "dirs:"
-        else:
+        elif len(rule.output_files) == 1:
             header_line = "{OUT_LIST}: {IN_LIST} | dirs".format(
                 OUT_LIST = files_to_makefile(rule.output_files, **kwargs),
                 IN_LIST = files_to_makefile(rule.input_files, **kwargs)
             )
+        else:
+            header_line = "{name}_all: {IN_LIST} | dirs".format(
+                IN_LIST = files_to_makefile(rule.input_files, **kwargs),
+                name = rule.name
+            )
+            for file in rule.output_files:
+                makefile_string += "{MAKEFILENAME}: {name}_all\n".format(
+                    MAKEFILENAME = files_to_makefile([file], **kwargs),
+                    name = rule.name
+                )
+            makefile_string += "\n"
         makefile_string += "{HEADER_LINE}\n{RULE_LINES}\n\n".format(
             HEADER_LINE = header_line,
             RULE_LINES = "\n".join("\t%s" % cmd for cmd in rule.cmds)
@@ -273,8 +288,8 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
 
     if isinstance(request, SingleExecutionRequest):
         cmd = template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with,
-            INPUT_FILES = request.input_files,
-            OUTPUT_FILES = request.output_files,
+            INPUT_FILES = [file.filename for file in request.input_files],
+            OUTPUT_FILES = [file.filename for file in request.output_files],
         ))
         return [
             MakeRule(
@@ -294,8 +309,8 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
                 input_files = [input_file] + request.dep_files,
                 output_files = [output_file],
                 cmds = [template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with, **iter_vars,
-                    INPUT_FILE = input_file,
-                    OUTPUT_FILE = output_file
+                    INPUT_FILE = input_file.filename,
+                    OUTPUT_FILE = output_file.filename
                 ))]
             ))
         return rules
@@ -377,11 +392,11 @@ def main():
     # UConv Conversion Table Files
     if config.has_feature("uconv"):
         input_files = [InFile(filename) for filename in glob("mappings/*.ucm")]
-        output_files = [OutFile("%s.cnv") % v.filename[9:-4] for v in input_files]
+        output_files = [OutFile("%s.cnv" % v.filename[9:-4]) for v in input_files]
         if config.max_parallel():
             # Do each cnv file on its own
             requests += [
-                MultiExecutionRequest(
+                RepeatedExecutionRequest(
                     name = "uconv",
                     dep_files = [],
                     input_files = input_files,
@@ -403,7 +418,7 @@ def main():
                     tool = "makeconv",
                     args = "-c -d {OUT_DIR} {INPUT_FILES_SPACED}",
                     format_with = {
-                        "INPUT_FILES_SPACED": " ".join(input_files)
+                        "INPUT_FILES_SPACED": " ".join(file.filename for file in input_files)
                     }
                 )
             ]
@@ -411,7 +426,7 @@ def main():
     # BRK Files
     if config.has_feature("brkitr"):
         input_files = [InFile(filename) for filename in glob("brkitr/rules/*.txt")]
-        output_files = [OutFile("brkitr/%s.brk") % v.filename[13:-4] for v in input_files]
+        output_files = [OutFile("brkitr/%s.brk" % v.filename[13:-4]) for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "brkitr_brk",
@@ -428,8 +443,8 @@ def main():
     # SPP FILES
     if config.has_feature("stringprep"):
         input_files = [InFile(filename) for filename in glob("sprep/*.txt")]
-        output_files = [OutFile("%s.spp") % v.filename[6:-4] for v in input_files]
-        bundle_names = [v[6:-4] for v.filename in input_files]
+        output_files = [OutFile("%s.spp" % v.filename[6:-4]) for v in input_files]
+        bundle_names = [v.filename[6:-4] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "stringprep",
@@ -448,7 +463,7 @@ def main():
     # Dict Files
     if config.has_feature("dictionaries"):
         input_files = [InFile(filename) for filename in glob("brkitr/dictionaries/*.txt")]
-        output_files = [OutFile("brkitr/%s.dict") % v.filename[20:-4] for v in input_files]
+        output_files = [OutFile("brkitr/%s.dict" % v.filename[20:-4]) for v in input_files]
         extra_options_map = {
             "brkitr/dictionaries/burmesedict.txt": "--bytes --transform offset-0x1000",
             "brkitr/dictionaries/cjdict.txt": "--uchars",
@@ -456,7 +471,7 @@ def main():
             "brkitr/dictionaries/laodict.txt": "--bytes --transform offset-0x0e80",
             "brkitr/dictionaries/thaidict.txt": "--bytes --transform offset-0x0e00"
         }
-        extra_optionses = [extra_options_map[v] for v.filename in input_files]
+        extra_optionses = [extra_options_map[v.filename] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "dictionaries",
@@ -476,7 +491,7 @@ def main():
     if config.has_feature("normalization"):
         input_files = [InFile(filename) for filename in glob("in/*.nrm")]
         input_files.remove(InFile("in/nfc.nrm"))  # nfc.nrm is pre-compiled into C++
-        output_files = [OutFile("%s") % v.filename[3:] for v in input_files]
+        output_files = [OutFile(v.filename[3:]) for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "normalization",
@@ -525,7 +540,7 @@ def main():
         # TODO: Treat each misc file separately
         input_files = [InFile(filename) for filename in glob("misc/*.txt")]
         input_basenames = [v.filename[5:] for v in input_files]
-        output_files = [OutFile("%s.res") % v.filename[:-4] for v in input_basenames]
+        output_files = [OutFile("%s.res" % v[:-4]) for v in input_basenames]
         requests += [
             RepeatedExecutionRequest(
                 name = "misc",
