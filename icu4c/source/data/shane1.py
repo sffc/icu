@@ -67,13 +67,13 @@ def dir_for(file):
         return "{OUT_DIR}"
     assert False
 
-SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with"])
+SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "input_files", "output_files", "tool", "args", "format_with"])
 
 RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
 
 PrintFileRequest = namedtuple("PrintFileRequest", ["name", "output_file", "content"])
 
-MakeRule = namedtuple("MakeRule", ["name", "dep_files", "input_files", "output_files", "cmds"])
+MakeRule = namedtuple("MakeRule", ["name", "input_files", "output_files", "cmds"])
 
 
 class Config(object):
@@ -106,7 +106,7 @@ def glob(pattern):
         IN_DIR =in_dir,
         PATTERN = pattern
     ))
-    return [v[len(in_dir)+1:] for v in result_paths]
+    return [v[len(in_dir)+1:] for v in sorted(result_paths)]
 
 
 def repeated_execution_request_looper(request):
@@ -127,32 +127,32 @@ def get_command_lines(requests, common_vars):
 
 def get_command_lines_helper(request, common_vars):
     if isinstance(request, PrintFileRequest):
-        cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = request.output_file)]
+        cmds = ["rm -f {OUTPUT_FILE}".format(**common_vars, OUTPUT_FILE = request.output_file.filename)]
         cmds += [
             "echo \"{LINE}\" >> {OUTPUT_FILE}".format(**common_vars,
-                OUTPUT_FILE = request.output_file,
+                OUTPUT_FILE = request.output_file.filename,
                 LINE = line.replace("\"", "\\\"")
             )
             for line in request.content.split("\n")]
         return cmds
 
     if request.tool == "mkinstalldirs":
-        return ["sh ../mkinstalldirs {ARGS}".format(ARGS = request.args)]
+        return ["sh ../mkinstalldirs {ARGS}".format(ARGS = request.args.format(**common_vars))]
 
     template = "../bin/{TOOL} {{ARGS}}".format(TOOL = request.tool)
     if isinstance(request, RepeatedExecutionRequest):
         cmds = []
         for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
             cmds.append(template.format(ARGS = request.args.format(**common_vars, **request.format_with, **iter_vars,
-                INPUT_FILE = input_file,
-                OUTPUT_FILE = output_file
+                INPUT_FILE = input_file.filename,
+                OUTPUT_FILE = output_file.filename
             )))
         return cmds
 
     if isinstance(request, SingleExecutionRequest):
         return [template.format(ARGS = request.args.format(**common_vars, **request.format_with,
-            INPUT_FILES = request.input_files,
-            OUTPUT_FILES = request.output_files,
+            INPUT_FILES = [file.filename for file in request.input_files],
+            OUTPUT_FILES = [file.filename for file in request.output_files],
         ))]
 
     assert False
@@ -188,23 +188,31 @@ include $(top_builddir)/icudefs.mk
         )
     makefile_string += "\n"
 
+    # Generate Rules
     make_rules = []
     for request in requests:
         make_rules += get_gnumake_rules_helper(request, **kwargs)
 
     # All output files, for "all" command
     all_output_files = set(file for rule in make_rules for file in rule.output_files)
-    makefile_string += "ALL_OUT = %s\n" % filenames_to_makefile(sorted(all_output_files), **kwargs)
+    makefile_string += "ALL_OUT = %s\n\n" % files_to_makefile(sorted(all_output_files), **kwargs)
+
+    # Variables for print commands
+    for request in requests:
+        if isinstance(request, PrintFileRequest):
+            makefile_string += "define {NAME}_CONTENT\n{CONTENT}\nendef\nexport {NAME}_CONTENT\n\n".format(
+                NAME = request.name.upper(),
+                CONTENT = request.content
+            )
 
     # Main Commands
     for rule in make_rules:
         if rule.name == "dirs":
             header_line = "dirs:"
         else:
-            header_line = "{OUT_LIST}: {IN_LIST} {DEP_LIST} | dirs".format(
-                OUT_LIST = filenames_to_makefile(rule.output_files, **kwargs),
-                IN_LIST = filenames_to_makefile(rule.input_files, **kwargs),
-                DEP_LIST = filenames_to_makefile(rule.dep_files, **kwargs)
+            header_line = "{OUT_LIST}: {IN_LIST} | dirs".format(
+                OUT_LIST = files_to_makefile(rule.output_files, **kwargs),
+                IN_LIST = files_to_makefile(rule.input_files, **kwargs)
             )
         makefile_string += "{HEADER_LINE}\n{RULE_LINES}\n\n".format(
             HEADER_LINE = header_line,
@@ -216,7 +224,7 @@ include $(top_builddir)/icudefs.mk
 
     return makefile_string
 
-def filenames_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
+def files_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
     if len(files) == 0:
         return ""
     dirnames = [dir_for(file).format(**common_vars_mak) for file in files]
@@ -225,12 +233,38 @@ def filenames_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
     if is_nmake or len(set(dirnames)) > 1:
         return " ".join("%s/%s" % (dirname, file.filename) for dirname, file in zip(dirnames, files))
     else:
-        return "$(addprefix %s/,%s)\n" % (dirnames[0], " ".join(file.filename for file in files))
+        return "$(addprefix %s/,%s)" % (dirnames[0], " ".join(file.filename for file in files))
 
-def get_gnumake_rules_helper(request, common_vars_mak, **kwargs):
+def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
     if isinstance(request, PrintFileRequest):
-        # TODO
-        return []
+        if is_nmake or True:
+            return [
+                MakeRule(
+                    name = request.name,
+                    input_files = [],
+                    output_files = [request.output_file],
+                    cmds = [
+                        "echo \"$${NAME}_CONTENT\" > {MAKEFILENAME}".format(**common_vars_mak,
+                            NAME = request.name.upper(),
+                            MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars_mak, **kwargs)
+                        )
+                    ]
+                )
+            ]
+        else:
+            return [
+                MakeRule(
+                    name = request.name,
+                    input_files = [],
+                    output_files = [request.output_file],
+                    cmds = [
+                        "$(file >{MAKEFILENAME},{CONTENT})".format(**common_vars_mak,
+                            MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars_mak, **kwargs),
+                            CONTENT = "\\ \n".join(request.content.split("\n"))
+                        )
+                    ]
+                )
+            ]
 
     if request.tool == "mkinstalldirs":
         template = "sh ../mkinstalldirs {ARGS}"
@@ -245,7 +279,6 @@ def get_gnumake_rules_helper(request, common_vars_mak, **kwargs):
         return [
             MakeRule(
                 name = request.name,
-                dep_files = request.dep_files,
                 input_files = request.input_files,
                 output_files = request.output_files,
                 cmds = [cmd]
@@ -258,8 +291,7 @@ def get_gnumake_rules_helper(request, common_vars_mak, **kwargs):
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
             rules.append(MakeRule(
                 name = "%s_%s" % (request.name, name_suffix),
-                dep_files = request.dep_files,
-                input_files = [input_file],
+                input_files = [input_file] + request.dep_files,
                 output_files = [output_file],
                 cmds = [template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with, **iter_vars,
                     INPUT_FILE = input_file,
@@ -303,7 +335,6 @@ def main():
     requests += [
         SingleExecutionRequest(
             name = "dirs",
-            dep_files = [],
             input_files = [],
             output_files = [],
             tool = "mkinstalldirs",
@@ -320,7 +351,6 @@ def main():
         requests += [
             SingleExecutionRequest(
                 name = "confusables",
-                dep_files = [],
                 input_files = [txt1, txt2],
                 output_files = [cfu],
                 tool = "gencfu",
@@ -336,7 +366,6 @@ def main():
         requests += [
             SingleExecutionRequest(
                 name = "cnvalias",
-                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "gencnval",
@@ -369,7 +398,6 @@ def main():
             requests += [
                 SingleExecutionRequest(
                     name = "uconv",
-                    dep_files = [],
                     input_files = input_files,
                     output_files = output_files,
                     tool = "makeconv",
@@ -469,7 +497,6 @@ def main():
         requests += [
             SingleExecutionRequest(
                 name = "coll_ucadata",
-                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
@@ -485,7 +512,6 @@ def main():
         requests += [
             SingleExecutionRequest(
                 name = "unames",
-                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = "icupkg",
@@ -535,7 +561,7 @@ def main():
         extra_options = "--usePoolBundle" if use_pool_bundle else ""
         if config.has_feature(sub_dir):
             if use_pool_bundle:
-                input_pool_files = InFile("%s/pool.res" % sub_dir)
+                input_pool_files = [InFile("%s/pool.res" % sub_dir)]
             else:
                 input_pool_files = []
             # TODO: Clean this up for translit
@@ -571,8 +597,7 @@ def main():
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_res" % sub_dir,
-                        dep_files = dep_files + input_pool_files,
-                        input_files = input_files,
+                        input_files = dep_files + input_pool_files + input_files,
                         output_files = output_files,
                         tool = "genrb",
                         args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
@@ -605,7 +630,6 @@ def main():
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_index_res" % sub_dir,
-                        dep_files = [],
                         input_files = [index_file_txt],
                         output_files = [index_res_file],
                         tool = "genrb",
@@ -622,7 +646,6 @@ def main():
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool" % sub_dir,
-                        dep_files = [],
                         input_files = input_pool_files,
                         output_files = [output_pool_file],
                         tool = "icupkg",
