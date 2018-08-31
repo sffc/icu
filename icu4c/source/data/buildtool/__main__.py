@@ -5,7 +5,7 @@ import argparse
 import glob as pyglob
 
 from . import *
-from . import buildtool
+from . import rules
 from .renderers import bash, makefile
 
 flag_parser = argparse.ArgumentParser(
@@ -99,7 +99,7 @@ def main():
         "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
     }
 
-    requests = buildtool.generate(config, glob, common)
+    requests = rules.generate(config, glob, common)
 
     if args.format == "bash":
         print(bash.get_command_lines(requests, common))
