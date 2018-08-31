@@ -54,6 +54,19 @@ features_group.add_argument(
 )
 
 
+InFile = namedtuple("InFile", ["filename"])
+TmpFile = namedtuple("TmpFile", ["filename"])
+OutFile = namedtuple("OutFile", ["filename"])
+
+def dir_for(file):
+    if isinstance(file, InFile):
+        return "{IN_DIR}"
+    if isinstance(file, TmpFile):
+        return "{TMP_DIR}"
+    if isinstance(file, OutFile):
+        return "{OUT_DIR}"
+    assert False
+
 SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with"])
 
 RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
@@ -145,12 +158,7 @@ def get_command_lines_helper(request, common_vars):
     assert False
 
 
-def get_gnumake_rules(requests, common_vars):
-    make_rules = []
-    for request in requests:
-        make_rules += get_gnumake_rules_helper(request, common_vars)
-    
-    # Print the Makefile.
+def get_gnumake_rules(requests, common_vars, **kwargs):
     makefile_string = """## Makefile for ICU data
 ## Copyright (C) 2018 and later: Unicode, Inc. and others.
 
@@ -172,6 +180,7 @@ include $(top_builddir)/icudefs.mk
     )
 
     # Common Variables
+    kwargs["common_vars_mak"] = { k: "$(%s)" % k for k in common_vars.keys() }
     for key, value in common_vars.items():
         makefile_string += "{KEY} = {VALUE}\n".format(
             KEY = key,
@@ -179,36 +188,23 @@ include $(top_builddir)/icudefs.mk
         )
     makefile_string += "\n"
 
-    # Custom Variables
-    all_out_vars = []
-    for rule in make_rules:
-        if rule.name == "dirs":
-            continue
-        makefile_string += "{NAME}_IN = {FILES_SPACED}\n".format(
-            NAME = rule.name.upper(),
-            FILES_SPACED = " ".join(rule.input_files)
-        )
-        makefile_string += "{NAME}_DEPS = {FILES_SPACED}\n".format(
-            NAME = rule.name.upper(),
-            FILES_SPACED = " ".join(rule.dep_files)
-        )
-        makefile_string += "{NAME}_OUT = {FILES_SPACED}\n".format(
-            NAME = rule.name.upper(),
-            FILES_SPACED = " ".join(rule.output_files)
-        )
-        all_out_vars.append("$(OUT_DIR)/$({NAME}_OUT)".format(
-            NAME = rule.name.upper(),
-        ))
-        makefile_string += "\n"
-    makefile_string += "ALL_OUT = %s\n\n" % " ".join(all_out_vars)
+    make_rules = []
+    for request in requests:
+        make_rules += get_gnumake_rules_helper(request, **kwargs)
+
+    # All output files, for "all" command
+    all_output_files = set(file for rule in make_rules for file in rule.output_files)
+    makefile_string += "ALL_OUT = %s\n" % filenames_to_makefile(sorted(all_output_files), **kwargs)
 
     # Main Commands
     for rule in make_rules:
         if rule.name == "dirs":
             header_line = "dirs:"
         else:
-            header_line = "$(OUT_DIR)/$({NAME}_OUT): $(IN_DIR)/$({NAME}_IN) $(TMP_DIR)/$({NAME}_DEP) | dirs".format(
-                NAME = rule.name.upper()
+            header_line = "{OUT_LIST}: {IN_LIST} {DEP_LIST} | dirs".format(
+                OUT_LIST = filenames_to_makefile(rule.output_files, **kwargs),
+                IN_LIST = filenames_to_makefile(rule.input_files, **kwargs),
+                DEP_LIST = filenames_to_makefile(rule.dep_files, **kwargs)
             )
         makefile_string += "{HEADER_LINE}\n{RULE_LINES}\n\n".format(
             HEADER_LINE = header_line,
@@ -220,12 +216,21 @@ include $(top_builddir)/icudefs.mk
 
     return makefile_string
 
-def get_gnumake_rules_helper(request, common_vars):
+def filenames_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
+    if len(files) == 0:
+        return ""
+    dirnames = [dir_for(file).format(**common_vars_mak) for file in files]
+    if len(files) == 1:
+        return "%s/%s" % (dirnames[0], files[0].filename)
+    if is_nmake or len(set(dirnames)) > 1:
+        return " ".join("%s/%s" % (dirname, file.filename) for dirname, file in zip(dirnames, files))
+    else:
+        return "$(addprefix %s/,%s)\n" % (dirnames[0], " ".join(file.filename for file in files))
+
+def get_gnumake_rules_helper(request, common_vars_mak, **kwargs):
     if isinstance(request, PrintFileRequest):
         # TODO
         return []
-
-    common_vars_mak = { k: "$(%s)" % k for k in common_vars.keys() }
 
     if request.tool == "mkinstalldirs":
         template = "sh ../mkinstalldirs {ARGS}"
@@ -250,7 +255,7 @@ def get_gnumake_rules_helper(request, common_vars):
     if isinstance(request, RepeatedExecutionRequest):
         rules = []
         for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
-            name_suffix = input_file[input_file.rfind("/")+1:input_file.rfind(".")]
+            name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
             rules.append(MakeRule(
                 name = "%s_%s" % (request.name, name_suffix),
                 dep_files = request.dep_files,
@@ -294,7 +299,7 @@ def main():
     }
 
     # DIRECTORIES
-    build_dirs = [v.format(**common) for v in ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]]
+    build_dirs = ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]
     requests += [
         SingleExecutionRequest(
             name = "dirs",
@@ -309,9 +314,9 @@ def main():
 
     # CONFUSABLES
     if config.has_feature("confusables"):
-        txt1 = "unidata/confusables.txt"
-        txt2 = "unidata/confusablesWholeScript.txt"
-        cfu = "confusables.cfu"
+        txt1 = InFile("unidata/confusables.txt")
+        txt2 = InFile("unidata/confusablesWholeScript.txt")
+        cfu = OutFile("confusables.cfu")
         requests += [
             SingleExecutionRequest(
                 name = "confusables",
@@ -326,8 +331,8 @@ def main():
 
     # UConv Name Aliases
     if config.has_feature("cnvalias"):
-        input_file = "mappings/convrtrs.txt"
-        output_file = "cnvalias.icu"
+        input_file = InFile("mappings/convrtrs.txt")
+        output_file = OutFile("cnvalias.icu")
         requests += [
             SingleExecutionRequest(
                 name = "cnvalias",
@@ -342,8 +347,8 @@ def main():
 
     # UConv Conversion Table Files
     if config.has_feature("uconv"):
-        input_files = glob("mappings/*.ucm")
-        output_files = ["%s.cnv" % v[9:-4] for v in input_files]
+        input_files = [InFile(filename) for filename in glob("mappings/*.ucm")]
+        output_files = [OutFile("%s.cnv") % v.filename[9:-4] for v in input_files]
         if config.max_parallel():
             # Do each cnv file on its own
             requests += [
@@ -377,8 +382,8 @@ def main():
 
     # BRK Files
     if config.has_feature("brkitr"):
-        input_files = glob("brkitr/rules/*.txt")
-        output_files = ["brkitr/%s.brk" % v[13:-4] for v in input_files]
+        input_files = [InFile(filename) for filename in glob("brkitr/rules/*.txt")]
+        output_files = [OutFile("brkitr/%s.brk") % v.filename[13:-4] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "brkitr_brk",
@@ -394,9 +399,9 @@ def main():
 
     # SPP FILES
     if config.has_feature("stringprep"):
-        input_files = glob("sprep/*.txt")
-        output_files = ["%s.spp" % v[6:-4] for v in input_files]
-        bundle_names = [v[6:-4] for v in input_files]
+        input_files = [InFile(filename) for filename in glob("sprep/*.txt")]
+        output_files = [OutFile("%s.spp") % v.filename[6:-4] for v in input_files]
+        bundle_names = [v[6:-4] for v.filename in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "stringprep",
@@ -414,8 +419,8 @@ def main():
 
     # Dict Files
     if config.has_feature("dictionaries"):
-        input_files = glob("brkitr/dictionaries/*.txt")
-        output_files = ["brkitr/%s.dict" % v[20:-4] for v in input_files]
+        input_files = [InFile(filename) for filename in glob("brkitr/dictionaries/*.txt")]
+        output_files = [OutFile("brkitr/%s.dict") % v.filename[20:-4] for v in input_files]
         extra_options_map = {
             "brkitr/dictionaries/burmesedict.txt": "--bytes --transform offset-0x1000",
             "brkitr/dictionaries/cjdict.txt": "--uchars",
@@ -423,7 +428,7 @@ def main():
             "brkitr/dictionaries/laodict.txt": "--bytes --transform offset-0x0e80",
             "brkitr/dictionaries/thaidict.txt": "--bytes --transform offset-0x0e00"
         }
-        extra_optionses = [extra_options_map[v] for v in input_files]
+        extra_optionses = [extra_options_map[v] for v.filename in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "dictionaries",
@@ -441,9 +446,9 @@ def main():
 
     # NRM Files
     if config.has_feature("normalization"):
-        input_files = glob("in/*.nrm")
-        input_files.remove("in/nfc.nrm")  # nfc.nrm is pre-compiled into C++
-        output_files = ["%s" % v[3:] for v in input_files]
+        input_files = [InFile(filename) for filename in glob("in/*.nrm")]
+        input_files.remove(InFile("in/nfc.nrm"))  # nfc.nrm is pre-compiled into C++
+        output_files = [OutFile("%s") % v.filename[3:] for v in input_files]
         requests += [
             RepeatedExecutionRequest(
                 name = "normalization",
@@ -459,8 +464,8 @@ def main():
 
     # Collation Dependency File (ucadata.icu)
     if config.has_feature("coll"):
-        input_file = "in/coll/ucadata-%s.icu" % config.coll_han_type()
-        output_file = "coll/ucadata.icu"
+        input_file = InFile("in/coll/ucadata-%s.icu" % config.coll_han_type())
+        output_file = OutFile("coll/ucadata.icu")
         requests += [
             SingleExecutionRequest(
                 name = "coll_ucadata",
@@ -475,8 +480,8 @@ def main():
 
     # Unicode Character Names
     if config.has_feature("unames"):
-        input_file = "in/unames.icu"
-        output_file = "unames.icu"
+        input_file = InFile("in/unames.icu")
+        output_file = OutFile("unames.icu")
         requests += [
             SingleExecutionRequest(
                 name = "unames",
@@ -492,9 +497,9 @@ def main():
     # Misc Data Res Files
     if config.has_feature("misc"):
         # TODO: Treat each misc file separately
-        input_files = glob("misc/*.txt")
-        input_basenames = [v[5:] for v in input_files]
-        output_files = ["%s.res" % v[:-4] for v in input_basenames]
+        input_files = [InFile(filename) for filename in glob("misc/*.txt")]
+        input_basenames = [v.filename[5:] for v in input_files]
+        output_files = [OutFile("%s.res") % v.filename[:-4] for v in input_basenames]
         requests += [
             RepeatedExecutionRequest(
                 name = "misc",
@@ -519,7 +524,7 @@ def main():
         ("region",   "region",   "resfiles.mk",  "REGION_CLDR_VERSION",    "REGION_SOURCE",    True,  []),
         ("zone",     "zone",     "resfiles.mk",  "ZONE_CLDR_VERSION",      "ZONE_SOURCE",      True,  []),
         ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,  []),
-        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, ["coll/ucadata.icu"]),
+        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, [OutFile("coll/ucadata.icu")]),
         ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False, []),
         ("rbnf",     "rbnf",     "rbnffiles.mk", "RBNF_CLDR_VERSION",      "RBNF_SOURCE",      False, []),
         ("translit", "translit", "trnsfiles.mk", None,                     "TRANSLIT_SOURCE",  False, [])
@@ -529,20 +534,23 @@ def main():
         out_prefix = "%s/" % out_sub_dir if out_sub_dir else ""
         extra_options = "--usePoolBundle" if use_pool_bundle else ""
         if config.has_feature(sub_dir):
-            input_pool_file = "%s/pool.res" % sub_dir
+            if use_pool_bundle:
+                input_pool_files = InFile("%s/pool.res" % sub_dir)
+            else:
+                input_pool_files = []
             # TODO: Clean this up for translit
             if sub_dir == "translit":
-                input_files = ["translit/root.txt", "translit/en.txt", "translit/el.txt"]
+                input_files = [InFile("translit/root.txt"), InFile("translit/en.txt"), InFile("translit/el.txt")]
             else:
-                input_files = glob("%s/*.txt" % sub_dir)
-            input_basenames = [v[len(sub_dir)+1:] for v in input_files]
-            output_files = ["%s%s.res" % (out_prefix, v[:-4]) for v in input_basenames]
+                input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
+            input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
+            output_files = [OutFile("%s%s.res" % (out_prefix, v[:-4])) for v in input_basenames]
             if config.max_parallel():
                 # Do each res file on its own
                 requests += [
                     RepeatedExecutionRequest(
                         name = "%s_res" % sub_dir,
-                        dep_files = dep_files + [input_pool_file],
+                        dep_files = dep_files + input_pool_files,
                         input_files = input_files,
                         output_files = output_files,
                         tool = "genrb",
@@ -563,7 +571,7 @@ def main():
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_res" % sub_dir,
-                        dep_files = dep_files + [input_pool_file],
+                        dep_files = dep_files + input_pool_files,
                         input_files = input_files,
                         output_files = output_files,
                         tool = "genrb",
@@ -584,7 +592,7 @@ def main():
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
                 #locales = list(sorted(v[:-4] for v in mk_values["CURR_SOURCE"].split(" ")))
-                index_file_txt = "{TMP_DIR}/{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir)
+                index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir))
                 requests += [
                     PrintFileRequest(
                         name = "%s_index_txt" % sub_dir,
@@ -593,12 +601,12 @@ def main():
                     )
                 ]
                 # Generate index res file
-                index_res_file = "{OUT_DIR}/{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix)
+                index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix))
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_index_res" % sub_dir,
-                        dep_files = [index_file_txt],
-                        input_files = [],
+                        dep_files = [],
+                        input_files = [index_file_txt],
                         output_files = [index_res_file],
                         tool = "genrb",
                         args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt",
@@ -610,12 +618,12 @@ def main():
                 ]
             # Copy the pool file
             if use_pool_bundle:
-                output_pool_file = " {OUT_DIR}/{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix)
+                output_pool_file = OutFile("{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix))
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool" % sub_dir,
                         dep_files = [],
-                        input_files = [input_pool_file],
+                        input_files = input_pool_files,
                         output_files = [output_pool_file],
                         tool = "icupkg",
                         args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res",
@@ -630,7 +638,9 @@ def main():
     if args.format == "bash":
         print(get_command_lines(requests, common))
     elif args.format == "gnumake":
-        print(get_gnumake_rules(requests, common))
+        print(get_gnumake_rules(requests, common, is_nmake = False))
+    elif args.format == "nmake":
+        print(get_gnumake_rules(requests, common, is_nmake = True))
     else:
         print("Format not supported: %s" % args.format)
 
