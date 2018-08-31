@@ -61,6 +61,7 @@ include $(top_builddir)/icudefs.mk
                 IN_LIST = files_to_makefile(rule.input_files, **kwargs)
             )
         else:
+            # TODO: Depend on $(TOOLBINDIR)/genbrk$(TOOLEXEEXT)
             header_line = "{name}_all: {IN_LIST} | dirs".format(
                 IN_LIST = files_to_makefile(rule.input_files, **kwargs),
                 name = rule.name
@@ -76,8 +77,21 @@ include $(top_builddir)/icudefs.mk
             RULE_LINES = "\n".join("\t%s" % cmd for cmd in rule.cmds)
         )
 
-    # Main Target
-    makefile_string += "all: $(ALL_OUT)\n\n"
+    makefile_string += """
+## List of standard targets
+all: $(ALL_OUT)
+install: all
+	echo "Error: install not supported yet"
+clean:
+	rm -r $(OUT_DIR)
+	rm -r $(TMP_DIR)
+distclean: clean
+	rm Makefile
+dist:
+	echo "Error: dist not supported yet"
+check: all
+check-exhaustive: check
+"""
 
     return makefile_string
 
@@ -124,7 +138,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
             ]
 
     if request.tool == "mkinstalldirs":
-        template = "sh ../mkinstalldirs {ARGS}"
+        template = "$(MKINSTALLDIRS) {ARGS}"
     else:
         template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool)
 
@@ -144,7 +158,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
 
     if isinstance(request, RepeatedExecutionRequest):
         rules = []
-        for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
+        for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
             rules.append(MakeRule(
                 name = "%s_%s" % (request.name, name_suffix),

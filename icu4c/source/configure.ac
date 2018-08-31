@@ -1324,7 +1324,6 @@ AC_CONFIG_FILES([icudefs.mk \
 		config/Makefile.inc \
 		config/icu.pc \
 		config/pkgdataMakefile \
-		data/Makefile \
 		stubdata/Makefile \
 		common/Makefile \
 		i18n/Makefile \
@@ -1384,6 +1383,16 @@ AC_CONFIG_FILES([icudefs.mk \
 		samples/Makefile samples/date/Makefile \
 		samples/cal/Makefile samples/layout/Makefile])
 AC_OUTPUT
+
+echo "Generating data/Makefile from Python script..."
+/usr/bin/env python3 -m data.buildtool \
+    --format gnumake \
+    --seqmode parallel \
+    --glob_dir "data" \
+    --in_dir "." \
+    --out_dir "out/build/\$(ICUDATA_PLATFORM_NAME)" \
+    --tmp_dir "out/tmp" \
+    > data/Makefile
 
 echo
 echo "ICU for C/C++ $VERSION is ready to be built."

@@ -23,7 +23,37 @@ flag_parser.add_argument(
     "--format",
     help = "How to output the rules to run to build ICU data.",
     choices = ["bash", "gnumake", "nmake"],
-    default = "bash"
+    required = True
+)
+flag_parser.add_argument(
+    "--glob_dir",
+    help = "Path to data input folder (icu4c/source/data) when this script is being run.",
+    default = "."
+)
+flag_parser.add_argument(
+    "--in_dir",
+    help = "Path to data input folder (icu4c/source/data). For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    default = "."
+)
+flag_parser.add_argument(
+    "--out_dir",
+    help = "Path to where to save output data files. For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    default = "icudata"
+)
+flag_parser.add_argument(
+    "--tmp_dir",
+    help = "Path to where to save temporary files. For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    default = "icutmp"
+)
+flag_parser.add_argument(
+    "--bin_dir",
+    help = "Path to where to find binary tools (genrb, genbrk, etc). Used for 'bash' format only.",
+    default = "../bin"
+)
+flag_parser.add_argument(
+    "--mkinstalldirs",
+    help = "Path to where to find the mkinstalldirs tool. Used for 'bash' format only.",
+    default = "../mkinstalldirs"
 )
 flag_parser.add_argument(
     "--seqmode",
@@ -78,31 +108,34 @@ class Config(object):
         return self._coll_han_type
 
 
-def glob(pattern):
-    in_dir = "." # TODO
-    result_paths = pyglob.glob("{IN_DIR}/{PATTERN}".format(
-        IN_DIR =in_dir,
-        PATTERN = pattern
-    ))
-    return [v[len(in_dir)+1:] for v in sorted(result_paths)]
-
-
 def main():
     args = flag_parser.parse_args()
     config = Config(args)
 
     common = {
-        "IN_DIR": ".",
-        "OUT_DIR": "outdir",
-        "TMP_DIR": "tmpdir",
+        "GLOB_DIR": args.glob_dir,
+        "IN_DIR": args.in_dir,
+        "OUT_DIR": args.out_dir,
+        "TMP_DIR": args.tmp_dir,
         "INDEX_NAME": "res_index",
         "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
     }
 
+    def glob(pattern):
+        result_paths = pyglob.glob("{IN_DIR}/{PATTERN}".format(
+            IN_DIR = args.glob_dir,
+            PATTERN = pattern
+        ))
+        return [v[len(args.glob_dir)+1:] for v in sorted(result_paths)]
+
     requests = rules.generate(config, glob, common)
 
     if args.format == "bash":
-        print(bash.get_command_lines(requests, common))
+        print(bash.get_command_lines(requests,
+            common_vars = common,
+            bin_dir = args.bin_dir,
+            mkinstalldirs = args.mkinstalldirs
+        ))
     elif args.format == "gnumake":
         print(makefile.get_gnumake_rules(requests, common, is_nmake = False))
     elif args.format == "nmake":

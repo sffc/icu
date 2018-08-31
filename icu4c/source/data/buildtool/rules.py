@@ -103,9 +103,11 @@ def generate(config, glob, common):
             ]
 
     # BRK Files
+    brkitr_brk_files = []
     if config.has_feature("brkitr"):
         input_files = [InFile(filename) for filename in glob("brkitr/rules/*.txt")]
         output_files = [OutFile("brkitr/%s.brk" % v.filename[13:-4]) for v in input_files]
+        brkitr_brk_files += output_files
         requests += [
             RepeatedExecutionRequest(
                 name = "brkitr_brk",
@@ -113,7 +115,7 @@ def generate(config, glob, common):
                 input_files = input_files,
                 output_files = output_files,
                 tool = "genbrk",
-                args = "-c -i {IN_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
+                args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {}
             )
@@ -140,9 +142,11 @@ def generate(config, glob, common):
         ]
 
     # Dict Files
+    dict_files = []
     if config.has_feature("dictionaries"):
         input_files = [InFile(filename) for filename in glob("brkitr/dictionaries/*.txt")]
         output_files = [OutFile("brkitr/%s.dict" % v.filename[20:-4]) for v in input_files]
+        dict_files += output_files
         extra_options_map = {
             "brkitr/dictionaries/burmesedict.txt": "--bytes --transform offset-0x1000",
             "brkitr/dictionaries/cjdict.txt": "--uchars",
@@ -245,7 +249,7 @@ def generate(config, glob, common):
         ("zone",     "zone",     "resfiles.mk",  "ZONE_CLDR_VERSION",      "ZONE_SOURCE",      True,  []),
         ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,  []),
         ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, [OutFile("coll/ucadata.icu")]),
-        ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False, []),
+        ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False, brkitr_brk_files + dict_files),
         ("rbnf",     "rbnf",     "rbnffiles.mk", "RBNF_CLDR_VERSION",      "RBNF_SOURCE",      False, []),
         ("translit", "translit", "trnsfiles.mk", None,                     "TRANSLIT_SOURCE",  False, [])
     ]
@@ -307,7 +311,7 @@ def generate(config, glob, common):
             if sub_dir != "translit":
                 # TODO: Change .mk files to .py files so they can be loaded directly.
                 # Reading these files as .py will be required for Bazel.
-                mk_values = parse_makefile("{IN_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(**common, IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name))
+                mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(**common, IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
                 #locales = list(sorted(v[:-4] for v in mk_values["CURR_SOURCE"].split(" ")))

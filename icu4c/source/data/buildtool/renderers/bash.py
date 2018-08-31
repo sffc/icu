@@ -4,13 +4,13 @@
 from .. import *
 from .. import utils
 
-def get_command_lines(requests, common_vars):
+def get_command_lines(requests, **kwargs):
     cmds = []
     for request in requests:
-        cmds += get_command_lines_helper(request, common_vars)
+        cmds += get_command_lines_helper(request, **kwargs)
     return "\n".join(cmds)
 
-def get_command_lines_helper(request, common_vars):
+def get_command_lines_helper(request, common_vars, bin_dir, mkinstalldirs):
     if isinstance(request, PrintFileRequest):
         output_path = "{DIRNAME}/{FILENAME}".format(
             DIRNAME = utils.dir_for(request.output_file).format(**common_vars),
@@ -26,12 +26,18 @@ def get_command_lines_helper(request, common_vars):
         return cmds
 
     if request.tool == "mkinstalldirs":
-        return ["sh ../mkinstalldirs {ARGS}".format(ARGS = request.args.format(**common_vars))]
+        return ["sh {MKINSTALLDIRS} {ARGS}".format(**common_vars,
+            MKINSTALLDIRS = mkinstalldirs,
+            ARGS = request.args.format(**common_vars)
+        )]
 
-    template = "../bin/{TOOL} {{ARGS}}".format(TOOL = request.tool)
+    template = "{BIN_DIR}/{TOOL} {{ARGS}}".format(**common_vars,
+        BIN_DIR = bin_dir,
+        TOOL = request.tool
+    )
     if isinstance(request, RepeatedExecutionRequest):
         cmds = []
-        for iter_vars, input_file, output_file in repeated_execution_request_looper(request):
+        for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
             cmds.append(template.format(ARGS = request.args.format(**common_vars, **request.format_with, **iter_vars,
                 INPUT_FILE = input_file.filename,
                 OUTPUT_FILE = output_file.filename
