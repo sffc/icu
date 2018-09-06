@@ -15,4 +15,4 @@ RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_
 
 PrintFileRequest = namedtuple("PrintFileRequest", ["name", "output_file", "content"])
 
-MakeRule = namedtuple("MakeRule", ["name", "input_files", "output_files", "cmds"])
+MakeRule = namedtuple("MakeRule", ["name", "dep_targets", "input_files", "output_files", "cmds"])

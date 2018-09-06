@@ -45,7 +45,7 @@ def generate(config, glob, common):
         requests += [
             SingleExecutionRequest(
                 name = "confusables",
-                input_files = [txt1, txt2],
+                input_files = [txt1, txt2, OutFile("cnvalias.icu")],
                 output_files = [cfu],
                 tool = "gencfu",
                 args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} -o {OUT_DIR}/{OUTPUT_FILES[0]}",
@@ -111,7 +111,7 @@ def generate(config, glob, common):
         requests += [
             RepeatedExecutionRequest(
                 name = "brkitr_brk",
-                dep_files = [],
+                dep_files = [OutFile("cnvalias.icu")],
                 input_files = input_files,
                 output_files = output_files,
                 tool = "genbrk",
@@ -248,7 +248,7 @@ def generate(config, glob, common):
         ("region",   "region",   "resfiles.mk",  "REGION_CLDR_VERSION",    "REGION_SOURCE",    True,  []),
         ("zone",     "zone",     "resfiles.mk",  "ZONE_CLDR_VERSION",      "ZONE_SOURCE",      True,  []),
         ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,  []),
-        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, [OutFile("coll/ucadata.icu")]),
+        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, [OutFile("coll/ucadata.icu"), OutFile("timezoneTypes.res"), OutFile("keyTypeData.res")]),
         ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False, brkitr_brk_files + dict_files),
         ("rbnf",     "rbnf",     "rbnffiles.mk", "RBNF_CLDR_VERSION",      "RBNF_SOURCE",      False, []),
         ("translit", "translit", "trnsfiles.mk", None,                     "TRANSLIT_SOURCE",  False, [])

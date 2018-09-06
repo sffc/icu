@@ -18,6 +18,13 @@ top_builddir = {TOP_BUILDDIR}
 ## All the flags and other definitions are included here.
 include $(top_builddir)/icudefs.mk
 
+## Build directory information
+# So that  $(top_builddir)/$(subdir) ~= "here"
+subdir = data
+
+## Default target
+all: all-local
+
 """.format(
         # TODO
         SRCDIR = ".",
@@ -55,15 +62,21 @@ include $(top_builddir)/icudefs.mk
     for rule in make_rules:
         if rule.name == "dirs":
             header_line = "dirs:"
+        elif len(rule.output_files) == 0:
+            header_line = "{name}: {IN_LIST} | dirs".format(
+                IN_LIST = files_to_makefile(rule.input_files, **kwargs),
+                name = rule.name
+            )
         elif len(rule.output_files) == 1:
-            header_line = "{OUT_LIST}: {IN_LIST} | dirs".format(
+            header_line = "{OUT_LIST}: {IN_LIST} {DEP_TARGETS} | dirs".format(
                 OUT_LIST = files_to_makefile(rule.output_files, **kwargs),
-                IN_LIST = files_to_makefile(rule.input_files, **kwargs)
+                IN_LIST = files_to_makefile(rule.input_files, **kwargs),
+                DEP_TARGETS = " ".join(rule.dep_targets)
             )
         else:
-            # TODO: Depend on $(TOOLBINDIR)/genbrk$(TOOLEXEEXT)
-            header_line = "{name}_all: {IN_LIST} | dirs".format(
+            header_line = "{name}_all: {IN_LIST} {DEP_TARGETS} | dirs".format(
                 IN_LIST = files_to_makefile(rule.input_files, **kwargs),
+                DEP_TARGETS = " ".join(rule.dep_targets),
                 name = rule.name
             )
             for file in rule.output_files:
@@ -79,7 +92,7 @@ include $(top_builddir)/icudefs.mk
 
     makefile_string += """
 ## List of standard targets
-all: $(ALL_OUT)
+all-local: $(ALL_OUT)
 install: all
 	echo "Error: install not supported yet"
 clean:
@@ -112,6 +125,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
             return [
                 MakeRule(
                     name = request.name,
+                    dep_targets = [],
                     input_files = [],
                     output_files = [request.output_file],
                     cmds = [
@@ -126,6 +140,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
             return [
                 MakeRule(
                     name = request.name,
+                    dep_targets = [],
                     input_files = [],
                     output_files = [request.output_file],
                     cmds = [
@@ -150,6 +165,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
         return [
             MakeRule(
                 name = request.name,
+                dep_targets = [],
                 input_files = request.input_files,
                 output_files = request.output_files,
                 cmds = [cmd]
@@ -158,11 +174,19 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
 
     if isinstance(request, RepeatedExecutionRequest):
         rules = []
+        rules.append(MakeRule(
+            name = "%s_deps" % request.name,
+            dep_targets = [],
+            input_files = request.dep_files,
+            output_files = [],
+            cmds = []
+        ))
         for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
             rules.append(MakeRule(
                 name = "%s_%s" % (request.name, name_suffix),
-                input_files = [input_file] + request.dep_files,
+                dep_targets = ["%s_deps" % request.name],
+                input_files = [input_file],
                 output_files = [output_file],
                 cmds = [template.format(ARGS = request.args.format(**common_vars_mak, **request.format_with, **iter_vars,
                     INPUT_FILE = input_file.filename,
