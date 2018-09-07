@@ -32,16 +32,15 @@ def get_all_output_files(requests):
     # Filter out all files but those in OUT_DIR
     collected_files = (file for file in all_output_files if isinstance(file, OutFile))
 
-    # Take unique values and sort
-    collected_files = sorted(set(collected_files))
-
-    return list(collected_files)
+    # Return a set with unique values
+    return set(collected_files)
 
 
 def generate(config, glob, common):
     # TODO: Rename common to common_vars
 
     requests = []
+    pkg_exclusions = set()
 
     # DIRECTORIES
     build_dirs = ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]
@@ -56,7 +55,7 @@ def generate(config, glob, common):
                 name = "confusables",
                 input_files = [txt1, txt2, OutFile("cnvalias.icu")],
                 output_files = [cfu],
-                tool = "gencfu",
+                tool = IcuTool("gencfu"),
                 args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} -o {OUT_DIR}/{OUTPUT_FILES[0]}",
                 format_with = {}
             )
@@ -71,7 +70,7 @@ def generate(config, glob, common):
                 name = "cnvalias",
                 input_files = [input_file],
                 output_files = [output_file],
-                tool = "gencnval",
+                tool = IcuTool("gencnval"),
                 args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILES[0]}",
                 format_with = {}
             )
@@ -89,7 +88,7 @@ def generate(config, glob, common):
                     dep_files = [],
                     input_files = input_files,
                     output_files = output_files,
-                    tool = "makeconv",
+                    tool = IcuTool("makeconv"),
                     args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}",
                     format_with = {},
                     repeat_with = {}
@@ -103,7 +102,7 @@ def generate(config, glob, common):
                     name = "uconv",
                     input_files = input_files,
                     output_files = output_files,
-                    tool = "makeconv",
+                    tool = IcuTool("makeconv"),
                     args = "-c -d {OUT_DIR} {INPUT_FILES_SPACED}",
                     format_with = {
                         "INPUT_FILES_SPACED": " ".join(file.filename for file in input_files)
@@ -123,7 +122,7 @@ def generate(config, glob, common):
                 dep_files = [OutFile("cnvalias.icu")],
                 input_files = input_files,
                 output_files = output_files,
-                tool = "genbrk",
+                tool = IcuTool("genbrk"),
                 args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {}
@@ -141,7 +140,7 @@ def generate(config, glob, common):
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
-                tool = "gensprep",
+                tool = IcuTool("gensprep"),
                 args = "-d {OUT_DIR} -i {OUT_DIR} -s {IN_DIR}/sprep -b {BUNDLE_NAME} -m {IN_DIR}/unidata -u 3.2.0 {BUNDLE_NAME}.txt",
                 format_with = {},
                 repeat_with = {
@@ -170,7 +169,7 @@ def generate(config, glob, common):
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
-                tool = "gendict",
+                tool = IcuTool("gendict"),
                 args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {
@@ -190,7 +189,7 @@ def generate(config, glob, common):
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
-                tool = "icupkg",
+                tool = IcuTool("icupkg"),
                 args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {}
@@ -206,7 +205,7 @@ def generate(config, glob, common):
                 name = "coll_ucadata",
                 input_files = [input_file],
                 output_files = [output_file],
-                tool = "icupkg",
+                tool = IcuTool("icupkg"),
                 args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
                 format_with = {}
             )
@@ -221,7 +220,7 @@ def generate(config, glob, common):
                 name = "unames",
                 input_files = [input_file],
                 output_files = [output_file],
-                tool = "icupkg",
+                tool = IcuTool("icupkg"),
                 args = "-t{ICUDATA_CHAR} {IN_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
                 format_with = {}
             )
@@ -239,7 +238,7 @@ def generate(config, glob, common):
                 dep_files = [],
                 input_files = input_files,
                 output_files = output_files,
-                tool = "genrb",
+                tool = IcuTool("genrb"),
                 args = "-k -q -i {OUT_DIR} -s {IN_DIR}/misc -d {OUT_DIR} {INPUT_BASENAME}",
                 format_with = {},
                 repeat_with = {
@@ -296,7 +295,7 @@ def generate(config, glob, common):
                         dep_files = dep_files + input_pool_files,
                         input_files = input_files,
                         output_files = output_files,
-                        tool = "genrb",
+                        tool = IcuTool("genrb"),
                         args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}",
                         format_with = {
                             "EXTRA_OPTIONS": extra_options,
@@ -316,7 +315,7 @@ def generate(config, glob, common):
                         name = "%s_res" % sub_dir,
                         input_files = dep_files + input_pool_files + input_files,
                         output_files = output_files,
-                        tool = "genrb",
+                        tool = IcuTool("genrb"),
                         args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
                         format_with = {
                             "EXTRA_OPTIONS": extra_options,
@@ -333,7 +332,7 @@ def generate(config, glob, common):
                 mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(**common, IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
-                #locales = list(sorted(v[:-4] for v in mk_values["CURR_SOURCE"].split(" ")))
+                pkg_exclusions |= set(output_files) - set(OutFile("%s%s.res" % (out_prefix, locale)) for locale in locales)
                 index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir))
                 requests += [
                     PrintFileRequest(
@@ -349,7 +348,7 @@ def generate(config, glob, common):
                         name = "%s_index_res" % sub_dir,
                         input_files = [index_file_txt],
                         output_files = [index_res_file],
-                        tool = "genrb",
+                        tool = IcuTool("genrb"),
                         args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
@@ -365,7 +364,7 @@ def generate(config, glob, common):
                         name = "%s_pool" % sub_dir,
                         input_files = input_pool_files,
                         output_files = [output_pool_file],
-                        tool = "icupkg",
+                        tool = IcuTool("icupkg"),
                         args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
@@ -375,24 +374,79 @@ def generate(config, glob, common):
                 ]
 
     # Finally, make the package.
-    all_output_files = get_all_output_files(requests)
+    all_output_files = list(sorted(get_all_output_files(requests)))
     icudata_list_file = TmpFile("icudata.lst")
-    icudata_inc_file = TmpFile("icupkg.inc")
+    icudata_inc_file = InFile("icupkg.inc")
+    pkgdata_makefile_in = InFile("pkgdataMakefile.in")
+    pkgdata_makefile = InFile("pkgdataMakefile")
     requests += [
         PrintFileRequest(
             name = "icudata_list",
             output_file = icudata_list_file,
             content = "\n".join(file.filename for file in all_output_files)
         ),
+        # TODO
         # SingleExecutionRequest(
-        #     name = "icudata_package",
-        #     input_files = all_output_files + [icudata_list_file, icudata_inc_file],
-        #     output_files = [TmpFile("icudt62l.dat")],
-        #     tool = "pkgdata",
-        #     args = "-O {TMP_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {LIB_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {ICUDATA_VERSION} -L {ICUDATA_LIBNAME} {TMP_DIR}/icudata.lst",
-        #     format_with = {}
-        # )
+        #     name = "pkgdata_makefile",
+        #     input_files = [pkgdata_makefile_in],
+        #     output_files = [pkgdata_makefile],
+        #     tool = SystemTool("make"),
+        #     args = ""
+        # ),
+        SingleExecutionRequest(
+            name = "icudata_inc_file",
+            input_files = [pkgdata_makefile],
+            output_files = [icudata_inc_file],
+            tool = SystemTool("make"),
+            args = "-f {IN_DIR}/pkgdataMakefile",
+            format_with = {}
+        ),
+        SingleExecutionRequest(
+            name = "icudata_package",
+            input_files = all_output_files + [icudata_list_file, icudata_inc_file],
+            # TODO: This function produces more files besides this dat file
+            output_files = [TmpFile("{ICUDATA_NAME}.dat".format(**common))],
+            tool = IcuTool("pkgdata"),
+            args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
+            format_with = {}
+        )
     ]
 
     return (build_dirs, requests)
+
+
+
+# icupkg.inc: pkgdataMakefile
+# 	$(MAKE) -f pkgdataMakefile
+
+# pkgdataMakefile:
+# 	cd $(top_builddir) \
+# 	&& CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+# ifeq ($(PKGDATA_OPTS),)
+# PKGDATA_OPTS = -O $(top_builddir)/data/icupkg.inc
+# endif
+# ifeq ($(PKGDATA_VERSIONING),)
+# PKGDATA_VERSIONING = -r $(SO_TARGET_VERSION)
+# endif
+
+# PKGDATA_LIST = $(OUTTMPDIR)/icudata.lst
+
+# PKGDATA = $(TOOLBINDIR)/pkgdata $(PKGDATA_OPTS) -q -c -s $(CURDIR)/out/build/$(ICUDATA_PLATFORM_NAME) -d $(ICUPKGDATA_OUTDIR)
+
+# packagedata: icupkg.inc $(PKGDATA_LIST) build-local
+# ifneq ($(ENABLE_STATIC),)
+# ifeq ($(PKGDATA_MODE),dll)
+# 	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) $(PKGDATA_LIBSTATICNAME) -m static $(PKGDATA_VERSIONING) $(PKGDATA_LIST)
+# endif
+# endif
+# ifneq ($(ICUDATA_SOURCE_IS_NATIVE_TARGET),YES)
+# 	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) -m $(PKGDATA_MODE) $(PKGDATA_VERSIONING) $(PKGDATA_LIBNAME) $(PKGDATA_LIST)
+# else
+# 	$(INSTALL_DATA) $(ICUDATA_SOURCE_ARCHIVE) $(OUTDIR)
+# endif
+# 	echo timestamp > $@
+
+
+
 

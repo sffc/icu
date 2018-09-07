@@ -5,7 +5,7 @@ from . import *
 from .. import *
 from .. import utils
 
-def get_gnumake_rules(build_dirs, requests, common_vars, **kwargs):
+def get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars, **kwargs):
     makefile_string = """## Makefile for ICU data
 ## Copyright (C) 2018 and later: Unicode, Inc. and others.
 
@@ -34,9 +34,9 @@ all: all-local
     )
 
     # Common Variables
-    common_vars_mak = { k: "$(%s)" % k for k in common_vars.keys() }
-    kwargs["common_vars_mak"] = common_vars_mak
-    for key, value in common_vars.items():
+    common_vars_mak = common_vars
+    kwargs["common_vars_mak"] = common_vars
+    for key, value in makefile_vars.items():
         makefile_string += "{KEY} = {VALUE}\n".format(
             KEY = key,
             VALUE = value
@@ -44,18 +44,19 @@ all: all-local
     makefile_string += "\n"
 
     # Directories
-    dirs_string = " ".join(build_dirs).format(**common_vars_mak)
-    makefile_string += "DIRS = {DIRS}\n\n".format(DIRS = dirs_string)
-    makefile_string += "$(DIRS):\n\t$(MKINSTALLDIRS) $(DIRS)\n\n"
+    dirs_timestamp_file = "{TMP_DIR}/dirs.timestamp".format(**common_vars_mak)
+    makefile_string += "DIRS = {TIMESTAMP_FILE}\n\n".format(
+        TIMESTAMP_FILE = dirs_timestamp_file
+    )
+    makefile_string += "{TIMESTAMP_FILE}:\n\t$(MKINSTALLDIRS) {ALL_DIRS}\n\techo timestamp > {TIMESTAMP_FILE}\n\n".format(
+        TIMESTAMP_FILE = dirs_timestamp_file,
+        ALL_DIRS = " ".join(build_dirs).format(**common_vars_mak)
+    )
 
     # Generate Rules
     make_rules = []
     for request in requests:
         make_rules += get_gnumake_rules_helper(request, **kwargs)
-
-    # # All output files, for "all" command
-    # all_output_files = set(file for rule in make_rules if isinstance(rule, MakeRule) for file in rule.output_files if isinstance(file, OutFile))
-    # makefile_string += "ALL_OUT = %s\n\n" % files_to_makefile(sorted(all_output_files), **kwargs)
 
     # Main Commands
     for rule in make_rules:
@@ -92,7 +93,7 @@ all: all-local
     makefile_string += """
 
 ## List of standard targets
-all-local: $(ALL_OUT)
+all-local: $(TMP_DIR)/$(ICUDATA_NAME).dat
 install: all
 	echo "Error: install not supported yet"
 clean:
@@ -105,39 +106,6 @@ dist:
 	echo "Error: dist not supported yet"
 check: all
 check-exhaustive: check
-
-###################################################################
-
-icupkg.inc: pkgdataMakefile
-	$(MAKE) -f pkgdataMakefile
-
-pkgdataMakefile:
-	cd $(top_builddir) \
-	&& CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-ifeq ($(PKGDATA_OPTS),)
-PKGDATA_OPTS = -O $(top_builddir)/data/icupkg.inc
-endif
-ifeq ($(PKGDATA_VERSIONING),)
-PKGDATA_VERSIONING = -r $(SO_TARGET_VERSION)
-endif
-
-PKGDATA_LIST = $(OUTTMPDIR)/icudata.lst
-
-PKGDATA = $(TOOLBINDIR)/pkgdata $(PKGDATA_OPTS) -q -c -s $(CURDIR)/out/build/$(ICUDATA_PLATFORM_NAME) -d $(ICUPKGDATA_OUTDIR)
-
-packagedata: icupkg.inc $(PKGDATA_LIST) build-local
-ifneq ($(ENABLE_STATIC),)
-ifeq ($(PKGDATA_MODE),dll)
-	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) $(PKGDATA_LIBSTATICNAME) -m static $(PKGDATA_VERSIONING) $(PKGDATA_LIST)
-endif
-endif
-ifneq ($(ICUDATA_SOURCE_IS_NATIVE_TARGET),YES)
-	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) -m $(PKGDATA_MODE) $(PKGDATA_VERSIONING) $(PKGDATA_LIBNAME) $(PKGDATA_LIST)
-else
-	$(INSTALL_DATA) $(ICUDATA_SOURCE_ARCHIVE) $(OUTDIR)
-endif
-	echo timestamp > $@
 
 """
 
@@ -177,7 +145,10 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
             )
         ]
 
-    cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool)
+    if isinstance(request.tool, IcuTool):
+        cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool.name)
+    elif request.tool.name == "make":
+        cmd_template = "$(MAKE) {ARGS}"
 
     if isinstance(request, SingleExecutionRequest):
         cmd = utils.format_single_request_command(request, cmd_template, common_vars_mak)
@@ -216,6 +187,23 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
                     )
                 ]
             return rules
+
+        elif len(request.input_files) > 5:
+            # For nicer printing, for long input lists, use a helper variable.
+            dep_var_name = "%s_DEPS" % request.name.upper()
+            return [
+                MakeFilesVar(
+                    name = dep_var_name,
+                    files = request.input_files
+                ),
+                MakeRule(
+                    name = request.name,
+                    dep_literals = ["$(%s)" % dep_var_name],
+                    dep_files = [],
+                    output_file = request.output_files[0],
+                    cmds = [cmd]
+                )
+            ]
 
         else:
             return [

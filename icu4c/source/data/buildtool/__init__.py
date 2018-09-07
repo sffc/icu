@@ -8,6 +8,10 @@ AVAILABLE_FEATURES = ["confusables", "cnvalias", "uconv", "brkitr", "stringprep"
 InFile = namedtuple("InFile", ["filename"])
 TmpFile = namedtuple("TmpFile", ["filename"])
 OutFile = namedtuple("OutFile", ["filename"])
+PkgFile = namedtuple("PkgFile", ["filename"])
+
+IcuTool = namedtuple("IcuTool", ["name"])
+SystemTool = namedtuple("SystemTool", ["name"])
 
 SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "input_files", "output_files", "tool", "args", "format_with"])
 

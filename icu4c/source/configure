@@ -9125,9 +9125,8 @@ echo "Generating data/Makefile from Python script..."
     --format gnumake \
     --seqmode parallel \
     --glob_dir "data" \
-    --in_dir "." \
-    --out_dir "out/build/\$(ICUDATA_PLATFORM_NAME)" \
-    --tmp_dir "out/tmp" \
+    --top_src_dir ".." \
+    --work_dir "out" \
     > data/Makefile
 
 echo

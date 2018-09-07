@@ -41,6 +41,21 @@ flag_parser.add_argument(
     default = "icudata"
 )
 flag_parser.add_argument(
+    "--pkg_dir",
+    help = "Path to where to save the packaged data library.",
+    default = "../lib"
+)
+flag_parser.add_argument(
+    "--top_src_dir",
+    help = "Path to the source files, relative to the Makefile.",
+    default = ".."
+)
+flag_parser.add_argument(
+    "--work_dir",
+    help = "Path to where to save tmp and output files.",
+    default = ".."
+)
+flag_parser.add_argument(
     "--tmp_dir",
     help = "Path to where to save temporary files. For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
     default = "icutmp"
@@ -112,14 +127,29 @@ def main():
     args = flag_parser.parse_args()
     config = Config(args)
 
-    common = {
-        "GLOB_DIR": args.glob_dir,
-        "IN_DIR": args.in_dir,
-        "OUT_DIR": args.out_dir,
-        "TMP_DIR": args.tmp_dir,
-        "INDEX_NAME": "res_index",
-        "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
-    }
+    if args.format == "gnumake":
+        makefile_vars = {
+            "IN_DIR": "%s/data" % args.top_src_dir,
+            "OUT_DIR": "%s/build/$(ICUDATA_PLATFORM_NAME)" % args.work_dir,
+            "TMP_DIR": "%s/tmp" % args.work_dir,
+            "PKG_DIR": args.pkg_dir,
+            "INDEX_NAME": "res_index"
+        }
+        makefile_env = ["ICUDATA_CHAR", "ICUDATA_ENTRY_POINT", "ICUDATA_NAME", "PKGDATA_MODE", "SO_TARGET_VERSION", "PKGDATA_LIBNAME"]
+        common = {
+            key: "$(%s)" % key
+            for key in list(makefile_vars.keys()) + makefile_env
+        }
+        common["GLOB_DIR"] = args.glob_dir
+    else:
+        common = {
+            "GLOB_DIR": args.glob_dir,
+            "IN_DIR": args.in_dir,
+            "OUT_DIR": args.out_dir,
+            "TMP_DIR": args.tmp_dir,
+            "INDEX_NAME": "res_index",
+            "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
+        }
 
     def glob(pattern):
         result_paths = pyglob.glob("{IN_DIR}/{PATTERN}".format(
@@ -137,9 +167,9 @@ def main():
             mkinstalldirs = args.mkinstalldirs
         ))
     elif args.format == "gnumake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, common, is_nmake = False))
+        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common, is_nmake = False))
     elif args.format == "nmake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, common, is_nmake = True))
+        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common, is_nmake = True))
     else:
         print("Format not supported: %s" % args.format)
 

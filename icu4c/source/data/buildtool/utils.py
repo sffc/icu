@@ -10,6 +10,8 @@ def dir_for(file):
         return "{TMP_DIR}"
     if isinstance(file, OutFile):
         return "{OUT_DIR}"
+    if isinstance(file, PkgFile):
+        return "{PKG_DIR}"
     assert False
 
 def repeated_execution_request_looper(request):
