@@ -14,5 +14,3 @@ SingleExecutionRequest = namedtuple("SingleExecutionRequest", ["name", "input_fi
 RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_files", "input_files", "output_files", "tool", "args", "format_with", "repeat_with"])
 
 PrintFileRequest = namedtuple("PrintFileRequest", ["name", "output_file", "content"])
-
-MakeRule = namedtuple("MakeRule", ["name", "dep_targets", "input_files", "output_files", "cmds"])

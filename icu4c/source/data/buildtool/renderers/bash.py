@@ -4,13 +4,18 @@
 from .. import *
 from .. import utils
 
-def get_command_lines(requests, **kwargs):
-    cmds = []
+def get_command_lines(build_dirs, requests, common_vars, mkinstalldirs, **kwargs):
+    cmds = [
+        "sh {MKINSTALLDIRS} {DIRS}".format(**common_vars,
+            MKINSTALLDIRS = mkinstalldirs,
+            DIRS = " ".join(build_dirs).format(**common_vars)
+        )
+    ]
     for request in requests:
-        cmds += get_command_lines_helper(request, **kwargs)
+        cmds += get_command_lines_helper(request, common_vars, mkinstalldirs, **kwargs)
     return "\n".join(cmds)
 
-def get_command_lines_helper(request, common_vars, bin_dir, mkinstalldirs):
+def get_command_lines_helper(request, common_vars, mkinstalldirs, bin_dir):
     if isinstance(request, PrintFileRequest):
         output_path = "{DIRNAME}/{FILENAME}".format(
             DIRNAME = utils.dir_for(request.output_file).format(**common_vars),
@@ -25,29 +30,19 @@ def get_command_lines_helper(request, common_vars, bin_dir, mkinstalldirs):
             for line in request.content.split("\n")]
         return cmds
 
-    if request.tool == "mkinstalldirs":
-        return ["sh {MKINSTALLDIRS} {ARGS}".format(**common_vars,
-            MKINSTALLDIRS = mkinstalldirs,
-            ARGS = request.args.format(**common_vars)
-        )]
-
-    template = "{BIN_DIR}/{TOOL} {{ARGS}}".format(**common_vars,
+    cmd_template = "{BIN_DIR}/{TOOL} {{ARGS}}".format(**common_vars,
         BIN_DIR = bin_dir,
         TOOL = request.tool
     )
     if isinstance(request, RepeatedExecutionRequest):
-        cmds = []
-        for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
-            cmds.append(template.format(ARGS = request.args.format(**common_vars, **request.format_with, **iter_vars,
-                INPUT_FILE = input_file.filename,
-                OUTPUT_FILE = output_file.filename
-            )))
-        return cmds
+        return [
+            utils.format_repeated_request_command(request, cmd_template, iter_vars, input_file, output_file, common_vars)
+            for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request)
+        ]
 
     if isinstance(request, SingleExecutionRequest):
-        return [template.format(ARGS = request.args.format(**common_vars, **request.format_with,
-            INPUT_FILES = [file.filename for file in request.input_files],
-            OUTPUT_FILES = [file.filename for file in request.output_files],
-        ))]
+        return [
+            utils.format_single_request_command(request, cmd_template, common_vars)
+        ]
 
     assert False

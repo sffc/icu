@@ -128,18 +128,18 @@ def main():
         ))
         return [v[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
-    requests = rules.generate(config, glob, common)
+    build_dirs, requests = rules.generate(config, glob, common)
 
     if args.format == "bash":
-        print(bash.get_command_lines(requests,
+        print(bash.get_command_lines(build_dirs, requests,
             common_vars = common,
             bin_dir = args.bin_dir,
             mkinstalldirs = args.mkinstalldirs
         ))
     elif args.format == "gnumake":
-        print(makefile.get_gnumake_rules(requests, common, is_nmake = False))
+        print(makefile.get_gnumake_rules(build_dirs, requests, common, is_nmake = False))
     elif args.format == "nmake":
-        print(makefile.get_gnumake_rules(requests, common, is_nmake = True))
+        print(makefile.get_gnumake_rules(build_dirs, requests, common, is_nmake = True))
     else:
         print("Format not supported: %s" % args.format)
 

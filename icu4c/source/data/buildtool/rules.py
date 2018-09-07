@@ -19,6 +19,25 @@ def generate_index_file(locales, cldr_version, common_vars):
             "}}").format(**common_vars, FORMATTED_VERSION = formatted_version, FORMATTED_LOCALES = formatted_locales)
 
 
+def get_all_output_files(requests):
+    all_output_files = []
+    for request in requests:
+        if isinstance(request, SingleExecutionRequest):
+            all_output_files += request.output_files
+        elif isinstance(request, RepeatedExecutionRequest):
+            all_output_files += request.output_files
+        elif isinstance(request, PrintFileRequest):
+            all_output_files += [request.output_file]
+
+    # Filter out all files but those in OUT_DIR
+    collected_files = (file for file in all_output_files if isinstance(file, OutFile))
+
+    # Take unique values and sort
+    collected_files = sorted(set(collected_files))
+
+    return list(collected_files)
+
+
 def generate(config, glob, common):
     # TODO: Rename common to common_vars
 
@@ -26,16 +45,6 @@ def generate(config, glob, common):
 
     # DIRECTORIES
     build_dirs = ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]
-    requests += [
-        SingleExecutionRequest(
-            name = "dirs",
-            input_files = [],
-            output_files = [],
-            tool = "mkinstalldirs",
-            args = " ".join(build_dirs),
-            format_with = {}
-        )
-    ]
 
     # CONFUSABLES
     if config.has_feature("confusables"):
@@ -242,16 +251,26 @@ def generate(config, glob, common):
     # Specialized Locale Data Res Files
     specialized_sub_dirs = [
         # (input dirname, output dirname, resfiles.mk path, mk version var, mk source var, use pool file, dep files)
-        ("locales",  None,       "resfiles.mk",  "GENRB_CLDR_VERSION",     "GENRB_SOURCE",     True,  []),
-        ("curr",     "curr",     "resfiles.mk",  "CURR_CLDR_VERSION",      "CURR_SOURCE",      True,  []),
-        ("lang",     "lang",     "resfiles.mk",  "LANG_CLDR_VERSION",      "LANG_SOURCE",      True,  []),
-        ("region",   "region",   "resfiles.mk",  "REGION_CLDR_VERSION",    "REGION_SOURCE",    True,  []),
-        ("zone",     "zone",     "resfiles.mk",  "ZONE_CLDR_VERSION",      "ZONE_SOURCE",      True,  []),
-        ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,  []),
-        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False, [OutFile("coll/ucadata.icu"), OutFile("timezoneTypes.res"), OutFile("keyTypeData.res")]),
-        ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False, brkitr_brk_files + dict_files),
-        ("rbnf",     "rbnf",     "rbnffiles.mk", "RBNF_CLDR_VERSION",      "RBNF_SOURCE",      False, []),
-        ("translit", "translit", "trnsfiles.mk", None,                     "TRANSLIT_SOURCE",  False, [])
+        ("locales",  None,       "resfiles.mk",  "GENRB_CLDR_VERSION",     "GENRB_SOURCE",     True,
+            []),
+        ("curr",     "curr",     "resfiles.mk",  "CURR_CLDR_VERSION",      "CURR_SOURCE",      True,
+            []),
+        ("lang",     "lang",     "resfiles.mk",  "LANG_CLDR_VERSION",      "LANG_SOURCE",      True,
+            []),
+        ("region",   "region",   "resfiles.mk",  "REGION_CLDR_VERSION",    "REGION_SOURCE",    True,
+            []),
+        ("zone",     "zone",     "resfiles.mk",  "ZONE_CLDR_VERSION",      "ZONE_SOURCE",      True,
+            []),
+        ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,
+            []),
+        ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False,
+            [OutFile("coll/ucadata.icu"), OutFile("timezoneTypes.res"), OutFile("keyTypeData.res")]),
+        ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False,
+            brkitr_brk_files + dict_files),
+        ("rbnf",     "rbnf",     "rbnffiles.mk", "RBNF_CLDR_VERSION",      "RBNF_SOURCE",      False,
+            []),
+        ("translit", "translit", "trnsfiles.mk", None,                     "TRANSLIT_SOURCE",  False,
+            [])
     ]
 
     for sub_dir, out_sub_dir, resfile_name, version_var, source_var, use_pool_bundle, dep_files in specialized_sub_dirs:
@@ -355,5 +374,25 @@ def generate(config, glob, common):
                     )
                 ]
 
-    return requests
+    # Finally, make the package.
+    all_output_files = get_all_output_files(requests)
+    icudata_list_file = TmpFile("icudata.lst")
+    icudata_inc_file = TmpFile("icupkg.inc")
+    requests += [
+        PrintFileRequest(
+            name = "icudata_list",
+            output_file = icudata_list_file,
+            content = "\n".join(file.filename for file in all_output_files)
+        ),
+        # SingleExecutionRequest(
+        #     name = "icudata_package",
+        #     input_files = all_output_files + [icudata_list_file, icudata_inc_file],
+        #     output_files = [TmpFile("icudt62l.dat")],
+        #     tool = "pkgdata",
+        #     args = "-O {TMP_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {LIB_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {ICUDATA_VERSION} -L {ICUDATA_LIBNAME} {TMP_DIR}/icudata.lst",
+        #     format_with = {}
+        # )
+    ]
+
+    return (build_dirs, requests)
 
