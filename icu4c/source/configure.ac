@@ -1321,6 +1321,7 @@ echo "CXXFLAGS=$CXXFLAGS"
 AC_CONFIG_FILES([icudefs.mk \
 		Makefile \
 		data/pkgdataMakefile \
+		data/Makefile \
 		config/Makefile.inc \
 		config/icu.pc \
 		config/pkgdataMakefile \
@@ -1385,13 +1386,12 @@ AC_CONFIG_FILES([icudefs.mk \
 AC_OUTPUT
 
 echo "Generating data/Makefile from Python script..."
-/usr/bin/env python3 -m data.buildtool \
+PYTHONPATH="$srcdir/data" /usr/bin/env python3 -m buildtool \
     --format gnumake \
     --seqmode parallel \
-    --glob_dir "data" \
-    --top_src_dir ".." \
+    --glob_dir "$srcdir/data" \
     --work_dir "out" \
-    > data/Makefile
+    > data/rules.mk
 
 echo
 echo "ICU for C/C++ $VERSION is ready to be built."

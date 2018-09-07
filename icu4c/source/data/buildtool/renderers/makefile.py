@@ -5,37 +5,11 @@ from . import *
 from .. import *
 from .. import utils
 
-def get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars, **kwargs):
-    makefile_string = """## Makefile for ICU data
-## Copyright (C) 2018 and later: Unicode, Inc. and others.
-
-## Source directory information
-srcdir = {SRCDIR}
-top_srcdir = {TOP_SRCDIR}
-
-# So that you have $(top_builddir)/config.status
-top_builddir = {TOP_BUILDDIR}
-
-## All the flags and other definitions are included here.
-include $(top_builddir)/icudefs.mk
-
-## Build directory information
-# So that  $(top_builddir)/$(subdir) ~= "here"
-subdir = data
-
-## Default target
-all: all-local
-
-""".format(
-        # TODO
-        SRCDIR = ".",
-        TOP_SRCDIR = "..",
-        TOP_BUILDDIR = ".."
-    )
+def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
+    makefile_string = ""
 
     # Common Variables
-    common_vars_mak = common_vars
-    kwargs["common_vars_mak"] = common_vars
+    common_vars = kwargs["common_vars"]
     for key, value in makefile_vars.items():
         makefile_string += "{KEY} = {VALUE}\n".format(
             KEY = key,
@@ -44,13 +18,13 @@ all: all-local
     makefile_string += "\n"
 
     # Directories
-    dirs_timestamp_file = "{TMP_DIR}/dirs.timestamp".format(**common_vars_mak)
+    dirs_timestamp_file = "{TMP_DIR}/dirs.timestamp".format(**common_vars)
     makefile_string += "DIRS = {TIMESTAMP_FILE}\n\n".format(
         TIMESTAMP_FILE = dirs_timestamp_file
     )
     makefile_string += "{TIMESTAMP_FILE}:\n\t$(MKINSTALLDIRS) {ALL_DIRS}\n\techo timestamp > {TIMESTAMP_FILE}\n\n".format(
         TIMESTAMP_FILE = dirs_timestamp_file,
-        ALL_DIRS = " ".join(build_dirs).format(**common_vars_mak)
+        ALL_DIRS = " ".join(build_dirs).format(**common_vars)
     )
 
     # Generate Rules
@@ -90,31 +64,12 @@ all: all-local
             RULE_LINES = "\n".join("\t%s" % cmd for cmd in rule.cmds)
         )
 
-    makefile_string += """
-
-## List of standard targets
-all-local: $(TMP_DIR)/$(ICUDATA_NAME).dat
-install: all
-	echo "Error: install not supported yet"
-clean:
-	rm -r $(OUT_DIR)
-	rm -r $(TMP_DIR)
-distclean: clean
-	rm Makefile
-	rm pkgdataMakefile
-dist:
-	echo "Error: dist not supported yet"
-check: all
-check-exhaustive: check
-
-"""
-
     return makefile_string
 
-def files_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
+def files_to_makefile(files, is_nmake, common_vars, **kwargs):
     if len(files) == 0:
         return ""
-    dirnames = [utils.dir_for(file).format(**common_vars_mak) for file in files]
+    dirnames = [utils.dir_for(file).format(**common_vars) for file in files]
     if len(files) == 1:
         return "%s/%s" % (dirnames[0], files[0].filename)
     if is_nmake or len(set(dirnames)) > 1:
@@ -122,7 +77,7 @@ def files_to_makefile(files, is_nmake, common_vars_mak, **kwargs):
     else:
         return "$(addprefix %s/,%s)" % (dirnames[0], " ".join(file.filename for file in files))
 
-def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
+def get_gnumake_rules_helper(request, is_nmake, common_vars, **kwargs):
 
     if isinstance(request, PrintFileRequest):
         var_name = "%s_CONTENT" % request.name.upper()
@@ -137,9 +92,9 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
                 dep_files = [],
                 output_file = request.output_file,
                 cmds = [
-                    "echo \"$${VAR_NAME}\" > {MAKEFILENAME}".format(**common_vars_mak,
+                    "echo \"$${VAR_NAME}\" > {MAKEFILENAME}".format(**common_vars,
                         VAR_NAME = var_name,
-                        MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars_mak)
+                        MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars)
                     )
                 ]
             )
@@ -151,7 +106,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
         cmd_template = "$(MAKE) {ARGS}"
 
     if isinstance(request, SingleExecutionRequest):
-        cmd = utils.format_single_request_command(request, cmd_template, common_vars_mak)
+        cmd = utils.format_single_request_command(request, cmd_template, common_vars)
 
         if len(request.output_files) > 1:
             # Special case for multiple output files: Makefile rules should have only one output file apiece.
@@ -171,7 +126,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
                     cmds = [
                         cmd,
                         "echo timestamp > {MAKEFILENAME}".format(
-                            MAKEFILENAME = files_to_makefile([timestamp_file], is_nmake, common_vars_mak)
+                            MAKEFILENAME = files_to_makefile([timestamp_file], is_nmake, common_vars)
                         )
                     ]
                 )
@@ -232,7 +187,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars_mak, **kwargs):
         # Add a rule for each individual file.
         for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
-            cmd = utils.format_repeated_request_command(request, cmd_template, iter_vars, input_file, output_file, common_vars_mak)
+            cmd = utils.format_repeated_request_command(request, cmd_template, iter_vars, input_file, output_file, common_vars)
             rules += [
                 MakeRule(
                     name = "%s_%s" % (request.name, name_suffix),

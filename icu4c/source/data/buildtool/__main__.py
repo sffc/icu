@@ -129,7 +129,7 @@ def main():
 
     if args.format == "gnumake":
         makefile_vars = {
-            "IN_DIR": "%s/data" % args.top_src_dir,
+            "IN_DIR": "$(srcdir)",
             "OUT_DIR": "%s/build/$(ICUDATA_PLATFORM_NAME)" % args.work_dir,
             "TMP_DIR": "%s/tmp" % args.work_dir,
             "PKG_DIR": args.pkg_dir,
@@ -167,9 +167,9 @@ def main():
             mkinstalldirs = args.mkinstalldirs
         ))
     elif args.format == "gnumake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common, is_nmake = False))
+        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = False))
     elif args.format == "nmake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common, is_nmake = True))
+        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = True))
     else:
         print("Format not supported: %s" % args.format)
 

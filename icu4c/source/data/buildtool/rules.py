@@ -170,7 +170,7 @@ def generate(config, glob, common):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("gendict"),
-                args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
+                args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {
                     "EXTRA_OPTIONS": extra_optionses
