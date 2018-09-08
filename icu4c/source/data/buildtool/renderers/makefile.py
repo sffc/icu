@@ -92,9 +92,10 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars, **kwargs):
                 dep_files = [],
                 output_file = request.output_file,
                 cmds = [
-                    "echo \"$${VAR_NAME}\" > {MAKEFILENAME}".format(**common_vars,
+                    "echo \"$${VAR_NAME}\" > {MAKEFILENAME}".format(
                         VAR_NAME = var_name,
-                        MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars)
+                        MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars),
+                        **common_vars
                     )
                 ]
             )

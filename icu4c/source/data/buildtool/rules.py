@@ -16,7 +16,7 @@ def generate_index_file(locales, cldr_version, common_vars):
             "    InstalledLocales {{\n"
             "{FORMATTED_LOCALES}\n"
             "    }}\n"
-            "}}").format(**common_vars, FORMATTED_VERSION = formatted_version, FORMATTED_LOCALES = formatted_locales)
+            "}}").format(FORMATTED_VERSION = formatted_version, FORMATTED_LOCALES = formatted_locales, **common_vars)
 
 
 def get_all_output_files(requests):
@@ -36,9 +36,7 @@ def get_all_output_files(requests):
     return set(collected_files)
 
 
-def generate(config, glob, common):
-    # TODO: Rename common to common_vars
-
+def generate(config, glob, common_vars):
     requests = []
     pkg_exclusions = set()
 
@@ -329,20 +327,20 @@ def generate(config, glob, common):
             if sub_dir != "translit":
                 # TODO: Change .mk files to .py files so they can be loaded directly.
                 # Reading these files as .py will be required for Bazel.
-                mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(**common, IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name))
+                mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name, **common_vars))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
                 pkg_exclusions |= set(output_files) - set(OutFile("%s%s.res" % (out_prefix, locale)) for locale in locales)
-                index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(**common, IN_SUB_DIR = sub_dir))
+                index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(IN_SUB_DIR = sub_dir, **common_vars))
                 requests += [
                     PrintFileRequest(
                         name = "%s_index_txt" % sub_dir,
                         output_file = index_file_txt,
-                        content = generate_index_file(locales, cldr_version, common)
+                        content = generate_index_file(locales, cldr_version, common_vars)
                     )
                 ]
                 # Generate index res file
-                index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(**common, OUT_PREFIX = out_prefix))
+                index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(OUT_PREFIX = out_prefix, **common_vars))
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_index_res" % sub_dir,
@@ -358,7 +356,7 @@ def generate(config, glob, common):
                 ]
             # Copy the pool file
             if use_pool_bundle:
-                output_pool_file = OutFile("{OUT_PREFIX}pool.res".format(**common, OUT_PREFIX = out_prefix))
+                output_pool_file = OutFile("{OUT_PREFIX}pool.res".format(OUT_PREFIX = out_prefix, **common_vars))
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool" % sub_dir,
@@ -405,7 +403,7 @@ def generate(config, glob, common):
             name = "icudata_package",
             input_files = all_output_files + [icudata_list_file, icudata_inc_file],
             # TODO: This function produces more files besides this dat file
-            output_files = [TmpFile("{ICUDATA_NAME}.dat".format(**common))],
+            output_files = [TmpFile("{ICUDATA_NAME}.dat".format(**common_vars))],
             tool = IcuTool("pkgdata"),
             args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
             format_with = {}

@@ -6,9 +6,10 @@ from .. import utils
 
 def get_command_lines(build_dirs, requests, common_vars, mkinstalldirs, **kwargs):
     cmds = [
-        "sh {MKINSTALLDIRS} {DIRS}".format(**common_vars,
+        "sh {MKINSTALLDIRS} {DIRS}".format(
             MKINSTALLDIRS = mkinstalldirs,
-            DIRS = " ".join(build_dirs).format(**common_vars)
+            DIRS = " ".join(build_dirs).format(**common_vars),
+            **common_vars
         )
     ]
     for request in requests:
@@ -21,18 +22,20 @@ def get_command_lines_helper(request, common_vars, mkinstalldirs, bin_dir):
             DIRNAME = utils.dir_for(request.output_file).format(**common_vars),
             FILENAME = request.output_file.filename,
         )
-        cmds = ["rm -f {OUTPUT_PATH}".format(**common_vars, OUTPUT_PATH = output_path)]
+        cmds = ["rm -f {OUTPUT_PATH}".format(OUTPUT_PATH = output_path, **common_vars)]
         cmds += [
-            "echo \"{LINE}\" >> {OUTPUT_PATH}".format(**common_vars,
+            "echo \"{LINE}\" >> {OUTPUT_PATH}".format(
                 OUTPUT_PATH = output_path,
-                LINE = line.replace("\"", "\\\"")
+                LINE = line.replace("\"", "\\\""),
+                **common_vars
             )
             for line in request.content.split("\n")]
         return cmds
 
-    cmd_template = "{BIN_DIR}/{TOOL} {{ARGS}}".format(**common_vars,
+    cmd_template = "{BIN_DIR}/{TOOL} {{ARGS}}".format(
         BIN_DIR = bin_dir,
-        TOOL = request.tool
+        TOOL = request.tool,
+        **common_vars
     )
     if isinstance(request, RepeatedExecutionRequest):
         return [

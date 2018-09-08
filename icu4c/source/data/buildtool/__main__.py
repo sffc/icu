@@ -1,8 +1,12 @@
 # Copyright (C) 2016 and later: Unicode, Inc. and others.
 # License & terms of use: http://www.unicode.org/copyright.html
 
+# Be compatible with both Python 2 and Python 3:
+from __future__ import print_function
+
 import argparse
 import glob as pyglob
+import sys
 
 from . import *
 from . import rules
@@ -157,6 +161,10 @@ def main():
             PATTERN = pattern
         ))
         return [v[len(args.glob_dir)+1:] for v in sorted(result_paths)]
+
+    if len(glob("misc/*")) == 0:
+        print("Error: Cannot find data directory; please specify --glob_dir", file=sys.stderr)
+        exit(1)
 
     build_dirs, requests = rules.generate(config, glob, common)
 
