@@ -35,5 +35,10 @@ distclean: clean
 	rm -f rules.mk
 dist:
 	echo "Error: dist not supported yet"
-check: all
+check: all check-python-compat
 check-exhaustive: check
+
+check-python-compat:
+	# Script should work in both Python 2 and Python 3
+	python2 -m buildtool --format gnumake 1> /dev/null
+	python3 -m buildtool --format gnumake 1> /dev/null

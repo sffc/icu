@@ -1385,7 +1385,7 @@ AC_CONFIG_FILES([icudefs.mk \
 		samples/cal/Makefile samples/layout/Makefile])
 AC_OUTPUT
 
-echo "Generating data/Makefile from Python script..."
+echo "Generating data/rules.mk from Python script..."
 PYTHONPATH="$srcdir/data" /usr/bin/env python -m buildtool \
     --format gnumake \
     --seqmode parallel \
