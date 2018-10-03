@@ -2,6 +2,11 @@
 ## Copyright (C) 2018 and later: Unicode, Inc. and others.
 ## License & terms of use: http://www.unicode.org/copyright.html
 
+# TODO: This file does not currently support the following features:
+# - Endianness conversion from source archive
+# - Installation
+# - PKGDATA_MODE strategies other than "dll"
+
 ## Source directory information
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -16,29 +21,68 @@ include $(top_builddir)/icudefs.mk
 # So that  $(top_builddir)/$(subdir) ~= "here"
 subdir = data
 
+# lib names; used for "make clean" only
+LIB_ICUDATA_NAME=$(LIBICU)$(DATA_STUBNAME)$(ICULIBSUFFIX)
+LIB_STATIC_ICUDATA_NAME=$(LIBSICU)$(DATA_STUBNAME)$(ICULIBSUFFIX)
+
 ## Default target
 all: all-local
+
+## Output directories
+ifeq ($(top_builddir),..)
+OUTPREFIX=./out
+else
+OUTPREFIX=$(top_builddir)/data/out
+endif
+
+OUT_DIR=$(OUTPREFIX)/build/$(ICUDATA_PLATFORM_NAME)
+TMP_DIR=$(OUTPREFIX)/tmp
 
 ## Include the main build rules
 include $(top_builddir)/$(subdir)/rules.mk
 
 ## List of standard targets
-all-local: $(TMP_DIR)/$(ICUDATA_NAME).dat
 install: all
 	echo "Error: install not supported yet"
 clean:
-	rm -rf $(OUT_DIR)
-	rm -rf $(TMP_DIR)
+	$(RMV) $(OUT_DIR)
+	$(RMV) $(TMP_DIR)
+	$(RMV) icupkg.inc
+	$(RMV) $(LIBDIR)/*$(LIB_ICUDATA_NAME)*.$(SO)* $(LIBDIR)/$(LIB_STATIC_ICUDATA_NAME).$(A)
 distclean: clean
-	rm -f Makefile
-	rm -f pkgdataMakefile
-	rm -f rules.mk
+	$(RMV) Makefile
+	$(RMV) pkgdataMakefile
+	$(RMV) rules.mk
 dist:
 	echo "Error: dist not supported yet"
-check: all check-python-compat
+check: all
 check-exhaustive: check
 
-check-python-compat:
-	# Script should work in both Python 2 and Python 3
-	python2 -m buildtool --format gnumake 1> /dev/null
-	python3 -m buildtool --format gnumake 1> /dev/null
+
+# Find out if we have a source archive.
+# If we have that, then use that instead of building everything from scratch.
+ICUDATA_SOURCE_ARCHIVE = $(wildcard $(srcdir)/in/$(ICUDATA_PLATFORM_NAME).dat)
+ifeq ($(ICUDATA_SOURCE_ARCHIVE),)
+# TODO: Re-enable endianess or charset conversion.
+else
+# TODO: Fast-path for PKGDATA_MODE=common.
+endif
+
+
+# Main package rules.
+ifeq ($(ICUDATA_SOURCE_ARCHIVE),)
+# We don't have an archive.  Build data from source.
+# rules.mk exposes this dat file as the target we can use.
+all-local: $(TMP_DIR)/$(ICUDATA_PLATFORM_NAME).dat
+else
+# We have an archive.  Use it.
+PKGDATA_LIST = $(TMP_DIR)/icudata.lst
+all-local: $(ICUDATA_SOURCE_ARCHIVE)
+# TODO: Much of this is duplicated from the auto-generated rules.mk
+	$(MKINSTALLDIRS) $(OUT_DIR) $(OUT_DIR)/curr $(OUT_DIR)/lang $(OUT_DIR)/region $(OUT_DIR)/zone $(OUT_DIR)/unit $(OUT_DIR)/brkitr $(OUT_DIR)/coll $(OUT_DIR)/rbnf $(OUT_DIR)/translit $(TMP_DIR) $(TMP_DIR)/curr $(TMP_DIR)/lang $(TMP_DIR)/locales $(TMP_DIR)/region $(TMP_DIR)/zone $(TMP_DIR)/unit $(TMP_DIR)/coll $(TMP_DIR)/rbnf $(TMP_DIR)/translit $(TMP_DIR)/brkitr
+	$(MAKE) -f pkgdataMakefile
+	@echo "Unpacking $(ICUDATA_SOURCE_ARCHIVE) and generating $(PKGDATA_LIST) (list of data files)"
+	@-$(RMV) $(PKGDATA_LIST)
+	$(INVOKE) $(TOOLBINDIR)/icupkg -d $(OUT_DIR) --list -x \* $(ICUDATA_SOURCE_ARCHIVE) -o $(PKGDATA_LIST)
+	$(INVOKE) $(TOOLBINDIR)/pkgdata -O $(IN_DIR)/icupkg.inc -q -c -s $(OUT_DIR) -d $(PKG_DIR) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) -m $(PKGDATA_MODE) -r $(SO_TARGET_VERSION) $(PKGDATA_LIBNAME) $(PKGDATA_LIST)
+endif

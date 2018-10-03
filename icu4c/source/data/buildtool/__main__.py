@@ -41,7 +41,7 @@ flag_parser.add_argument(
 )
 flag_parser.add_argument(
     "--out_dir",
-    help = "Path to where to save output data files. For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    help = "Path to where to save output data files. Not used in gnumake format.",
     default = "icudata"
 )
 flag_parser.add_argument(
@@ -50,18 +50,8 @@ flag_parser.add_argument(
     default = "../lib"
 )
 flag_parser.add_argument(
-    "--top_src_dir",
-    help = "Path to the source files, relative to the Makefile.",
-    default = ".."
-)
-flag_parser.add_argument(
-    "--work_dir",
-    help = "Path to where to save tmp and output files.",
-    default = ".."
-)
-flag_parser.add_argument(
     "--tmp_dir",
-    help = "Path to where to save temporary files. For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    help = "Path to where to save temporary files. Not used in gnumake format.",
     default = "icutmp"
 )
 flag_parser.add_argument(
@@ -134,12 +124,10 @@ def main():
     if args.format == "gnumake":
         makefile_vars = {
             "IN_DIR": "$(srcdir)",
-            "OUT_DIR": "%s/build/$(ICUDATA_PLATFORM_NAME)" % args.work_dir,
-            "TMP_DIR": "%s/tmp" % args.work_dir,
             "PKG_DIR": args.pkg_dir,
             "INDEX_NAME": "res_index"
         }
-        makefile_env = ["ICUDATA_CHAR", "ICUDATA_ENTRY_POINT", "ICUDATA_NAME", "PKGDATA_MODE", "SO_TARGET_VERSION", "PKGDATA_LIBNAME"]
+        makefile_env = ["ICUDATA_CHAR", "ICUDATA_ENTRY_POINT", "ICUDATA_NAME", "ICUDATA_PLATFORM_NAME", "PKGDATA_MODE", "SO_TARGET_VERSION", "PKGDATA_LIBNAME", "OUT_DIR", "TMP_DIR"]
         common = {
             key: "$(%s)" % key
             for key in list(makefile_vars.keys()) + makefile_env
