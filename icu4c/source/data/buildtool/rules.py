@@ -272,12 +272,7 @@ def generate(config, glob, common_vars):
 
     for sub_dir, out_sub_dir, resfile_name, version_var, source_var, use_pool_bundle, dep_files in specialized_sub_dirs:
         out_prefix = "%s/" % out_sub_dir if out_sub_dir else ""
-        extra_options = "--usePoolBundle" if use_pool_bundle else ""
         if config.has_feature(sub_dir):
-            if use_pool_bundle:
-                input_pool_files = [InFile("%s/pool.res" % sub_dir)]
-            else:
-                input_pool_files = []
             # TODO: Clean this up for translit
             if sub_dir == "translit":
                 input_files = [InFile("translit/root.txt"), InFile("translit/en.txt"), InFile("translit/el.txt")]
@@ -285,6 +280,40 @@ def generate(config, glob, common_vars):
                 input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
             input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
             output_files = [OutFile("%s%s.res" % (out_prefix, v[:-4])) for v in input_basenames]
+            if use_pool_bundle:
+                input_pool_files = [TmpFile("%s/pool.res" % sub_dir)]
+                output_pool_files = [OutFile("%spool.res" % out_prefix)]
+                use_pool_bundle_option = "--usePoolBundle {TMP_DIR}/{IN_SUB_DIR}"
+                # TODO: In principle, we should be able to use the pool bundle directly from --writePoolBundle,
+                # but it seems that calling icupkg is still required.
+                requests += [
+                    SingleExecutionRequest(
+                        name = "%s_pool_write" % sub_dir,
+                        input_files = dep_files + input_files,
+                        output_files = input_pool_files,
+                        tool = IcuTool("genrb"),
+                        args = "--writePoolBundle {TMP_DIR}/{IN_SUB_DIR} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        format_with = {
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix,
+                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
+                        }
+                    ),
+                    SingleExecutionRequest(
+                        name = "%s_pool_icupkg" % sub_dir,
+                        input_files = input_pool_files,
+                        output_files = output_pool_files,
+                        tool = IcuTool("icupkg"),
+                        args = "-t{ICUDATA_CHAR} {TMP_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
+                        format_with = {
+                            "IN_SUB_DIR": sub_dir,
+                            "OUT_PREFIX": out_prefix
+                        }
+                    )
+                ]
+            else:
+                input_pool_files = []
+                use_pool_bundle_option = ""
             if config.max_parallel():
                 # Do each res file on its own
                 requests += [
@@ -294,9 +323,8 @@ def generate(config, glob, common_vars):
                         input_files = input_files,
                         output_files = output_files,
                         tool = IcuTool("genrb"),
-                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}",
+                        args = use_pool_bundle_option + " -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}",
                         format_with = {
-                            "EXTRA_OPTIONS": extra_options,
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix
                         },
@@ -314,9 +342,8 @@ def generate(config, glob, common_vars):
                         input_files = dep_files + input_pool_files + input_files,
                         output_files = output_files,
                         tool = IcuTool("genrb"),
-                        args = "{EXTRA_OPTIONS} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        args = use_pool_bundle_option + " -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
                         format_with = {
-                            "EXTRA_OPTIONS": extra_options,
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix,
                             "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
@@ -348,22 +375,6 @@ def generate(config, glob, common_vars):
                         output_files = [index_res_file],
                         tool = IcuTool("genrb"),
                         args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt",
-                        format_with = {
-                            "IN_SUB_DIR": sub_dir,
-                            "OUT_PREFIX": out_prefix
-                        }
-                    )
-                ]
-            # Copy the pool file
-            if use_pool_bundle:
-                output_pool_file = OutFile("{OUT_PREFIX}pool.res".format(OUT_PREFIX = out_prefix, **common_vars))
-                requests += [
-                    SingleExecutionRequest(
-                        name = "%s_pool" % sub_dir,
-                        input_files = input_pool_files,
-                        output_files = [output_pool_file],
-                        tool = IcuTool("icupkg"),
-                        args = "-t{ICUDATA_CHAR} {IN_DIR}/{IN_SUB_DIR}/pool.res {OUT_DIR}/{OUT_PREFIX}pool.res",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix
