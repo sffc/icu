@@ -195,7 +195,7 @@ fi
 #AC_CHECK_PROG(AUTOCONF, autoconf, autoconf, true)
 #AC_CHECK_PROG(STRIP, strip, strip, true)
 
-AC_CHECK_PROGS(PYTHON3, python3)
+AC_CHECK_PROGS(PYTHON3, python3 "py -3")
 
 # Check for the platform make
 AC_PATH_PROGS(U_MAKE, gmake gnumake, make)

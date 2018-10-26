@@ -4200,7 +4200,7 @@ fi
 #AC_CHECK_PROG(AUTOCONF, autoconf, autoconf, true)
 #AC_CHECK_PROG(STRIP, strip, strip, true)
 
-for ac_prog in python3
+for ac_prog in python3 "py -3"
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
