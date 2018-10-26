@@ -148,7 +148,8 @@ def main():
             IN_DIR = args.glob_dir,
             PATTERN = pattern
         ))
-        return [v[len(args.glob_dir)+1:] for v in sorted(result_paths)]
+        # For the purposes of buildtool, force Unix-style directory separators.
+        return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
     if len(glob("misc/*")) == 0:
         print("Error: Cannot find data directory; please specify --glob_dir", file=sys.stderr)
