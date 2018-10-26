@@ -281,35 +281,21 @@ def generate(config, glob, common_vars):
             input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
             output_files = [OutFile("%s%s.res" % (out_prefix, v[:-4])) for v in input_basenames]
             if use_pool_bundle:
-                input_pool_files = [TmpFile("%s/pool.res" % sub_dir)]
-                output_pool_files = [OutFile("%spool.res" % out_prefix)]
-                use_pool_bundle_option = "--usePoolBundle {TMP_DIR}/{IN_SUB_DIR}"
-                # TODO: In principle, we should be able to use the pool bundle directly from --writePoolBundle,
-                # but it seems that calling icupkg is still required.
+                input_pool_files = [OutFile("%spool.res" % out_prefix)]
+                use_pool_bundle_option = "--usePoolBundle {OUT_DIR}/{OUT_PREFIX}"
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool_write" % sub_dir,
                         input_files = dep_files + input_files,
                         output_files = input_pool_files,
                         tool = IcuTool("genrb"),
-                        args = "--writePoolBundle {TMP_DIR}/{IN_SUB_DIR} -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        args = "--writePoolBundle -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix,
                             "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
                         }
                     ),
-                    SingleExecutionRequest(
-                        name = "%s_pool_icupkg" % sub_dir,
-                        input_files = input_pool_files,
-                        output_files = output_pool_files,
-                        tool = IcuTool("icupkg"),
-                        args = "-t{ICUDATA_CHAR} {TMP_DIR}/{INPUT_FILES[0]} {OUT_DIR}/{OUTPUT_FILES[0]}",
-                        format_with = {
-                            "IN_SUB_DIR": sub_dir,
-                            "OUT_PREFIX": out_prefix
-                        }
-                    )
                 ]
             else:
                 input_pool_files = []
