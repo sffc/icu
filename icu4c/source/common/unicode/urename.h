@@ -34,7 +34,7 @@
 #if !U_DISABLE_RENAMING
 
 // Disable Renaming for Visual Studio's IntelliSense feature, so that 'Go-to-Definition' (F12) will work.
-#if defined(_MSC_VER) && !defined(__INTELLISENSE__)
+#if !(defined(_MSC_VER) && defined(__INTELLISENSE__))
 
 /* We need the U_ICU_ENTRY_POINT_RENAME definition. There's a default one in unicode/uvernum.h we can use, but we will give
    the platform a chance to define it first.
@@ -110,7 +110,6 @@
 #define _UTF7Data U_ICU_ENTRY_POINT_RENAME(_UTF7Data)
 #define _UTF8Data U_ICU_ENTRY_POINT_RENAME(_UTF8Data)
 #define allowedHourFormatsCleanup U_ICU_ENTRY_POINT_RENAME(allowedHourFormatsCleanup)
-#define checkImpl U_ICU_ENTRY_POINT_RENAME(checkImpl)
 #define cmemory_cleanup U_ICU_ENTRY_POINT_RENAME(cmemory_cleanup)
 #define dayPeriodRulesCleanup U_ICU_ENTRY_POINT_RENAME(dayPeriodRulesCleanup)
 #define deleteAllowedHourFormats U_ICU_ENTRY_POINT_RENAME(deleteAllowedHourFormats)
@@ -1858,7 +1857,7 @@
 #define ztrans_setTime U_ICU_ENTRY_POINT_RENAME(ztrans_setTime)
 #define ztrans_setTo U_ICU_ENTRY_POINT_RENAME(ztrans_setTo)
 
-#endif /* defined(_MSC_VER) && !defined(__INTELLISENSE__) */
+#endif /* !(defined(_MSC_VER) && defined(__INTELLISENSE__)) */
 #endif /* U_DISABLE_RENAMING */
 #endif /* URENAME_H */
 
