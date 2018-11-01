@@ -10,6 +10,7 @@
 #include "intltest.h"
 #include "number_affixutils.h"
 #include "numparse_stringsegment.h"
+#include "numrange_impl.h"
 #include "unicode/locid.h"
 #include "unicode/numberformatter.h"
 #include "unicode/numberrangeformatter.h"
@@ -128,6 +129,7 @@ class DecimalQuantityTest : public IntlTest {
     void testHardDoubleConversion();
     void testToDouble();
     void testMaxDigits();
+    void testNickelRounding();
 
     void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par = 0);
 
