@@ -26,7 +26,7 @@ Available features include:
 flag_parser.add_argument(
     "--format",
     help = "How to output the rules to run to build ICU data.",
-    choices = ["bash", "gnumake", "nmake", "windirect"],
+    choices = ["bash", "gnumake", "windirect"],
     required = True
 )
 flag_parser.add_argument(
@@ -121,7 +121,7 @@ def main():
     args = flag_parser.parse_args()
     config = Config(args)
 
-    if args.format == "gnumake" or args.format == "nmake":
+    if args.format == "gnumake":
         makefile_vars = {
             "IN_DIR": "$(srcdir)",
             "PKG_DIR": args.pkg_dir,
@@ -166,9 +166,7 @@ def main():
             mkinstalldirs = args.mkinstalldirs
         ))
     elif args.format == "gnumake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = False))
-    elif args.format == "nmake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = True))
+        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common))
     elif args.format == "windirect":
         return windirect.run(build_dirs, requests, common_vars = common, bin_dir = args.bin_dir)
     else:

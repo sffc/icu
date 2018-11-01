@@ -66,18 +66,16 @@ def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
 
     return makefile_string
 
-def files_to_makefile(files, is_nmake, common_vars, **kwargs):
+def files_to_makefile(files, common_vars, **kwargs):
     if len(files) == 0:
         return ""
     dirnames = [utils.dir_for(file).format(**common_vars) for file in files]
     if len(files) == 1:
         return "%s/%s" % (dirnames[0], files[0].filename)
-    if is_nmake or len(set(dirnames)) > 1:
-        return " ".join("%s/%s" % (dirname, file.filename) for dirname, file in zip(dirnames, files))
     else:
         return "$(addprefix %s/,%s)" % (dirnames[0], " ".join(file.filename for file in files))
 
-def get_gnumake_rules_helper(request, is_nmake, common_vars, **kwargs):
+def get_gnumake_rules_helper(request, common_vars, **kwargs):
 
     if isinstance(request, PrintFileRequest):
         var_name = "%s_CONTENT" % request.name.upper()
@@ -94,7 +92,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars, **kwargs):
                 cmds = [
                     "echo \"$${VAR_NAME}\" > {MAKEFILENAME}".format(
                         VAR_NAME = var_name,
-                        MAKEFILENAME = files_to_makefile([request.output_file], is_nmake, common_vars),
+                        MAKEFILENAME = files_to_makefile([request.output_file], common_vars),
                         **common_vars
                     )
                 ]
@@ -127,7 +125,7 @@ def get_gnumake_rules_helper(request, is_nmake, common_vars, **kwargs):
                     cmds = [
                         cmd,
                         "echo timestamp > {MAKEFILENAME}".format(
-                            MAKEFILENAME = files_to_makefile([timestamp_file], is_nmake, common_vars)
+                            MAKEFILENAME = files_to_makefile([timestamp_file], common_vars)
                         )
                     ]
                 )
