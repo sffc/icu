@@ -43,6 +43,21 @@ def generate(config, glob, common_vars):
     # DIRECTORIES
     build_dirs = ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]
 
+    # UConv Name Aliases
+    if config.has_feature("cnvalias"):
+        input_file = InFile("mappings/convrtrs.txt")
+        output_file = OutFile("cnvalias.icu")
+        requests += [
+            SingleExecutionRequest(
+                name = "cnvalias",
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = IcuTool("gencnval"),
+                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILES[0]}",
+                format_with = {}
+            )
+        ]
+
     # CONFUSABLES
     if config.has_feature("confusables"):
         txt1 = InFile("unidata/confusables.txt")
@@ -55,21 +70,6 @@ def generate(config, glob, common_vars):
                 output_files = [cfu],
                 tool = IcuTool("gencfu"),
                 args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} -o {OUT_DIR}/{OUTPUT_FILES[0]}",
-                format_with = {}
-            )
-        ]
-
-    # UConv Name Aliases
-    if config.has_feature("cnvalias"):
-        input_file = InFile("mappings/convrtrs.txt")
-        output_file = OutFile("cnvalias.icu")
-        requests += [
-            SingleExecutionRequest(
-                name = "cnvalias",
-                input_files = [input_file],
-                output_files = [output_file],
-                tool = IcuTool("gencnval"),
-                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILES[0]}",
                 format_with = {}
             )
         ]

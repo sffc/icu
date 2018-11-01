@@ -10,7 +10,7 @@ import sys
 
 from . import *
 from . import rules
-from .renderers import bash, makefile
+from .renderers import bash, makefile, windirect
 
 flag_parser = argparse.ArgumentParser(
     description = """Generates rules for building ICU binary data files from text
@@ -26,7 +26,7 @@ Available features include:
 flag_parser.add_argument(
     "--format",
     help = "How to output the rules to run to build ICU data.",
-    choices = ["bash", "gnumake", "nmake"],
+    choices = ["bash", "gnumake", "nmake", "windirect"],
     required = True
 )
 flag_parser.add_argument(
@@ -68,7 +68,7 @@ flag_parser.add_argument(
     "--seqmode",
     help = "Whether to optimize rules to be run sequentially (fewer threads) or in parallel (many threads).",
     choices = ["sequential", "parallel"],
-    default = "sequential"
+    default = "parallel"
 )
 flag_parser.add_argument(
     "--collation_ucadata",
@@ -121,7 +121,7 @@ def main():
     args = flag_parser.parse_args()
     config = Config(args)
 
-    if args.format == "gnumake":
+    if args.format == "gnumake" or args.format == "nmake":
         makefile_vars = {
             "IN_DIR": "$(srcdir)",
             "PKG_DIR": args.pkg_dir,
@@ -140,7 +140,9 @@ def main():
             "OUT_DIR": args.out_dir,
             "TMP_DIR": args.tmp_dir,
             "INDEX_NAME": "res_index",
-            "ICUDATA_CHAR": "l",  # TODO: Pull from configure script
+            # TODO: Pull these from configure script:
+            "ICUDATA_CHAR": "l",
+            "ICUDATA_PLATFORM_NAME": "icu63dtl"
         }
 
     def glob(pattern):
@@ -167,8 +169,12 @@ def main():
         print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = False))
     elif args.format == "nmake":
         print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common, is_nmake = True))
+    elif args.format == "windirect":
+        return windirect.run(build_dirs, requests, common_vars = common, bin_dir = args.bin_dir)
     else:
         print("Format not supported: %s" % args.format)
+        return 1
+    return 0
 
 if __name__ == "__main__":
-    main()
+    exit(main())
