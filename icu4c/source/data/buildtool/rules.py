@@ -78,6 +78,7 @@ def generate(config, glob, common_vars):
     if config.has_feature("uconv"):
         input_files = [InFile(filename) for filename in glob("mappings/*.ucm")]
         output_files = [OutFile("%s.cnv" % v.filename[9:-4]) for v in input_files]
+        # TODO: handle BUILD_SPECIAL_CNV_FILES? Means to add --ignore-siso-check flag to makeconv
         if config.max_parallel():
             # Do each cnv file on its own
             requests += [
@@ -121,6 +122,7 @@ def generate(config, glob, common_vars):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("genbrk"),
+                # TODO: Do we need the -d argument?
                 args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {}
@@ -388,23 +390,23 @@ def generate(config, glob, common_vars):
         #     tool = SystemTool("make"),
         #     args = ""
         # ),
-        SingleExecutionRequest(
-            name = "icudata_inc_file",
-            input_files = [pkgdata_makefile],
-            output_files = [icudata_inc_file],
-            tool = SystemTool("make"),
-            args = "-f {IN_DIR}/pkgdataMakefile",
-            format_with = {}
-        ),
-        SingleExecutionRequest(
-            name = "icudata_package",
-            input_files = all_output_files + [icudata_list_file, icudata_inc_file],
-            # TODO: This function produces more files besides this dat file
-            output_files = [TmpFile("{ICUDATA_PLATFORM_NAME}.dat".format(**common_vars))],
-            tool = IcuTool("pkgdata"),
-            args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
-            format_with = {}
-        )
+        # SingleExecutionRequest(
+        #     name = "icudata_inc_file",
+        #     input_files = [pkgdata_makefile],
+        #     output_files = [icudata_inc_file],
+        #     tool = SystemTool("make"),
+        #     args = "-f {IN_DIR}/pkgdataMakefile",
+        #     format_with = {}
+        # ),
+        # SingleExecutionRequest(
+        #     name = "icudata_package",
+        #     input_files = all_output_files + [icudata_list_file, icudata_inc_file],
+        #     # TODO: This function produces more files besides this dat file
+        #     output_files = [TmpFile("{ICUDATA_PLATFORM_NAME}.dat".format(**common_vars))],
+        #     tool = IcuTool("pkgdata"),
+        #     args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
+        #     format_with = {}
+        # )
     ]
 
     return (build_dirs, requests)
