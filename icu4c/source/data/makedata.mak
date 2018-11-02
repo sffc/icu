@@ -34,11 +34,7 @@ ICU_LIB_TARGET=$(DLL_OUTPUT)\$(U_ICUDATA_NAME).dll
 !MESSAGE ICU data make path is $(ICUMAKE)
 
 !IF [py -3 -c "exit(0)"]!=0
-!MESSAGE Information: Unable to find Python 3. ICU versions 64 and later will require Python 3 to build.
-!MESSAGE Information: See ICU-10923 for more information: https://unicode-org.atlassian.net/browse/ICU-10923
-!ELSE
-!MESSAGE Information: Found Python 3. You are all set for ICU 64, which will require Python 3 to build.
-!MESSAGE Information: For more info on Python 3 requirement, see: https://unicode-org.atlassian.net/browse/ICU-10923
+!MESSAGE Information: Unable to find Python 3. Data will fail to build from source.
 !ENDIF
 
 # Suffixes for data files
@@ -72,19 +68,10 @@ ICUP=$(ICUP:\source\data\\..\..=)
 ICUSRCDATA=$(ICUP)\source\data
 ICUSRCDATA_RELATIVE_PATH=..\..\..
 
+# Timestamp files to keep track of current build state
 TOOLS_TS=$(ICUTMP)\tools.timestamp
 COREDATA_TS=$(ICUTMP)\coredata.timestamp
 TESTDATA_TS=$(ICUTMP)\testdata.timestamp
-
-#  ICUUCM
-#       The directory that contains ucmcore.mk files along with *.ucm files
-#
-ICUUCM=mappings
-
-#  ICULOC
-#       The directory that contains resfiles.mk files along with *.txt locale data files
-#
-ICULOC=locales
 
 #  ICUCOL
 #       The directory that contains colfiles.mk files along with *.txt collation data files
@@ -105,23 +92,6 @@ ICUTRNS=translit
 #       The directory that contains resfiles.mk files along with *.txt break iterator files
 #
 ICUBRK=brkitr
-
-#  ICUUNIDATA
-#       The directory that contains Unicode data files
-#
-ICUUNIDATA=$(ICUP)\source\data\unidata
-
-
-#  ICUMISC
-#       The directory that contains miscfiles.mk along with files that are miscelleneous data
-#
-ICUMISC=$(ICUP)\source\data\misc
-ICUMISC2=misc
-
-#  ICUSPREP
-#       The directory that contains sprepfiles.mk files along with *.txt stringprep files
-#
-ICUSPREP=sprep
 
 #
 #  ICUDATA
@@ -217,341 +187,6 @@ ICUDATA_SOURCE_ARCHIVE=$(ICUTMP)\$(ICUPKG).dat
 !ELSE
 # We're including a list of .ucm files.
 # There are several lists, they are all optional.
-
-# Always build the mapping files for the EBCDIC fallback codepages
-# They are necessary on EBCDIC machines, and
-# the following logic is much easier if UCM_SOURCE is never empty.
-# (They are small.)
-UCM_SOURCE=ibm-37_P100-1995.ucm ibm-1047_P100-1995.ucm
-
-!IF EXISTS("$(ICUSRCDATA)\$(ICUUCM)\ucmcore.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUUCM)\ucmcore.mk"
-UCM_SOURCE=$(UCM_SOURCE) $(UCM_SOURCE_CORE)
-!ELSE
-!MESSAGE Warning: cannot find "ucmcore.mk". Not building core MIME/Unix/Windows converter files.
-!ENDIF
-
-!IF EXISTS("$(ICUSRCDATA)\$(ICUUCM)\ucmfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUUCM)\ucmfiles.mk"
-UCM_SOURCE=$(UCM_SOURCE) $(UCM_SOURCE_FILES)
-!ELSE
-!MESSAGE Warning: cannot find "ucmfiles.mk". Not building many converter files.
-!ENDIF
-
-!IF EXISTS("$(ICUSRCDATA)\$(ICUUCM)\ucmebcdic.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUUCM)\ucmebcdic.mk"
-UCM_SOURCE=$(UCM_SOURCE) $(UCM_SOURCE_EBCDIC)
-!IFDEF UCM_SOURCE_EBCDIC_IGNORE_SISO
-BUILD_SPECIAL_CNV_FILES=YES
-UCM_SOURCE_SPECIAL=$(UCM_SOURCE_EBCDIC_IGNORE_SISO)
-!ELSE
-!UNDEF BUILD_SPECIAL_CNV_FILES
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "ucmebcdic.mk". Not building EBCDIC converter files.
-!ENDIF
-
-!IF EXISTS("$(ICUSRCDATA)\$(ICUUCM)\ucmlocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUUCM)\ucmlocal.mk"
-!IFDEF UCM_SOURCE_LOCAL
-UCM_SOURCE=$(UCM_SOURCE) $(UCM_SOURCE_LOCAL)
-!ENDIF
-!IFDEF UCM_SOURCE_EBCDIC_IGNORE_SISO_LOCAL
-UCM_SOURCE_SPECIAL=$(UCM_SOURCE_SPECIAL) $(UCM_SOURCE_EBCDIC_IGNORE_SISO_LOCAL)
-BUILD_SPECIAL_CNV_FILES=YES
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "ucmlocal.mk". Not building user-additional converter files.
-!ENDIF
-
-CNV_FILES=$(UCM_SOURCE:.ucm=.cnv)
-!IFDEF BUILD_SPECIAL_CNV_FILES
-CNV_FILES_SPECIAL=$(UCM_SOURCE_SPECIAL:.ucm=.cnv)
-!ENDIF
-
-!IF EXISTS("$(ICUSRCDATA)\$(ICUBRK)\brkfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUBRK)\brkfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICUBRK)\brklocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUBRK)\brklocal.mk"
-!IFDEF BRK_SOURCE_LOCAL
-BRK_SOURCE=$(BRK_SOURCE) $(BRK_SOURCE_LOCAL)
-!ENDIF
-!IFDEF BRK_DICT_SOURCE_LOCAL
-BRK_DICT_SOURCE=$(BRK_DICT_SOURCE) $(BRK_DICT_SOURCE_LOCAL)
-!ENDIF
-!IFDEF BRK_RES_SOURCE_LOCAL
-BRK_RES_SOURCE=$(BRK_RES_SOURCE) $(BRK_RES_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "brklocal.mk". Not building user-additional break iterator files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "brkfiles.mk"
-!ENDIF
-
-#
-#  Break iterator data files.
-#
-BRK_FILES=$(ICUBRK)\$(BRK_SOURCE:.txt =.brk brkitr\)
-BRK_FILES=$(BRK_FILES:.txt=.brk)
-BRK_FILES=$(BRK_FILES:brkitr\ =brkitr\)
-
-!IFDEF BRK_DICT_SOURCE
-BRK_DICT_FILES = $(ICUBRK)\$(BRK_DICT_SOURCE:.txt =.dict brkitr\)
-BRK_DICT_FILES = $(BRK_DICT_FILES:.txt=.dict)
-BRK_DICT_FILES = $(BRK_DICT_FILES:brkitr\ =brkitr\)
-!ENDIF
-
-!IFDEF BRK_RES_SOURCE
-BRK_RES_FILES = $(BRK_RES_SOURCE:.txt =.res brkitr\)
-BRK_RES_FILES = $(BRK_RES_FILES:.txt=.res)
-BRK_RES_FILES = $(ICUBRK)\root.res $(ICUBRK)\$(BRK_RES_FILES:brkitr\ =)
-ALL_RES = $(ALL_RES) $(ICUBRK)\res_index.res
-!ENDIF
-
-# Read list of locale resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\$(ICULOC)\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICULOC)\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICULOC)\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICULOC)\reslocal.mk"
-!IFDEF GENRB_SOURCE_LOCAL
-GENRB_SOURCE=$(GENRB_SOURCE) $(GENRB_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "resfiles.mk"
-!ENDIF
-
-!IFDEF GENRB_SOURCE
-RB_FILES = root.res pool.res $(GENRB_ALIAS_SOURCE:.txt=.res) $(GENRB_ALIAS_SOURCE_LOCAL:.txt=.res) $(GENRB_SOURCE:.txt=.res)
-ALL_RES = $(ALL_RES) res_index.res
-!ENDIF
-
-
-# Read the list of currency display name resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\curr\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\curr\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\curr\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\curr\reslocal.mk"
-!IFDEF CURR_SOURCE_LOCAL
-CURR_SOURCE=$(CURR_SOURCE) $(CURR_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "curr\reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "curr\resfiles.mk"
-!ENDIF
-
-!IFDEF CURR_SOURCE
-CURR_FILES = curr\root.txt supplementalData.txt $(CURR_ALIAS_SOURCE) $(CURR_SOURCE)
-CURR_RES_FILES = $(CURR_FILES:.txt =.res curr\)
-CURR_RES_FILES = $(CURR_RES_FILES:.txt=.res)
-CURR_RES_FILES = curr\pool.res $(CURR_RES_FILES:curr\ =curr\)
-ALL_RES = $(ALL_RES) curr\res_index.res
-!ENDIF
-
-# Read the list of language/script display name resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\lang\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\lang\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\lang\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\lang\reslocal.mk"
-!IFDEF LANG_SOURCE_LOCAL
-LANG_SOURCE=$(LANG_SOURCE) $(LANG_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "lang\reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "lang\resfiles.mk"
-!ENDIF
-
-!IFDEF LANG_SOURCE
-LANG_FILES = lang\root.txt $(LANG_ALIAS_SOURCE) $(LANG_SOURCE)
-LANG_RES_FILES = $(LANG_FILES:.txt =.res lang\)
-LANG_RES_FILES = $(LANG_RES_FILES:.txt=.res)
-LANG_RES_FILES = lang\pool.res $(LANG_RES_FILES:lang\ =lang\)
-ALL_RES = $(ALL_RES) lang\res_index.res
-!ENDIF
-
-# Read the list of region display name resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\region\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\region\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\region\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\region\reslocal.mk"
-!IFDEF REGION_SOURCE_LOCAL
-REGION_SOURCE=$(REGION_SOURCE) $(REGION_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "region\reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "region\resfiles.mk"
-!ENDIF
-
-!IFDEF REGION_SOURCE
-REGION_FILES = region\root.txt $(REGION_ALIAS_SOURCE) $(REGION_SOURCE)
-REGION_RES_FILES = $(REGION_FILES:.txt =.res region\)
-REGION_RES_FILES = $(REGION_RES_FILES:.txt=.res)
-REGION_RES_FILES = region\pool.res $(REGION_RES_FILES:region\ =region\)
-ALL_RES = $(ALL_RES) region\res_index.res
-!ENDIF
-
-# Read the list of time zone display name resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\zone\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\zone\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\zone\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\zone\reslocal.mk"
-!IFDEF ZONE_SOURCE_LOCAL
-ZONE_SOURCE=$(ZONE_SOURCE) $(ZONE_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "zone\reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-ZONE_SOURCE=$(ZONE_SOURCE) tzdbNames.txt
-!ELSE
-!MESSAGE Warning: cannot find "zone\resfiles.mk"
-!ENDIF
-
-!IFDEF ZONE_SOURCE
-ZONE_FILES = zone\root.txt $(ZONE_ALIAS_SOURCE) $(ZONE_SOURCE)
-ZONE_RES_FILES = $(ZONE_FILES:.txt =.res zone\)
-ZONE_RES_FILES = $(ZONE_RES_FILES:.txt=.res)
-ZONE_RES_FILES = zone\pool.res $(ZONE_RES_FILES:zone\ =zone\)
-ALL_RES = $(ALL_RES) zone\res_index.res
-!ENDIF
-
-# Read the list of units display name resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\unit\resfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\unit\resfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\unit\reslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\unit\reslocal.mk"
-!IFDEF UNIT_SOURCE_LOCAL
-UNIT_SOURCE=$(UNIT_SOURCE) $(UNIT_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "unit\reslocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "unit\resfiles.mk"
-!ENDIF
-
-!IFDEF UNIT_SOURCE
-UNIT_FILES = unit\root.txt $(UNIT_ALIAS_SOURCE) $(UNIT_SOURCE)
-UNIT_RES_FILES = $(UNIT_FILES:.txt =.res unit\)
-UNIT_RES_FILES = $(UNIT_RES_FILES:.txt=.res)
-UNIT_RES_FILES = unit\pool.res $(UNIT_RES_FILES:unit\ =unit\)
-ALL_RES = $(ALL_RES) unit\res_index.res
-!ENDIF
-
-# Read the list of collation resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\$(ICUCOL)\colfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUCOL)\colfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICUCOL)\collocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUCOL)\collocal.mk"
-!IFDEF COLLATION_SOURCE_LOCAL
-COLLATION_SOURCE=$(COLLATION_SOURCE) $(COLLATION_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "collocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "colfiles.mk"
-!ENDIF
-
-!IFDEF COLLATION_SOURCE
-COL_FILES = $(ICUCOL)\root.txt $(COLLATION_ALIAS_SOURCE) $(COLLATION_SOURCE)
-COL_COL_FILES = $(COL_FILES:.txt =.res coll\)
-COL_COL_FILES = $(COL_COL_FILES:.txt=.res)
-COL_COL_FILES = $(COL_COL_FILES:coll\ =)
-ALL_RES = $(ALL_RES) $(ICUCOL)\res_index.res
-!ENDIF
-
-# Read the list of RBNF resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\$(ICURBNF)\rbnffiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICURBNF)\rbnffiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICURBNF)\rbnflocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICURBNF)\rbnflocal.mk"
-!IFDEF RBNF_SOURCE_LOCAL
-RBNF_SOURCE=$(RBNF_SOURCE) $(RBNF_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "rbnflocal.mk". Not building user-additional resource bundle files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "rbnffiles.mk"
-!ENDIF
-
-!IFDEF RBNF_SOURCE
-RBNF_FILES = $(ICURBNF)\root.txt $(RBNF_ALIAS_SOURCE) $(RBNF_SOURCE)
-RBNF_RES_FILES = $(RBNF_FILES:.txt =.res rbnf\)
-RBNF_RES_FILES = $(RBNF_RES_FILES:.txt=.res)
-RBNF_RES_FILES = $(RBNF_RES_FILES:rbnf\ =rbnf\)
-ALL_RES = $(ALL_RES) $(ICURBNF)\res_index.res
-!ENDIF
-
-# Read the list of transliterator resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\$(ICUTRNS)\trnsfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUTRNS)\trnsfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICUTRNS)\trnslocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUTRNS)\trnslocal.mk"
-!IFDEF TRANSLIT_SOURCE_LOCAL
-TRANSLIT_SOURCE=$(TRANSLIT_SOURCE) $(TRANSLIT_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "trnslocal.mk". Not building user-additional transliterator files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "trnsfiles.mk"
-!ENDIF
-
-!IFDEF TRANSLIT_SOURCE
-TRANSLIT_FILES = $(ICUTRNS)\$(TRANSLIT_ALIAS_SOURCE) $(TRANSLIT_SOURCE)
-TRANSLIT_RES_FILES = $(TRANSLIT_FILES:.txt =.res translit\)
-TRANSLIT_RES_FILES = $(TRANSLIT_RES_FILES:.txt=.res)
-TRANSLIT_RES_FILES = $(TRANSLIT_RES_FILES:translit\ =translit\)
-#ALL_RES = $(ALL_RES) $(ICUTRNS)\res_index.res
-!ENDIF
-
-# Read the list of miscellaneous resource bundle files
-!IF EXISTS("$(ICUSRCDATA)\$(ICUMISC2)\miscfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUMISC2)\miscfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICUMISC2)\misclocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUMISC2)\misclocal.mk"
-!IFDEF MISC_SOURCE_LOCAL
-MISC_SOURCE=$(MISC_SOURCE) $(MISC_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "misclocal.mk". Not building user-additional miscellaenous files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "miscfiles.mk"
-!ENDIF
-
-MISC_FILES = $(MISC_SOURCE:.txt=.res)
-
-# don't include COL_FILES
-ALL_RES = $(ALL_RES) $(RB_FILES) $(MISC_FILES)
-!ENDIF
-
-# Read the list of stringprep profile files
-!IF EXISTS("$(ICUSRCDATA)\$(ICUSPREP)\sprepfiles.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUSPREP)\sprepfiles.mk"
-!IF EXISTS("$(ICUSRCDATA)\$(ICUSPREP)\spreplocal.mk")
-!INCLUDE "$(ICUSRCDATA)\$(ICUSPREP)\spreplocal.mk"
-!IFDEF SPREP_SOURCE_LOCAL
-SPREP_SOURCE=$(SPREP_SOURCE) $(SPREP_SOURCE_LOCAL)
-!ENDIF
-!ELSE
-!MESSAGE Information: cannot find "spreplocal.mk". Not building user-additional stringprep files.
-!ENDIF
-!ELSE
-!MESSAGE Warning: cannot find "sprepfiles.mk"
-!ENDIF
-
-SPREP_FILES = $(SPREP_SOURCE:.txt=.spp)
 
 # Common defines for both ways of building ICU's data library.
 COMMON_ICUDATA_DEPENDENCIES="$(ICUPBIN)\pkgdata.exe" "$(ICUTMP)\icudata.res" "$(ICUP)\source\stubdata\stubdatabuilt.txt"
@@ -723,7 +358,7 @@ icu4j-data-install :
 	copy "$(ICUTMP)\$(ICUPKG).dat" "$(ICUOUT)\$(U_ICUDATA_NAME)$(U_ICUDATA_ENDIAN_SUFFIX).dat"
 	-@erase "$(ICUTMP)\$(ICUPKG).dat"
 !ELSE
-"$(ICU_LIB_TARGET)" : $(COREDATA_TS)
+"$(ICU_LIB_TARGET)" : $(COMMON_ICUDATA_DEPENDENCIES) $(COREDATA_TS)
 	@echo Building ICU data from scratch
 	cd "$(ICUBLD_PKG)"
 	"$(ICUPBIN)\pkgdata" $(COMMON_ICUDATA_ARGUMENTS) $(ICUTMP)\icudata.lst
@@ -808,6 +443,12 @@ CLEAN : GODATA
 	-@erase "*.typ"
 	@cd "$(ICUBLD_PKG)"
 
+
+# DLL version information
+# If you modify this, modify winmode.c in pkgdata.
+"$(ICUTMP)\icudata.res": "$(ICUSRCDATA)\misc\icudata.rc"
+	@echo Creating data DLL version information from $**
+	@rc.exe /i "..\..\..\..\common" /r /fo $@ $**
 
 # Targets for prebuilt Unicode data
 # Needed for ICU4J!
