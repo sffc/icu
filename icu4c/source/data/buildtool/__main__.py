@@ -9,8 +9,8 @@ import glob as pyglob
 import sys
 
 from . import *
-from . import rules
 from .renderers import bash, makefile, windirect
+import BRULES
 
 flag_parser = argparse.ArgumentParser(
     description = """Generates rules for building ICU binary data files from text
@@ -159,7 +159,7 @@ def main():
         print("Error: Cannot find data directory; please specify --glob_dir", file=sys.stderr)
         exit(1)
 
-    build_dirs, requests = rules.generate(config, glob, common)
+    build_dirs, requests = BRULES.generate(config, glob, common)
 
     if args.format == "bash":
         print(bash.get_command_lines(build_dirs, requests,

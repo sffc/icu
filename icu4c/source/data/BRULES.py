@@ -3,7 +3,7 @@
 
 from distutils.sysconfig import parse_makefile
 
-from . import *
+from buildtool import *
 
 
 def generate_index_file(locales, cldr_version, common_vars):
