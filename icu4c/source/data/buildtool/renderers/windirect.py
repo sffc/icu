@@ -19,7 +19,7 @@ def run(build_dirs, requests, common_vars, **kwargs):
     print("All done!")
     return 0
 
-def run_helper(request, common_vars, bin_dir, **kwargs):
+def run_helper(request, common_vars, tool_dir, tool_cfg, **kwargs):
     if isinstance(request, PrintFileRequest):
         output_path = "{DIRNAME}/{FILENAME}".format(
             DIRNAME = utils.dir_for(request.output_file).format(**common_vars),
@@ -31,8 +31,9 @@ def run_helper(request, common_vars, bin_dir, **kwargs):
         return 0
 
     assert isinstance(request.tool, IcuTool)
-    cmd_template = "{BIN_DIR}/{TOOL}.exe {{ARGS}}".format(
-        BIN_DIR = bin_dir,
+    cmd_template = "{TOOL_DIR}/{TOOL}/{TOOL_CFG}/{TOOL}.exe {{ARGS}}".format(
+        TOOL_DIR = tool_dir,
+        TOOL_CFG = tool_cfg,
         TOOL = request.tool.name,
         **common_vars
     )

@@ -226,6 +226,8 @@ $(COREDATA_TS):
 		--format windirect \
 		--bin_dir "$(DLL_OUTPUT)" \
 		--in_dir "$(ICUSRCDATA)" \
+		--tool_dir "$(ICUTOOLS)" \
+		--tool_cfg "$(CFG)" \
 		--out_dir "$(ICUBLD_PKG)" \
 		--tmp_dir "$(ICUTMP)"
 	@echo "timestamp" > $(COREDATA_TS)
@@ -335,7 +337,7 @@ icu4j-data-install :
 "$(TESTDATAOUT)\testdata.dat": "$(TESTDATA)\*" $(TOOLS_TS) $(COREDATA_TS)
 	@cd "$(TESTDATA)"
 	@echo building testdata...
-	nmake /nologo /f "$(TESTDATA)\testdata.mak" TESTDATA=. ICUTOOLS="$(ICUTOOLS)" ICUPBIN="$(ICUPBIN)" ICUP="$(ICUP)" CFG=$(CFGTOOLS) TESTDATAOUT="$(TESTDATAOUT)" TESTDATABLD="$(TESTDATABLD)"
+	nmake /nologo /f "$(TESTDATA)\testdata.mak" TESTDATA=. ICUTOOLS="$(ICUTOOLS)" ICUPBIN="$(ICUPBIN)" ICUP="$(ICUP)" CFG=$(CFGTOOLS) TESTDATAOUT="$(TESTDATAOUT)" TESTDATABLD="$(TESTDATABLD)" ICUSRCDATA="$(ICUSRCDATA)" DLL_OUTPUT="$(DLL_OUTPUT)"
 
 #invoke pkgdata for ICU common data
 #  pkgdata will drop all output files (.dat, .dll, .lib) into the target (ICUBLD_PKG) directory.
@@ -361,7 +363,7 @@ icu4j-data-install :
 	cd "$(ICUBLD_PKG)"
 	"$(ICUPBIN)\pkgdata" $(COMMON_ICUDATA_ARGUMENTS) $(ICUTMP)\icudata.lst
 	-@erase "$(ICU_LIB_TARGET)"
-    @if not exist "$(DLL_OUTPUT)" mkdir "$(DLL_OUTPUT)"
+	@if not exist "$(DLL_OUTPUT)" mkdir "$(DLL_OUTPUT)"
 	copy "$(U_ICUDATA_NAME).dll" "$(ICU_LIB_TARGET)"
 	-@erase "$(U_ICUDATA_NAME).dll"
 	copy "$(ICUTMP)\$(ICUPKG).dat" "$(ICUOUT)\$(U_ICUDATA_NAME)$(U_ICUDATA_ENDIAN_SUFFIX).dat"
@@ -376,9 +378,6 @@ CREATE_DIRS :
 	@if not exist "$(ICUTMP)\$(NULL)" mkdir "$(ICUTMP)"
 	@if not exist "$(ICUOUT)\build\$(NULL)" mkdir "$(ICUOUT)\build"
 	@if not exist "$(ICUBLD_PKG)\$(NULL)" mkdir "$(ICUBLD_PKG)"
-	@if not exist "$(TESTDATAOUT)\$(NULL)" mkdir "$(TESTDATAOUT)"
-	@if not exist "$(TESTDATABLD)\$(NULL)" mkdir "$(TESTDATABLD)"
-	@if not exist "$(TESTDATAOUT)\testdata\$(NULL)" mkdir "$(TESTDATAOUT)\testdata"
 
 # utility target to send us to the right dir
 GODATA : CREATE_DIRS

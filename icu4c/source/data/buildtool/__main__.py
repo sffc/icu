@@ -60,6 +60,16 @@ flag_parser.add_argument(
     default = "../bin"
 )
 flag_parser.add_argument(
+    "--tool_dir",
+    help = "Path to where to find binary tools (genrb, genbrk, etc). Used for 'windirect' format only.",
+    default = "../tool"
+)
+flag_parser.add_argument(
+    "--tool_cfg",
+    help = "The build configuration of the tools. Used for 'windirect' format only.",
+    default = "x86/Debug"
+)
+flag_parser.add_argument(
     "--mkinstalldirs",
     help = "Path to where to find the mkinstalldirs tool. Used for 'bash' format only.",
     default = "../mkinstalldirs"
@@ -155,10 +165,6 @@ def main():
         # For the purposes of buildtool, force Unix-style directory separators.
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
-    if len(glob("misc/*")) == 0:
-        print("Error: Cannot find data directory; please specify --glob_dir", file=sys.stderr)
-        exit(1)
-
     build_dirs, requests = BRULES.generate(config, glob, common)
 
     if args.format == "bash":
@@ -170,7 +176,7 @@ def main():
     elif args.format == "gnumake":
         print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common))
     elif args.format == "windirect":
-        return windirect.run(build_dirs, requests, common_vars = common, bin_dir = args.bin_dir)
+        return windirect.run(build_dirs, requests, common_vars = common, tool_dir = args.tool_dir, tool_cfg = args.tool_cfg)
     else:
         print("Format not supported: %s" % args.format)
         return 1
