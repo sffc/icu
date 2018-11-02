@@ -184,9 +184,7 @@ ICUDATA_SOURCE_ARCHIVE=$(ICUTMP)\$(ICUPKG).dat
 
 !IFDEF ICUDATA_SOURCE_ARCHIVE
 !MESSAGE ICU data source archive is $(ICUDATA_SOURCE_ARCHIVE)
-!ELSE
-# We're including a list of .ucm files.
-# There are several lists, they are all optional.
+!ENDIF
 
 # Common defines for both ways of building ICU's data library.
 COMMON_ICUDATA_DEPENDENCIES="$(ICUPBIN)\pkgdata.exe" "$(ICUTMP)\icudata.res" "$(ICUP)\source\stubdata\stubdatabuilt.txt"
