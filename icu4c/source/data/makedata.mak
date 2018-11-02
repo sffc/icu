@@ -588,11 +588,11 @@ $(TOOLS_TS): "$(ICUTOOLS)\genrb\$(CFGTOOLS)\genrb.exe" "$(ICUTOOLS)\gencnval\$(C
 	@echo "timestamp" > $(TOOLS_TS)
 
 $(COREDATA_TS):
-	@cd "$(ICUMAKE)"
+	@cd "$(ICUSRCDATA)"
 	py -3 -m buildtool \
 		--format windirect \
 		--bin_dir "$(DLL_OUTPUT)" \
-		--in_dir "$(ICUMAKE)" \
+		--in_dir "$(ICUSRCDATA)" \
 		--out_dir "$(ICUBLD_PKG)" \
 		--tmp_dir "$(ICUTMP)"
 	@echo "timestamp" > $(COREDATA_TS)
@@ -741,6 +741,8 @@ icu4j-data-install :
 CREATE_DIRS :
 	@if not exist "$(ICUOUT)\$(NULL)" mkdir "$(ICUOUT)"
 	@if not exist "$(ICUTMP)\$(NULL)" mkdir "$(ICUTMP)"
+	@if not exist "$(ICUOUT)\build\$(NULL)" mkdir "$(ICUOUT)\build"
+	@if not exist "$(ICUBLD_PKG)\$(NULL)" mkdir "$(ICUBLD_PKG)"
 	@if not exist "$(TESTDATAOUT)\$(NULL)" mkdir "$(TESTDATAOUT)"
 	@if not exist "$(TESTDATABLD)\$(NULL)" mkdir "$(TESTDATABLD)"
 	@if not exist "$(TESTDATAOUT)\testdata\$(NULL)" mkdir "$(TESTDATAOUT)\testdata"
