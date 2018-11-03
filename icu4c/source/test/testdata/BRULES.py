@@ -50,7 +50,6 @@ def generate_rb(config, glob, common_vars):
         # "metaZones",
         # "timezoneTypes",
         # "windowsZones",
-        "zoneinfo64",
     ]
     return [
         # Inference rule for creating resource bundles
@@ -81,6 +80,14 @@ def generate_rb(config, glob, common_vars):
             output_files = [OutFile("idna_rules.res")],
             tool = IcuTool("genrb"),
             args = "-s {IN_DIR} -d {OUT_DIR} {INPUT_FILES[0]}",
+            format_with = {}
+        ),
+        SingleExecutionRequest(
+            name = "zoneinfo64",
+            input_files = [InFile("zoneinfo64.txt")],
+            output_files = [TmpFile("zoneinfo64.res")],
+            tool = IcuTool("genrb"),
+            args = "-s {IN_DIR} -d {TMP_DIR} {INPUT_FILES[0]}",
             format_with = {}
         )
     ]
@@ -172,11 +179,6 @@ def generate_copy(config, glob, common_vars):
             name = "old_e_testtypes",
             input_file = InFile("old_e_testtypes.res"),
             output_file = OutFile("old_e_testtypes.res")
-        ),
-        CopyRequest(
-            name = "zoneinfo64",
-            input_file = OutFile("zoneinfo64.res"),
-            output_file = TmpFile("zoneinfo64.typ")
         ),
     ]
 
