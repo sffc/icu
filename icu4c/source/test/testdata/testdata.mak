@@ -45,8 +45,4 @@ CREATE_DIRS :
 		--in_dir "$(TESTDATA)" \
 		--tmp_dir "$(TESTDATATMP)" \
 		--out_dir "$(TESTDATABLD)"
-	@copy "$(TESTDATABLD)\te.res" "$(TESTDATATMP)\nam.typ"
-	@copy "$(TESTDATA)\old_l_testtypes.res" "$(TESTDATABLD)"
-	@copy "$(TESTDATA)\old_e_testtypes.res" "$(TESTDATABLD)"
-	@copy "$(TESTDATABLD)\zoneinfo64.res" "$(TESTDATATMP)"
 	"$(ICUPBIN)\pkgdata" -f -v -m common -c -p"$(TESTPKG)" -d "$(TESTDATAOUT)" -T "$(TESTDATABLD)" -s "$(TESTDATABLD)" $(TESTDATATMP)\testdata.lst

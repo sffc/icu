@@ -14,6 +14,7 @@ def generate(config, glob, common_vars):
     requests += generate_sprep(config, glob, common_vars)
     requests += generate_conv(config, glob, common_vars)
     requests += generate_other(config, glob, common_vars)
+    requests += generate_copy(config, glob, common_vars)
 
     all_output_files = list(sorted(utils.get_all_output_files(requests)))
     requests += [
@@ -152,6 +153,31 @@ def generate_conv(config, glob, common_vars):
             format_with = {},
             repeat_with = {}
         )
+    ]
+
+
+def generate_copy(config, glob, common_vars):
+    return [
+        CopyRequest(
+            name = "nam_typ",
+            input_file = OutFile("te.res"),
+            output_file = TmpFile("nam.typ")
+        ),
+        CopyRequest(
+            name = "old_l_testtypes",
+            input_file = InFile("old_l_testtypes.res"),
+            output_file = OutFile("old_l_testtypes.res")
+        ),
+        CopyRequest(
+            name = "old_e_testtypes",
+            input_file = InFile("old_e_testtypes.res"),
+            output_file = OutFile("old_e_testtypes.res")
+        ),
+        CopyRequest(
+            name = "zoneinfo64",
+            input_file = OutFile("zoneinfo64.res"),
+            output_file = TmpFile("zoneinfo64.typ")
+        ),
     ]
 
 

@@ -71,7 +71,6 @@ ICUSRCDATA_RELATIVE_PATH=..\..\..
 # Timestamp files to keep track of current build state
 TOOLS_TS=$(ICUTMP)\tools.timestamp
 COREDATA_TS=$(ICUTMP)\coredata.timestamp
-TESTDATA_TS=$(ICUTMP)\testdata.timestamp
 
 #  ICUCOL
 #       The directory that contains colfiles.mk files along with *.txt collation data files
@@ -231,10 +230,6 @@ $(COREDATA_TS):
 		--out_dir "$(ICUBLD_PKG)" \
 		--tmp_dir "$(ICUTMP)"
 	@echo "timestamp" > $(COREDATA_TS)
-
-$(TESTDATA_TS):
-# TODO
-	@echo "timestamp" > $(TESTDATA_TS)
 
 	
 # The core Unicode properties files (uprops.icu, ucase.icu, ubidi.icu)

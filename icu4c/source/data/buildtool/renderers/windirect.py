@@ -6,6 +6,7 @@ from .. import *
 from .. import utils
 
 import os
+import shutil
 import subprocess
 
 def run(build_dirs, requests, common_vars, **kwargs):
@@ -16,7 +17,7 @@ def run(build_dirs, requests, common_vars, **kwargs):
         if status != 0:
             print("!!! ERROR executing above command line: exit code %d" % status)
             return 1
-    print("All done!")
+    print("windirect: All data build commands executed")
     return 0
 
 def run_helper(request, common_vars, tool_dir, tool_cfg, **kwargs):
@@ -28,6 +29,18 @@ def run_helper(request, common_vars, tool_dir, tool_cfg, **kwargs):
         print("Printing to file: %s" % output_path)
         with open(output_path, "w") as f:
             f.write(request.content)
+        return 0
+    if isinstance(request, CopyRequest):
+        input_path = "{DIRNAME}/{FILENAME}".format(
+            DIRNAME = utils.dir_for(request.input_file).format(**common_vars),
+            FILENAME = request.input_file.filename,
+        )
+        output_path = "{DIRNAME}/{FILENAME}".format(
+            DIRNAME = utils.dir_for(request.output_file).format(**common_vars),
+            FILENAME = request.output_file.filename,
+        )
+        print("Copying file to: %s" % output_path)
+        shutil.copyfile(input_path, output_path)
         return 0
 
     assert isinstance(request.tool, IcuTool)

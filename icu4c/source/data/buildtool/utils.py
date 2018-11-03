@@ -77,6 +77,10 @@ def get_all_output_files(requests):
             all_output_files += request.output_files
         elif isinstance(request, PrintFileRequest):
             all_output_files += [request.output_file]
+        elif isinstance(request, CopyRequest):
+            all_output_files += [request.output_file]
+        else:
+            assert False
 
     # Filter out all files but those in OUT_DIR
     collected_files = (file for file in all_output_files if isinstance(file, OutFile))
