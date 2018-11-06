@@ -17,11 +17,16 @@ def generate(config, glob, common_vars):
     requests += generate_copy(config, glob, common_vars)
 
     all_output_files = list(sorted(utils.get_all_output_files(requests)))
+    testdata_list_file = TmpFile("testdata.lst")
     requests += [
         PrintFileRequest(
             name = "testdata_list",
-            output_file = TmpFile("testdata.lst"),
+            output_file = testdata_list_file,
             content = "\n".join(file.filename for file in all_output_files)
+        ),
+        VariableRequest(
+            name = "testdata_all_output_files",
+            input_files = all_output_files + [testdata_list_file]
         )
     ]
 
@@ -55,6 +60,7 @@ def generate_rb(config, glob, common_vars):
         # Inference rule for creating resource bundles
         # Some test data resource bundles are known to have warnings and bad data.
         # The -q option is there on purpose, so we don't see it normally.
+        # TODO: Use option -k?
         RepeatedExecutionRequest(
             name = "testrb",
             dep_files = [],

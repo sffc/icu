@@ -1395,6 +1395,12 @@ else
         --seqmode parallel \
         --glob_dir "$srcdir/data" \
         > data/rules.mk
+    echo "Spawning Python to generate test/testdata/rules.mk..."
+    PYTHONPATH="$srcdir/test/testdata:$srcdir/data" $PYTHON3 -m buildtool \
+        --format gnumake \
+        --seqmode parallel \
+        --glob_dir "$srcdir/test/testdata" \
+        > test/testdata/rules.mk
 fi
 
 echo

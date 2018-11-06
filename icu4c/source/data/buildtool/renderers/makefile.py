@@ -121,10 +121,13 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
             )
         ]
 
-    if isinstance(request.tool, IcuTool):
-        cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool.name)
-    elif request.tool.name == "make":
+    if request.tool.name == "make":
         cmd_template = "$(MAKE) {ARGS}"
+    elif request.tool.name == "gentest":
+        cmd_template = "$(INVOKE) $(GENTEST) {ARGS}"
+    else:
+        assert isinstance(request.tool, IcuTool)
+        cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool.name)
 
     if isinstance(request, SingleExecutionRequest):
         cmd = utils.format_single_request_command(request, cmd_template, common_vars)
