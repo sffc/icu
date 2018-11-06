@@ -42,6 +42,9 @@ def run_helper(request, common_vars, tool_dir, tool_cfg, **kwargs):
         print("Copying file to: %s" % output_path)
         shutil.copyfile(input_path, output_path)
         return 0
+    if isinstance(request, VariableRequest):
+        # No-op
+        return 0
 
     assert isinstance(request.tool, IcuTool)
     cmd_template = "{TOOL_DIR}/{TOOL}/{TOOL_CFG}/{TOOL}.exe {{ARGS}}".format(

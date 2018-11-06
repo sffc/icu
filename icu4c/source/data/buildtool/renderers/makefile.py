@@ -72,8 +72,10 @@ def files_to_makefile(files, common_vars, **kwargs):
     dirnames = [utils.dir_for(file).format(**common_vars) for file in files]
     if len(files) == 1:
         return "%s/%s" % (dirnames[0], files[0].filename)
-    else:
+    elif len(set(dirnames)) == 1:
         return "$(addprefix %s/,%s)" % (dirnames[0], " ".join(file.filename for file in files))
+    else:
+        return " ".join("%s/%s" % (d, f.filename) for d,f in zip(dirnames, files))
 
 def get_gnumake_rules_helper(request, common_vars, **kwargs):
 
@@ -96,6 +98,26 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
                         **common_vars
                     )
                 ]
+            )
+        ]
+
+
+    if isinstance(request, CopyRequest):
+        return [
+            MakeRule(
+                name = request.name,
+                dep_literals = [],
+                dep_files = [request.input_file],
+                output_file = request.output_file,
+                cmds = ["cp %s %s" % (files_to_makefile([request.input_file], common_vars), files_to_makefile([request.output_file], common_vars))]
+            )
+        ]
+
+    if isinstance(request, VariableRequest):
+        return [
+            MakeFilesVar(
+                name = request.name.upper(),
+                files = request.input_files
             )
         ]
 
@@ -198,4 +220,4 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
             ]
         return rules
 
-    return []
+    assert False

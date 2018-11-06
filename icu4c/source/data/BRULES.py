@@ -382,6 +382,10 @@ def generate(config, glob, common_vars):
         #     args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
         #     format_with = {}
         # )
+        VariableRequest(
+            name = "icudata_all_output_files",
+            input_files = all_output_files + [icudata_list_file]
+        )
     ]
 
     return (build_dirs, requests)

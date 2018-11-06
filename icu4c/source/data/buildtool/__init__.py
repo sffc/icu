@@ -20,3 +20,5 @@ RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", ["name", "dep_
 PrintFileRequest = namedtuple("PrintFileRequest", ["name", "output_file", "content"])
 
 CopyRequest = namedtuple("CopyRequest", ["name", "input_file", "output_file"])
+
+VariableRequest = namedtuple("VariableRequest", ["name", "input_files"])

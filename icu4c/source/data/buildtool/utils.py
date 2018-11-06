@@ -79,6 +79,8 @@ def get_all_output_files(requests):
             all_output_files += [request.output_file]
         elif isinstance(request, CopyRequest):
             all_output_files += [request.output_file]
+        elif isinstance(request, VariableRequest):
+            pass
         else:
             assert False
 

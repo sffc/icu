@@ -155,8 +155,6 @@ def main():
             "ICUDATA_PLATFORM_NAME": "icu63dtl"
         }
 
-    print(common)
-
     def glob(pattern):
         result_paths = pyglob.glob("{IN_DIR}/{PATTERN}".format(
             IN_DIR = args.glob_dir,
