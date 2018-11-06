@@ -68,24 +68,28 @@ def generate_index_file(locales, cldr_version, common_vars):
             "}}").format(FORMATTED_VERSION = formatted_version, FORMATTED_LOCALES = formatted_locales, **common_vars)
 
 
-def get_all_output_files(requests):
-    all_output_files = []
+def get_all_output_files(requests, include_tmp=False):
+    files = []
     for request in requests:
         if isinstance(request, SingleExecutionRequest):
-            all_output_files += request.output_files
+            files += request.output_files
         elif isinstance(request, RepeatedExecutionRequest):
-            all_output_files += request.output_files
+            files += request.output_files
         elif isinstance(request, PrintFileRequest):
-            all_output_files += [request.output_file]
+            files += [request.output_file]
         elif isinstance(request, CopyRequest):
-            all_output_files += [request.output_file]
+            files += [request.output_file]
         elif isinstance(request, VariableRequest):
             pass
         else:
             assert False
 
-    # Filter out all files but those in OUT_DIR
-    collected_files = (file for file in all_output_files if isinstance(file, OutFile))
+    # Filter out all files but those in OUT_DIR if necessary.
+    # It is also easy to filter for uniqueness; do it right now and return.
+    if not include_tmp:
+        files = (file for file in files if isinstance(file, OutFile))
+        return list(set(files))
 
-    # Return a set with unique values
-    return set(collected_files)
+    # Filter for unique values.  NOTE: Cannot use set() because we need to accept same filename as
+    # OutFile and TmpFile as different, and by default they evaluate as equal.
+    return [f for _, f in set((type(f), f) for f in files)]

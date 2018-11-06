@@ -17,6 +17,7 @@ def generate(config, glob, common_vars):
     requests += generate_copy(config, glob, common_vars)
 
     all_output_files = list(sorted(utils.get_all_output_files(requests)))
+    all_output_files_with_tmp = list(sorted(utils.get_all_output_files(requests, include_tmp=True)))
     testdata_list_file = TmpFile("testdata.lst")
     requests += [
         PrintFileRequest(
@@ -26,7 +27,7 @@ def generate(config, glob, common_vars):
         ),
         VariableRequest(
             name = "testdata_all_output_files",
-            input_files = all_output_files + [testdata_list_file]
+            input_files = all_output_files_with_tmp + [testdata_list_file]
         )
     ]
 
@@ -208,7 +209,7 @@ def generate_other(config, glob, common_vars):
             format_with = {}
         ),
         SingleExecutionRequest(
-            name = "testtable32",
+            name = "testtable32_txt",
             input_files = [],
             output_files = [TmpFile("testtable32.txt")],
             tool = IcuTool("gentest"),
@@ -216,7 +217,7 @@ def generate_other(config, glob, common_vars):
             format_with = {}
         ),
         SingleExecutionRequest(
-            name = "testtable32",
+            name = "testtable32_res",
             input_files = [TmpFile("testtable32.txt")],
             output_files = [OutFile("testtable32.res")],
             tool = IcuTool("genrb"),
