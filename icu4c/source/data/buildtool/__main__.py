@@ -1,4 +1,4 @@
-# Copyright (C) 2016 and later: Unicode, Inc. and others.
+# Copyright (C) 2018 and later: Unicode, Inc. and others.
 # License & terms of use: http://www.unicode.org/copyright.html
 
 # Be compatible with both Python 2 and Python 3:
@@ -11,6 +11,8 @@ import sys
 from . import *
 from .renderers import bash, makefile, windirect
 import BRULES
+
+# TODO: There are more options here than actually needed or used. Optimize.
 
 flag_parser = argparse.ArgumentParser(
     description = """Generates rules for building ICU binary data files from text

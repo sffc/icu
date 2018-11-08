@@ -1321,10 +1321,10 @@ echo "CXXFLAGS=$CXXFLAGS"
 AC_CONFIG_FILES([icudefs.mk \
 		Makefile \
 		data/pkgdataMakefile \
-		data/Makefile \
 		config/Makefile.inc \
 		config/icu.pc \
 		config/pkgdataMakefile \
+		data/Makefile \
 		stubdata/Makefile \
 		common/Makefile \
 		i18n/Makefile \
