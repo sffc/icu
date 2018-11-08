@@ -32,13 +32,11 @@ CREATE_DIRS :
 	@if not exist "$(TESTDATABLD)\$(NULL)" mkdir "$(TESTDATABLD)"
 	@if not exist "$(TESTDATATMP)\$(NULL)" mkdir "$(TESTDATATMP)"
 
-#"$(TESTDATAOUT)\testdata.dat" : CREATE_DIRS $(TEST_RES_FILES) "$(TESTDATABLD)\casing.res" "$(TESTDATABLD)\conversion.res" "$(TESTDATABLD)\icuio.res" "$(TESTDATABLD)\mc.res" "$(TESTDATABLD)\structLocale.res" "$(TESTDATABLD)\root.res" "$(TESTDATABLD)\sh.res" "$(TESTDATABLD)\sh_YU.res"  "$(TESTDATABLD)\te.res" "$(TESTDATABLD)\te_IN.res" "$(TESTDATABLD)\te_IN_REVISED.res" "$(TESTDATABLD)\testaliases.res" "$(TESTDATABLD)\testtypes.res" "$(TESTDATABLD)\testempty.res" "$(TESTDATABLD)\encoded.res" "$(TESTDATABLD)\idna_rules.res" "$(TESTDATABLD)\test.icu" "$(TESTDATABLD)\testtable32.res" "$(TESTDATABLD)\test1.cnv" "$(TESTDATABLD)\test1bmp.cnv" "$(TESTDATABLD)\test2.cnv" "$(TESTDATABLD)\test3.cnv" "$(TESTDATABLD)\test4.cnv" "$(TESTDATABLD)\test4x.cnv" "$(TESTDATABLD)\test5.cnv" "$(TESTDATABLD)\ibm9027.cnv" "$(TESTDATABLD)\nfscsi.spp" "$(TESTDATABLD)\nfscss.spp" "$(TESTDATABLD)\nfscis.spp" "$(TESTDATABLD)\nfsmxs.spp" "$(TESTDATABLD)\nfsmxp.spp" "$(TESTDATABLD)\testnorm.nrm" "$(TESTDATABLD)\zoneinfo64.res"
 "$(TESTDATAOUT)\testdata.dat" :
 	@echo Building test data
 	set PYTHONPATH=$(ICUSRCDATA);%PYTHONPATH%
 	py -3 -m buildtool \
 		--format windirect \
-		--bin_dir "$(DLL_OUTPUT)" \
 		--tool_dir "$(ICUTOOLS)" \
 		--tool_cfg "$(CFG)" \
 		--glob_dir "$(TESTDATA)" \
