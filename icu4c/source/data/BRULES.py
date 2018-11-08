@@ -348,9 +348,6 @@ def generate(config, glob, common_vars):
     # Finally, make the package.
     all_output_files = list(sorted(utils.get_all_output_files(requests)))
     icudata_list_file = TmpFile("icudata.lst")
-    icudata_inc_file = InFile("icupkg.inc")
-    pkgdata_makefile_in = InFile("pkgdataMakefile.in")
-    pkgdata_makefile = InFile("pkgdataMakefile")
     requests += [
         PrintFileRequest(
             name = "icudata_list",
