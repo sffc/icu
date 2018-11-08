@@ -357,31 +357,6 @@ def generate(config, glob, common_vars):
             output_file = icudata_list_file,
             content = "\n".join(file.filename for file in all_output_files)
         ),
-        # TODO
-        # SingleExecutionRequest(
-        #     name = "pkgdata_makefile",
-        #     input_files = [pkgdata_makefile_in],
-        #     output_files = [pkgdata_makefile],
-        #     tool = SystemTool("make"),
-        #     args = ""
-        # ),
-        # SingleExecutionRequest(
-        #     name = "icudata_inc_file",
-        #     input_files = [pkgdata_makefile],
-        #     output_files = [icudata_inc_file],
-        #     tool = SystemTool("make"),
-        #     args = "-f {IN_DIR}/pkgdataMakefile",
-        #     format_with = {}
-        # ),
-        # SingleExecutionRequest(
-        #     name = "icudata_package",
-        #     input_files = all_output_files + [icudata_list_file, icudata_inc_file],
-        #     # TODO: This function produces more files besides this dat file
-        #     output_files = [TmpFile("{ICUDATA_PLATFORM_NAME}.dat".format(**common_vars))],
-        #     tool = IcuTool("pkgdata"),
-        #     args = "-O {IN_DIR}/icupkg.inc -q -c -s {OUT_DIR} -d {PKG_DIR} -e {ICUDATA_ENTRY_POINT} -T {TMP_DIR} -p {ICUDATA_NAME} -m {PKGDATA_MODE} -r {SO_TARGET_VERSION} {PKGDATA_LIBNAME} {TMP_DIR}/icudata.lst",
-        #     format_with = {}
-        # )
         VariableRequest(
             name = "icudata_all_output_files",
             input_files = all_output_files + [icudata_list_file]
@@ -389,40 +364,3 @@ def generate(config, glob, common_vars):
     ]
 
     return (build_dirs, requests)
-
-
-
-# icupkg.inc: pkgdataMakefile
-# 	$(MAKE) -f pkgdataMakefile
-
-# pkgdataMakefile:
-# 	cd $(top_builddir) \
-# 	&& CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-# ifeq ($(PKGDATA_OPTS),)
-# PKGDATA_OPTS = -O $(top_builddir)/data/icupkg.inc
-# endif
-# ifeq ($(PKGDATA_VERSIONING),)
-# PKGDATA_VERSIONING = -r $(SO_TARGET_VERSION)
-# endif
-
-# PKGDATA_LIST = $(OUTTMPDIR)/icudata.lst
-
-# PKGDATA = $(TOOLBINDIR)/pkgdata $(PKGDATA_OPTS) -q -c -s $(CURDIR)/out/build/$(ICUDATA_PLATFORM_NAME) -d $(ICUPKGDATA_OUTDIR)
-
-# packagedata: icupkg.inc $(PKGDATA_LIST) build-local
-# ifneq ($(ENABLE_STATIC),)
-# ifeq ($(PKGDATA_MODE),dll)
-# 	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) $(PKGDATA_LIBSTATICNAME) -m static $(PKGDATA_VERSIONING) $(PKGDATA_LIST)
-# endif
-# endif
-# ifneq ($(ICUDATA_SOURCE_IS_NATIVE_TARGET),YES)
-# 	$(PKGDATA_INVOKE) $(PKGDATA) -e $(ICUDATA_ENTRY_POINT) -T $(TMP_DIR) -p $(ICUDATA_NAME) -m $(PKGDATA_MODE) $(PKGDATA_VERSIONING) $(PKGDATA_LIBNAME) $(PKGDATA_LIST)
-# else
-# 	$(INSTALL_DATA) $(ICUDATA_SOURCE_ARCHIVE) $(OUTDIR)
-# endif
-# 	echo timestamp > $@
-
-
-
-

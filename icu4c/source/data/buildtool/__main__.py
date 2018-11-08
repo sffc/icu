@@ -9,10 +9,8 @@ import glob as pyglob
 import sys
 
 from . import *
-from .renderers import bash, makefile, windirect
+from .renderers import makefile, windirect
 import BRULES
-
-# TODO: There are more options here than actually needed or used. Optimize.
 
 flag_parser = argparse.ArgumentParser(
     description = """Generates rules for building ICU binary data files from text
@@ -28,7 +26,7 @@ Available features include:
 flag_parser.add_argument(
     "--format",
     help = "How to output the rules to run to build ICU data.",
-    choices = ["bash", "gnumake", "windirect"],
+    choices = ["gnumake", "windirect"],
     required = True
 )
 flag_parser.add_argument(
@@ -38,7 +36,7 @@ flag_parser.add_argument(
 )
 flag_parser.add_argument(
     "--in_dir",
-    help = "Path to data input folder (icu4c/source/data). For 'bash' format, this should be relative to your current working directory. For 'gnumake' format, this should be relative to the directory where the Makefile is to be saved.",
+    help = "Path to data input folder (icu4c/source/data) for file processing. Not used in gnumake format.",
     default = "."
 )
 flag_parser.add_argument(
@@ -47,19 +45,9 @@ flag_parser.add_argument(
     default = "icudata"
 )
 flag_parser.add_argument(
-    "--pkg_dir",
-    help = "Path to where to save the packaged data library.",
-    default = "../lib"
-)
-flag_parser.add_argument(
     "--tmp_dir",
     help = "Path to where to save temporary files. Not used in gnumake format.",
     default = "icutmp"
-)
-flag_parser.add_argument(
-    "--bin_dir",
-    help = "Path to where to find binary tools (genrb, genbrk, etc). Used for 'bash' format only.",
-    default = "../bin"
 )
 flag_parser.add_argument(
     "--tool_dir",
@@ -70,11 +58,6 @@ flag_parser.add_argument(
     "--tool_cfg",
     help = "The build configuration of the tools. Used for 'windirect' format only.",
     default = "x86/Debug"
-)
-flag_parser.add_argument(
-    "--mkinstalldirs",
-    help = "Path to where to find the mkinstalldirs tool. Used for 'bash' format only.",
-    default = "../mkinstalldirs"
 )
 flag_parser.add_argument(
     "--seqmode",
@@ -136,10 +119,9 @@ def main():
     if args.format == "gnumake":
         makefile_vars = {
             "IN_DIR": "$(srcdir)",
-            "PKG_DIR": args.pkg_dir,
             "INDEX_NAME": "res_index"
         }
-        makefile_env = ["ICUDATA_CHAR", "ICUDATA_ENTRY_POINT", "ICUDATA_NAME", "ICUDATA_PLATFORM_NAME", "PKGDATA_MODE", "SO_TARGET_VERSION", "PKGDATA_LIBNAME", "OUT_DIR", "TMP_DIR"]
+        makefile_env = ["ICUDATA_CHAR", "OUT_DIR", "TMP_DIR"]
         common = {
             key: "$(%s)" % key
             for key in list(makefile_vars.keys()) + makefile_env
@@ -152,9 +134,8 @@ def main():
             "OUT_DIR": args.out_dir,
             "TMP_DIR": args.tmp_dir,
             "INDEX_NAME": "res_index",
-            # TODO: Pull these from configure script:
-            "ICUDATA_CHAR": "l",
-            "ICUDATA_PLATFORM_NAME": "icu63dtl"
+            # TODO: Pull this from configure script:
+            "ICUDATA_CHAR": "l"
         }
 
     def glob(pattern):
@@ -167,13 +148,7 @@ def main():
 
     build_dirs, requests = BRULES.generate(config, glob, common)
 
-    if args.format == "bash":
-        print(bash.get_command_lines(build_dirs, requests,
-            common_vars = common,
-            bin_dir = args.bin_dir,
-            mkinstalldirs = args.mkinstalldirs
-        ))
-    elif args.format == "gnumake":
+    if args.format == "gnumake":
         print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common))
     elif args.format == "windirect":
         return windirect.run(build_dirs, requests, common_vars = common, tool_dir = args.tool_dir, tool_cfg = args.tool_cfg)
