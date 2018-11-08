@@ -223,7 +223,6 @@ $(COREDATA_TS):
 	@cd "$(ICUSRCDATA)"
 	py -3 -m buildtool \
 		--format windirect \
-		--bin_dir "$(DLL_OUTPUT)" \
 		--in_dir "$(ICUSRCDATA)" \
 		--tool_dir "$(ICUTOOLS)" \
 		--tool_cfg "$(CFG)" \
