@@ -149,9 +149,20 @@ def main():
     build_dirs, requests = BRULES.generate(config, glob, common)
 
     if args.format == "gnumake":
-        print(makefile.get_gnumake_rules(build_dirs, requests, makefile_vars, common_vars = common))
+        print(makefile.get_gnumake_rules(
+            build_dirs,
+            requests,
+            makefile_vars,
+            common_vars = common
+        ))
     elif args.format == "windirect":
-        return windirect.run(build_dirs, requests, common_vars = common, tool_dir = args.tool_dir, tool_cfg = args.tool_cfg)
+        return windirect.run(
+            build_dirs,
+            requests,
+            common_vars = common,
+            tool_dir = args.tool_dir,
+            tool_cfg = args.tool_cfg
+        )
     else:
         print("Format not supported: %s" % args.format)
         return 1

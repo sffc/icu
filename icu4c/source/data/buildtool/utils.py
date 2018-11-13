@@ -18,7 +18,6 @@ def dir_for(file):
 
 def concat_dicts(*dicts):
     # There is not a super great way to do this in Python:
-    # https://stackoverflow.com/q/38987/1407170
     new_dict = {}
     for dict in dicts:
         new_dict.update(dict)
@@ -27,8 +26,10 @@ def concat_dicts(*dicts):
 
 def repeated_execution_request_looper(request):
     # dictionary of lists to list of dictionaries:
-    # https://stackoverflow.com/a/33046935/1407170
-    ld = [dict(zip(request.repeat_with, t)) for t in zip(*request.repeat_with.values())]
+    ld = [
+        dict(zip(request.repeat_with, t))
+        for t in zip(*request.repeat_with.values())
+    ]
     if not ld:
         # No special options given in repeat_with
         ld = [{} for _ in range(len(request.input_files))]
@@ -45,7 +46,8 @@ def format_single_request_command(request, cmd_template, common_vars):
     )
 
 
-def format_repeated_request_command(request, cmd_template, iter_vars, input_file, output_file, common_vars):
+def format_repeated_request_command(
+        request, cmd_template, iter_vars, input_file, output_file, common_vars):
     return cmd_template.format(
         ARGS = request.args.format(
             INPUT_FILE = input_file.filename,
@@ -65,7 +67,11 @@ def generate_index_file(locales, cldr_version, common_vars):
             "    InstalledLocales {{\n"
             "{FORMATTED_LOCALES}\n"
             "    }}\n"
-            "}}").format(FORMATTED_VERSION = formatted_version, FORMATTED_LOCALES = formatted_locales, **common_vars)
+            "}}").format(
+                FORMATTED_VERSION = formatted_version,
+                FORMATTED_LOCALES = formatted_locales,
+                **common_vars
+            )
 
 
 def get_all_output_files(requests, include_tmp=False):

@@ -16,7 +16,29 @@ def generate(config, glob, common_vars):
         exit(1)
 
     # DIRECTORIES
-    build_dirs = ["{OUT_DIR}", "{OUT_DIR}/curr", "{OUT_DIR}/lang", "{OUT_DIR}/region", "{OUT_DIR}/zone", "{OUT_DIR}/unit", "{OUT_DIR}/brkitr", "{OUT_DIR}/coll", "{OUT_DIR}/rbnf", "{OUT_DIR}/translit", "{TMP_DIR}", "{TMP_DIR}/curr", "{TMP_DIR}/lang", "{TMP_DIR}/locales", "{TMP_DIR}/region", "{TMP_DIR}/zone", "{TMP_DIR}/unit", "{TMP_DIR}/coll", "{TMP_DIR}/rbnf", "{TMP_DIR}/translit", "{TMP_DIR}/brkitr"]
+    build_dirs = [
+        "{OUT_DIR}",
+        "{OUT_DIR}/curr",
+        "{OUT_DIR}/lang",
+        "{OUT_DIR}/region",
+        "{OUT_DIR}/zone",
+        "{OUT_DIR}/unit",
+        "{OUT_DIR}/brkitr",
+        "{OUT_DIR}/coll",
+        "{OUT_DIR}/rbnf",
+        "{OUT_DIR}/translit",
+        "{TMP_DIR}",
+        "{TMP_DIR}/curr",
+        "{TMP_DIR}/lang",
+        "{TMP_DIR}/locales",
+        "{TMP_DIR}/region",
+        "{TMP_DIR}/zone",
+        "{TMP_DIR}/unit",
+        "{TMP_DIR}/coll",
+        "{TMP_DIR}/rbnf",
+        "{TMP_DIR}/translit",
+        "{TMP_DIR}/brkitr"
+    ]
 
     # UConv Name Aliases
     if config.has_feature("cnvalias"):
@@ -252,11 +274,18 @@ def generate(config, glob, common_vars):
         if config.has_feature(sub_dir):
             # TODO: Clean this up for translit
             if sub_dir == "translit":
-                input_files = [InFile("translit/root.txt"), InFile("translit/en.txt"), InFile("translit/el.txt")]
+                input_files = [
+                    InFile("translit/root.txt"),
+                    InFile("translit/en.txt"),
+                    InFile("translit/el.txt")
+                ]
             else:
                 input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
             input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
-            output_files = [OutFile("%s%s.res" % (out_prefix, v[:-4])) for v in input_basenames]
+            output_files = [
+                OutFile("%s%s.res" % (out_prefix, v[:-4]))
+                for v in input_basenames
+            ]
             if use_pool_bundle:
                 input_pool_files = [OutFile("%spool.res" % out_prefix)]
                 use_pool_bundle_option = "--usePoolBundle {OUT_DIR}/{OUT_PREFIX}"
@@ -317,11 +346,18 @@ def generate(config, glob, common_vars):
             if sub_dir != "translit":
                 # TODO: Change .mk files to .py files so they can be loaded directly.
                 # Reading these files as .py will be required for Bazel.
-                mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(IN_SUB_DIR = sub_dir, RESFILE_NAME = resfile_name, **common_vars))
+                mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(
+                    IN_SUB_DIR = sub_dir,
+                    RESFILE_NAME = resfile_name,
+                    **common_vars
+                ))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
                 pkg_exclusions |= set(output_files) - set(OutFile("%s%s.res" % (out_prefix, locale)) for locale in locales)
-                index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(IN_SUB_DIR = sub_dir, **common_vars))
+                index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(
+                    IN_SUB_DIR = sub_dir,
+                    **common_vars
+                ))
                 requests += [
                     PrintFileRequest(
                         name = "%s_index_txt" % sub_dir,
@@ -330,7 +366,10 @@ def generate(config, glob, common_vars):
                     )
                 ]
                 # Generate index res file
-                index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(OUT_PREFIX = out_prefix, **common_vars))
+                index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(
+                    OUT_PREFIX = out_prefix,
+                    **common_vars
+                ))
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_index_res" % sub_dir,
