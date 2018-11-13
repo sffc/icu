@@ -259,6 +259,8 @@ def generate(config, glob, common_vars):
             []),
         ("unit",     "unit",     "resfiles.mk",  "UNIT_CLDR_VERSION",      "UNIT_SOURCE",      True,
             []),
+        # TODO: We should not need timezoneTypes.res to build collation resource bundles.
+        # TODO: Maybe keyTypeData.res should be baked into the common library.
         ("coll",     "coll",     "colfiles.mk",  "COLLATION_CLDR_VERSION", "COLLATION_SOURCE", False,
             [OutFile("coll/ucadata.icu"), OutFile("timezoneTypes.res"), OutFile("keyTypeData.res")]),
         ("brkitr",   "brkitr",   "brkfiles.mk",  "BRK_RES_CLDR_VERSION",   "BRK_RES_SOURCE",   False,
@@ -345,6 +347,8 @@ def generate(config, glob, common_vars):
             # Generate index txt file
             if sub_dir != "translit":
                 # TODO: Change .mk files to .py files so they can be loaded directly.
+                # Alternatively, figure out a way to require reading this file altogether.
+                # Right now, it is required for the index list file.
                 # Reading these files as .py will be required for Bazel.
                 mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(
                     IN_SUB_DIR = sub_dir,

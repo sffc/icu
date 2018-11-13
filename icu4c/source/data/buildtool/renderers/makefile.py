@@ -109,7 +109,10 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
                 dep_literals = [],
                 dep_files = [request.input_file],
                 output_file = request.output_file,
-                cmds = ["cp %s %s" % (files_to_makefile([request.input_file], common_vars), files_to_makefile([request.output_file], common_vars))]
+                cmds = ["cp %s %s" % (
+                    files_to_makefile([request.input_file], common_vars),
+                    files_to_makefile([request.output_file], common_vars))
+                ]
             )
         ]
 
@@ -127,14 +130,17 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
         cmd_template = "$(INVOKE) $(GENTEST) {ARGS}"
     else:
         assert isinstance(request.tool, IcuTool)
-        cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(TOOL = request.tool.name)
+        cmd_template = "$(INVOKE) $(TOOLBINDIR)/{TOOL} {{ARGS}}".format(
+            TOOL = request.tool.name
+        )
 
     if isinstance(request, SingleExecutionRequest):
         cmd = utils.format_single_request_command(request, cmd_template, common_vars)
 
         if len(request.output_files) > 1:
-            # Special case for multiple output files: Makefile rules should have only one output file apiece.
-            # More information: https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
+            # Special case for multiple output files: Makefile rules should have only one
+            # output file apiece. More information:
+            # https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
             timestamp_var_name = "%s_ALL" % request.name.upper()
             timestamp_file = TmpFile("%s.timestamp" % request.name)
             rules = [
@@ -211,7 +217,14 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
         # Add a rule for each individual file.
         for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
-            cmd = utils.format_repeated_request_command(request, cmd_template, iter_vars, input_file, output_file, common_vars)
+            cmd = utils.format_repeated_request_command(
+                request,
+                cmd_template,
+                iter_vars,
+                input_file,
+                output_file,
+                common_vars
+            )
             rules += [
                 MakeRule(
                     name = "%s_%s" % (request.name, name_suffix),

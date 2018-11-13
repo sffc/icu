@@ -219,6 +219,15 @@ ALL : GODATA "$(ICU_LIB_TARGET)" "$(TESTDATAOUT)\testdata.dat"
 $(TOOLS_TS): "$(ICUTOOLS)\genrb\$(CFGTOOLS)\genrb.exe" "$(ICUTOOLS)\gencnval\$(CFGTOOLS)\gencnval.exe" "$(ICUTOOLS)\gencfu\$(CFGTOOLS)\gencfu.exe" "$(ICUTOOLS)\icupkg\$(CFGTOOLS)\icupkg.exe" "$(ICUTOOLS)\makeconv\$(CFGTOOLS)\makeconv.exe" "$(ICUPBIN)\pkgdata.exe"
 	@echo "timestamp" > $(TOOLS_TS)
 
+# On Unix, Python generates at configure time a list of Makefile rules.
+# On Windows, however, we run the Python data build script at build time instead.
+# The alternative would be to use a preprocessor macro to generate rules for nmake.
+# However, this approach was abandoned for reasons including:
+#
+#  - nmake imposes more stringent restrictions on command line length.
+#  - The lack of gnumake features makes nmake file construction more complex.
+#  - Windows builds are single-threaded, giving less advantage to a Makefile approach.
+
 $(COREDATA_TS):
 	@cd "$(ICUSRCDATA)"
 	py -3 -m buildtool \
