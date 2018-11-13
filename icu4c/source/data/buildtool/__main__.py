@@ -10,7 +10,7 @@ import sys
 
 from . import *
 from .renderers import makefile, windirect
-import BRULES
+import BUILDRULES
 
 flag_parser = argparse.ArgumentParser(
     description = """Generates rules for building ICU binary data files from text
@@ -146,7 +146,7 @@ def main():
         # For the purposes of buildtool, force Unix-style directory separators.
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
-    build_dirs, requests = BRULES.generate(config, glob, common)
+    build_dirs, requests = BUILDRULES.generate(config, glob, common)
 
     if args.format == "gnumake":
         print(makefile.get_gnumake_rules(
