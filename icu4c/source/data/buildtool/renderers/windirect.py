@@ -54,13 +54,11 @@ def run_helper(request, common_vars, tool_dir, tool_cfg, **kwargs):
         **common_vars
     )
     if isinstance(request, RepeatedExecutionRequest):
-        for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
+        for loop_vars in utils.repeated_execution_request_looper(request):
             command_line = utils.format_repeated_request_command(
                 request,
                 cmd_template,
-                iter_vars,
-                input_file,
-                output_file,
+                loop_vars,
                 common_vars
             )
             # TODO: Is this / to \ substitution too aggressive?

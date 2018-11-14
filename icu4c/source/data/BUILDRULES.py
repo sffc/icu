@@ -6,6 +6,8 @@ from distutils.sysconfig import parse_makefile
 from buildtool import *
 from buildtool import utils
 
+import sys
+
 
 def generate(config, glob, common_vars):
     requests = []
@@ -79,35 +81,23 @@ def generate(config, glob, common_vars):
         input_files = [InFile(filename) for filename in glob("mappings/*.ucm")]
         output_files = [OutFile("%s.cnv" % v.filename[9:-4]) for v in input_files]
         # TODO: handle BUILD_SPECIAL_CNV_FILES? Means to add --ignore-siso-check flag to makeconv
-        if config.max_parallel():
-            # Do each cnv file on its own
-            requests += [
-                RepeatedExecutionRequest(
-                    name = "uconv",
-                    dep_files = [],
-                    input_files = input_files,
-                    output_files = output_files,
-                    tool = IcuTool("makeconv"),
-                    args = "-d {OUT_DIR} -c {IN_DIR}/{INPUT_FILE}",
-                    format_with = {},
-                    repeat_with = {}
-                )
-            ]
-        else:
-            # Do all cnv files in one command
-            # Faster overall but cannot be parallelized
-            requests += [
-                SingleExecutionRequest(
-                    name = "uconv",
-                    input_files = input_files,
-                    output_files = output_files,
-                    tool = IcuTool("makeconv"),
-                    args = "-d {OUT_DIR} -c {INPUT_FILES_SPACED}",
-                    format_with = {
-                        "INPUT_FILES_SPACED": " ".join(file.filename for file in input_files)
-                    }
-                )
-            ]
+        requests += [
+            RepeatedOrSingleExecutionRequest(
+                name = "uconv",
+                dep_files = [],
+                input_files = input_files,
+                output_files = output_files,
+                tool = IcuTool("makeconv"),
+                args = "-s {IN_DIR} -d {OUT_DIR} -c {INPUT_FILE_PLACEHOLDER}",
+                format_with = {},
+                repeat_with = {
+                    "INPUT_FILE_PLACEHOLDER": [file.filename for file in input_files]
+                },
+                flatten_with = {
+                    "INPUT_FILE_PLACEHOLDER": " ".join(file.filename for file in input_files)
+                }
+            )
+        ]
 
     # BRK Files
     brkitr_brk_files = []
@@ -322,48 +312,29 @@ def generate(config, glob, common_vars):
             else:
                 input_pool_files = []
                 use_pool_bundle_option = ""
-            if config.max_parallel():
-                # Do each res file on its own
-                requests += [
-                    RepeatedExecutionRequest(
-                        name = "%s_res" % sub_dir,
-                        dep_files = dep_files + input_pool_files,
-                        input_files = input_files,
-                        output_files = output_files,
-                        tool = IcuTool("genrb"),
-                        args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
-                            "{EXTRA_OPTION} -k "
-                            "{INPUT_BASENAME}",
-                        format_with = {
-                            "IN_SUB_DIR": sub_dir,
-                            "OUT_PREFIX": out_prefix,
-                            "EXTRA_OPTION": use_pool_bundle_option
-                        },
-                        repeat_with = {
-                            "INPUT_BASENAME": input_basenames,
-                        }
-                    )
-                ]
-            else:
-                # Do all res files in one command
-                # Faster overall but cannot be parallelized
-                requests += [
-                    SingleExecutionRequest(
-                        name = "%s_res" % sub_dir,
-                        input_files = dep_files + input_pool_files + input_files,
-                        output_files = output_files,
-                        tool = IcuTool("genrb"),
-                        args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
-                            "{EXTRA_OPTION} -k "
-                            "{INPUT_BASENAMES_SPACED}",
-                        format_with = {
-                            "IN_SUB_DIR": sub_dir,
-                            "OUT_PREFIX": out_prefix,
-                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames),
-                            "EXTRA_OPTION": use_pool_bundle_option
-                        }
-                    )
-                ]
+            requests += [
+                RepeatedOrSingleExecutionRequest(
+                    name = "%s_res" % sub_dir,
+                    dep_files = dep_files + input_pool_files,
+                    input_files = input_files,
+                    output_files = output_files,
+                    tool = IcuTool("genrb"),
+                    args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                        "{EXTRA_OPTION} -k "
+                        "{INPUT_BASENAME}",
+                    format_with = {
+                        "IN_SUB_DIR": sub_dir,
+                        "OUT_PREFIX": out_prefix,
+                        "EXTRA_OPTION": use_pool_bundle_option
+                    },
+                    repeat_with = {
+                        "INPUT_BASENAME": input_basenames,
+                    },
+                    flatten_with = {
+                        "INPUT_BASENAME": " ".join(input_basenames)
+                    }
+                )
+            ]
             # Generate index txt file
             if sub_dir != "translit":
                 # TODO: Change .mk files to .py files so they can be loaded directly.

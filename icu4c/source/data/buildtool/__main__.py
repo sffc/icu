@@ -10,6 +10,7 @@ import sys
 
 from . import *
 from .renderers import makefile, windirect
+from . import utils
 import BUILDRULES
 
 flag_parser = argparse.ArgumentParser(
@@ -147,6 +148,12 @@ def main():
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
     build_dirs, requests = BUILDRULES.generate(config, glob, common)
+    requests = [
+        utils.flatten(req, config.max_parallel())
+        if isinstance(req, RepeatedOrSingleExecutionRequest)
+        else req
+        for req in requests
+    ]
 
     if args.format == "gnumake":
         print(makefile.get_gnumake_rules(

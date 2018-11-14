@@ -215,14 +215,13 @@ def get_gnumake_rules_helper(request, common_vars, **kwargs):
                 )
             ]
         # Add a rule for each individual file.
-        for iter_vars, input_file, output_file in utils.repeated_execution_request_looper(request):
+        for loop_vars in utils.repeated_execution_request_looper(request):
+            (_, input_file, output_file) = loop_vars
             name_suffix = input_file[input_file.filename.rfind("/")+1:input_file.filename.rfind(".")]
             cmd = utils.format_repeated_request_command(
                 request,
                 cmd_template,
-                iter_vars,
-                input_file,
-                output_file,
+                loop_vars,
                 common_vars
             )
             rules += [

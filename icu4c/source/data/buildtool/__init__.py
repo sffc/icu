@@ -52,6 +52,18 @@ RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", [
     "repeat_with"
 ])
 
+RepeatedOrSingleExecutionRequest = namedtuple("RepeatedOrSingleExecutionRequest", [
+    "name",
+    "dep_files",
+    "input_files",
+    "output_files",
+    "tool",
+    "args",
+    "format_with",
+    "repeat_with",
+    "flatten_with"
+])
+
 PrintFileRequest = namedtuple("PrintFileRequest", [
     "name",
     "output_file",

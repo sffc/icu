@@ -46,8 +46,8 @@ def format_single_request_command(request, cmd_template, common_vars):
     )
 
 
-def format_repeated_request_command(
-        request, cmd_template, iter_vars, input_file, output_file, common_vars):
+def format_repeated_request_command(request, cmd_template, loop_vars, common_vars):
+    (iter_vars, input_file, output_file) = loop_vars
     return cmd_template.format(
         ARGS = request.args.format(
             INPUT_FILE = input_file.filename,
@@ -55,6 +55,33 @@ def format_repeated_request_command(
             **concat_dicts(common_vars, request.format_with, iter_vars)
         )
     )
+
+
+def flatten(request, max_parallel):
+    """Flatten a RepeatedOrSingleExecutionRequest
+
+    Becomes either a SingleExecutionRequest or a RepeatedExecutionRequest.
+    """
+    if max_parallel:
+        return RepeatedExecutionRequest(
+            name = request.name,
+            dep_files = request.dep_files,
+            input_files = request.input_files,
+            output_files = request.output_files,
+            tool = request.tool,
+            args = request.args,
+            format_with = request.format_with,
+            repeat_with = request.repeat_with
+        )
+    else:
+        return SingleExecutionRequest(
+            name = request.name,
+            input_files = request.dep_files + request.input_files,
+            output_files = request.output_files,
+            tool = request.tool,
+            args = request.args,
+            format_with = concat_dicts(request.format_with, request.flatten_with)
+        )
 
 
 def generate_index_file(locales, cldr_version, common_vars):
@@ -80,6 +107,8 @@ def get_all_output_files(requests, include_tmp=False):
         if isinstance(request, SingleExecutionRequest):
             files += request.output_files
         elif isinstance(request, RepeatedExecutionRequest):
+            files += request.output_files
+        elif isinstance(request, RepeatedOrSingleExecutionRequest):
             files += request.output_files
         elif isinstance(request, PrintFileRequest):
             files += [request.output_file]
