@@ -50,7 +50,8 @@ def generate(config, glob, common_vars):
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = IcuTool("gencnval"),
-                args = "-d {OUT_DIR} {IN_DIR}/{INPUT_FILES[0]}",
+                args = "-s {IN_DIR} -d {OUT_DIR} "
+                    "{INPUT_FILES[0]}",
                 format_with = {}
             )
         ]
@@ -66,7 +67,9 @@ def generate(config, glob, common_vars):
                 input_files = [txt1, txt2, OutFile("cnvalias.icu")],
                 output_files = [cfu],
                 tool = IcuTool("gencfu"),
-                args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} -o {OUT_DIR}/{OUTPUT_FILES[0]}",
+                args = "-d {OUT_DIR} -i {OUT_DIR} "
+                    "-c -r {IN_DIR}/{INPUT_FILES[0]} -w {IN_DIR}/{INPUT_FILES[1]} "
+                    "-o {OUTPUT_FILES[0]}",
                 format_with = {}
             )
         ]
@@ -85,7 +88,7 @@ def generate(config, glob, common_vars):
                     input_files = input_files,
                     output_files = output_files,
                     tool = IcuTool("makeconv"),
-                    args = "-c -d {OUT_DIR} {IN_DIR}/{INPUT_FILE}",
+                    args = "-d {OUT_DIR} -c {IN_DIR}/{INPUT_FILE}",
                     format_with = {},
                     repeat_with = {}
                 )
@@ -99,7 +102,7 @@ def generate(config, glob, common_vars):
                     input_files = input_files,
                     output_files = output_files,
                     tool = IcuTool("makeconv"),
-                    args = "-c -d {OUT_DIR} {INPUT_FILES_SPACED}",
+                    args = "-d {OUT_DIR} -c {INPUT_FILES_SPACED}",
                     format_with = {
                         "INPUT_FILES_SPACED": " ".join(file.filename for file in input_files)
                     }
@@ -119,8 +122,9 @@ def generate(config, glob, common_vars):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("genbrk"),
-                # TODO: Do we need the -d argument?
-                args = "-c -i {OUT_DIR} -r {IN_DIR}/{INPUT_FILE} -o {OUT_DIR}/{OUTPUT_FILE}",
+                args = "-d {OUT_DIR} -i {OUT_DIR} "
+                    "-c -r {IN_DIR}/{INPUT_FILE} "
+                    "-o {OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {}
             )
@@ -138,7 +142,8 @@ def generate(config, glob, common_vars):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("gensprep"),
-                args = "-d {OUT_DIR} -i {OUT_DIR} -s {IN_DIR}/sprep -b {BUNDLE_NAME} -m {IN_DIR}/unidata -u 3.2.0 {BUNDLE_NAME}.txt",
+                args = "-s {IN_DIR}/sprep -d {OUT_DIR} -i {OUT_DIR} "
+                    "-b {BUNDLE_NAME} -m {IN_DIR}/unidata -u 3.2.0 {BUNDLE_NAME}.txt",
                 format_with = {},
                 repeat_with = {
                     "BUNDLE_NAME": bundle_names
@@ -167,7 +172,9 @@ def generate(config, glob, common_vars):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("gendict"),
-                args = "{EXTRA_OPTIONS} -c -i {OUT_DIR} {IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
+                args = "-i {OUT_DIR} "
+                    "-c {EXTRA_OPTIONS} "
+                    "{IN_DIR}/{INPUT_FILE} {OUT_DIR}/{OUTPUT_FILE}",
                 format_with = {},
                 repeat_with = {
                     "EXTRA_OPTIONS": extra_optionses
@@ -236,7 +243,9 @@ def generate(config, glob, common_vars):
                 input_files = input_files,
                 output_files = output_files,
                 tool = IcuTool("genrb"),
-                args = "-k -q -i {OUT_DIR} -s {IN_DIR}/misc -d {OUT_DIR} {INPUT_BASENAME}",
+                args = "-s {IN_DIR}/misc -d {OUT_DIR} -i {OUT_DIR} "
+                    "-k -q "
+                    "{INPUT_BASENAME}",
                 format_with = {},
                 repeat_with = {
                     "INPUT_BASENAME": input_basenames
@@ -290,14 +299,19 @@ def generate(config, glob, common_vars):
             ]
             if use_pool_bundle:
                 input_pool_files = [OutFile("%spool.res" % out_prefix)]
-                use_pool_bundle_option = "--usePoolBundle {OUT_DIR}/{OUT_PREFIX}"
+                use_pool_bundle_option = "--usePoolBundle {OUT_DIR}/{OUT_PREFIX}".format(
+                    OUT_PREFIX = out_prefix,
+                    **common_vars
+                )
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool_write" % sub_dir,
                         input_files = dep_files + input_files,
                         output_files = input_pool_files,
                         tool = IcuTool("genrb"),
-                        args = "--writePoolBundle -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                            "--writePoolBundle -k "
+                            "{INPUT_BASENAMES_SPACED}",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix,
@@ -317,10 +331,13 @@ def generate(config, glob, common_vars):
                         input_files = input_files,
                         output_files = output_files,
                         tool = IcuTool("genrb"),
-                        args = use_pool_bundle_option + " -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAME}",
+                        args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                            "{EXTRA_OPTION} -k "
+                            "{INPUT_BASENAME}",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
-                            "OUT_PREFIX": out_prefix
+                            "OUT_PREFIX": out_prefix,
+                            "EXTRA_OPTION": use_pool_bundle_option
                         },
                         repeat_with = {
                             "INPUT_BASENAME": input_basenames,
@@ -336,11 +353,14 @@ def generate(config, glob, common_vars):
                         input_files = dep_files + input_pool_files + input_files,
                         output_files = output_files,
                         tool = IcuTool("genrb"),
-                        args = use_pool_bundle_option + " -k -i {OUT_DIR} -s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INPUT_BASENAMES_SPACED}",
+                        args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                            "{EXTRA_OPTION} -k "
+                            "{INPUT_BASENAMES_SPACED}",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix,
-                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
+                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames),
+                            "EXTRA_OPTION": use_pool_bundle_option
                         }
                     )
                 ]
@@ -380,7 +400,9 @@ def generate(config, glob, common_vars):
                         input_files = [index_file_txt],
                         output_files = [index_res_file],
                         tool = IcuTool("genrb"),
-                        args = "-k -i {OUT_DIR} -s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} {INDEX_NAME}.txt",
+                        args = "-s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                            "-k "
+                            "{INDEX_NAME}.txt",
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix

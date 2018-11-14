@@ -227,6 +227,9 @@ $(TOOLS_TS): "$(ICUTOOLS)\genrb\$(CFGTOOLS)\genrb.exe" "$(ICUTOOLS)\gencnval\$(C
 #  - nmake imposes more stringent restrictions on command line length.
 #  - The lack of gnumake features makes nmake file construction more complex.
 #  - Windows builds are single-threaded, giving less advantage to a Makefile approach.
+#
+# Currently, the entire script needs to run even for small changes to data. Maybe consider
+# checking file-changed timestamps in Python to build only the required subset of data.
 
 $(COREDATA_TS):
 	@cd "$(ICUSRCDATA)"
