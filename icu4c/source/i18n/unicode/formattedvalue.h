@@ -33,7 +33,7 @@ class U_I18N_API FormattedValue {
      *
      * @draft ICU 64
      */
-    virtual UnicodeString getString(UErrorCode& status) const = 0;
+    virtual UnicodeString toString(UErrorCode& status) const = 0;
 
     /**
      * Returns a temporary formatted string. The object returned is a read-only alias to memory
@@ -45,7 +45,7 @@ class U_I18N_API FormattedValue {
      *
      * @draft ICU 64
      */
-    virtual UnicodeString getTempString(UErrorCode& status) const = 0;
+    virtual UnicodeString toTempString(UErrorCode& status) const = 0;
 
     /**
      * Appends the formatted string to an Appendable.
@@ -118,8 +118,9 @@ class U_I18N_API FormattedValue {
      * @draft ICU 64
      */
     virtual void getAllPositionsForFieldCategory(
-        FieldPositionIterator &iterator,
-        UErrorCode &status) const = 0;
+        UFieldCategory category,
+        FieldPositionIterator& iterator,
+        UErrorCode& status) const = 0;
 };
 
 
