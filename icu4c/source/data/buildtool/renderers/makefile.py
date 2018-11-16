@@ -37,7 +37,7 @@ def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
         if isinstance(rule, MakeFilesVar):
             makefile_string += "{NAME} = {FILE_LIST}\n\n".format(
                 NAME = rule.name,
-                FILE_LIST = files_to_makefile(rule.files, **kwargs),
+                FILE_LIST = files_to_makefile(rule.files, wrap = True, **kwargs),
             )
             continue
 
@@ -51,7 +51,7 @@ def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
         assert isinstance(rule, MakeRule)
         header_line = "{OUT_FILE}: {DEP_FILES} {DEP_LITERALS} | $(DIRS)".format(
             OUT_FILE = files_to_makefile([rule.output_file], **kwargs),
-            DEP_FILES = files_to_makefile(rule.dep_files, **kwargs),
+            DEP_FILES = files_to_makefile(rule.dep_files, wrap = True, **kwargs),
             DEP_LITERALS = " ".join(rule.dep_literals)
         )
 
@@ -66,16 +66,17 @@ def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
 
     return makefile_string
 
-def files_to_makefile(files, common_vars, **kwargs):
+def files_to_makefile(files, common_vars, wrap = False, **kwargs):
     if len(files) == 0:
         return ""
     dirnames = [utils.dir_for(file).format(**common_vars) for file in files]
+    join_str = " \\\n\t\t" if wrap and len(files) > 2 else " "
     if len(files) == 1:
         return "%s/%s" % (dirnames[0], files[0].filename)
     elif len(set(dirnames)) == 1:
-        return "$(addprefix %s/,%s)" % (dirnames[0], " ".join(file.filename for file in files))
+        return "$(addprefix %s/,%s)" % (dirnames[0], join_str.join(file.filename for file in files))
     else:
-        return " ".join("%s/%s" % (d, f.filename) for d,f in zip(dirnames, files))
+        return join_str.join("%s/%s" % (d, f.filename) for d,f in zip(dirnames, files))
 
 def get_gnumake_rules_helper(request, common_vars, **kwargs):
 
