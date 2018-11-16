@@ -285,7 +285,7 @@ int main(int argc, char* argv[])
 #endif
 
     UBool printFilename = (UBool) (argc > 2 || VERBOSE);
-    char pathBuf[512];
+    icu::CharString pathBuf;
     for (++argv; --argc; ++argv)
     {
         UErrorCode localError = U_ZERO_ERROR;
@@ -293,14 +293,10 @@ int main(int argc, char* argv[])
 
         const char* sourcedir = options[OPT_SOURCEDIR].value;
         if (sourcedir != NULL && *sourcedir != 0) {
-            char *end;
-            uprv_strcpy(pathBuf, sourcedir);
-            end = uprv_strchr(pathBuf, 0);
-            if (*(end - 1) != U_FILE_SEP_CHAR) {
-                *(end++) = U_FILE_SEP_CHAR;
-            }
-            uprv_strcpy(end, arg);
-            arg = pathBuf;
+            pathBuf.clear();
+            pathBuf.appendPathPart(sourcedir, localError);
+            pathBuf.appendPathPart(arg, localError);
+            arg = pathBuf.data();
         }
 
         /*produces the right destination path for display*/

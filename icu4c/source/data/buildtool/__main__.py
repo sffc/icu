@@ -1,9 +1,6 @@
 # Copyright (C) 2018 and later: Unicode, Inc. and others.
 # License & terms of use: http://www.unicode.org/copyright.html
 
-# Be compatible with both Python 2 and Python 3:
-from __future__ import print_function
-
 import argparse
 import glob as pyglob
 import sys
@@ -147,13 +144,13 @@ def main():
         # For the purposes of buildtool, force Unix-style directory separators.
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
-    build_dirs, requests = BUILDRULES.generate(config, glob, common)
-    requests = [
-        utils.flatten(req, config.max_parallel())
-        if isinstance(req, RepeatedOrSingleExecutionRequest)
-        else req
-        for req in requests
-    ]
+    build_dirs, raw_requests = BUILDRULES.generate(config, glob, common)
+    requests = []
+    for req in raw_requests:
+        if isinstance(req, RepeatedOrSingleExecutionRequest):
+            requests.append(utils.flatten(req, config.max_parallel()))
+        else:
+            requests.append(req)
 
     if args.format == "gnumake":
         print(makefile.get_gnumake_rules(
