@@ -246,6 +246,8 @@ typedef struct UFormattedValue UFormattedValue;
  * Returns a pointer to the formatted string. The pointer is owned by the UFormattedValue. The
  * return value is valid only as long as the UFormattedValue is present and unchanged in memory.
  *
+ * The return value is NUL-terminated but could contain internal NULs.
+ *
  * @param ufmtval
  *         The object containing the formatted string and attributes.
  * @param pLength Output variable for the length of the string. Ignored if NULL.
