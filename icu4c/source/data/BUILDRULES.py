@@ -11,7 +11,6 @@ import sys
 
 def generate(config, glob, common_vars):
     requests = []
-    pkg_exclusions = set()
 
     if len(glob("misc/*")) == 0:
         print("Error: Cannot find data directory; please specify --glob_dir", file=sys.stderr)
@@ -347,7 +346,6 @@ def generate(config, glob, common_vars):
                 ))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
                 locales = [v[:-4] for v in mk_values[source_var].split()]
-                pkg_exclusions |= set(output_files) - set(OutFile("%s%s.res" % (out_prefix, locale)) for locale in locales)
                 index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(
                     IN_SUB_DIR = sub_dir,
                     **common_vars
