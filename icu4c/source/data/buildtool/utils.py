@@ -57,31 +57,58 @@ def format_repeated_request_command(request, cmd_template, loop_vars, common_var
     )
 
 
-def flatten(request, max_parallel):
-    """Flatten a RepeatedOrSingleExecutionRequest
+def flatten_requests(raw_requests, config):
+    """Post-processes "meta" requests into normal requests.
 
-    Becomes either a SingleExecutionRequest or a RepeatedExecutionRequest.
+    Affected classes:
+    - RepeatedOrSingleExecutionRequest becomes either 
+      RepeatedExecutionRequest or SingleExecutionRequest
+    - ListRequest becomes PrintFileRequest and VariableRequest
     """
-    if max_parallel:
-        return RepeatedExecutionRequest(
-            name = request.name,
-            dep_files = request.dep_files,
-            input_files = request.input_files,
-            output_files = request.output_files,
-            tool = request.tool,
-            args = request.args,
-            format_with = request.format_with,
-            repeat_with = request.repeat_with
-        )
-    else:
-        return SingleExecutionRequest(
-            name = request.name,
-            input_files = request.dep_files + request.input_files,
-            output_files = request.output_files,
-            tool = request.tool,
-            args = request.args,
-            format_with = concat_dicts(request.format_with, request.flatten_with)
-        )
+    flattened_requests = []
+    for request in raw_requests:
+        if isinstance(request, RepeatedOrSingleExecutionRequest):
+            if config.max_parallel():
+                flattened_requests.append(RepeatedExecutionRequest(
+                    name = request.name,
+                    dep_files = request.dep_files,
+                    input_files = request.input_files,
+                    output_files = request.output_files,
+                    tool = request.tool,
+                    args = request.args,
+                    format_with = request.format_with,
+                    repeat_with = request.repeat_with
+                ))
+            else:
+                flattened_requests.append(SingleExecutionRequest(
+                    name = request.name,
+                    input_files = request.dep_files + request.input_files,
+                    output_files = request.output_files,
+                    tool = request.tool,
+                    args = request.args,
+                    format_with = concat_dicts(request.format_with, request.repeat_with)
+                ))
+        elif isinstance(request, ListRequest):
+            list_files = list(sorted(get_all_output_files(raw_requests)))
+            if request.include_tmp:
+                variable_files = list(sorted(get_all_output_files(raw_requests, include_tmp=True)))
+            else:
+                # Always include the list file itself
+                variable_files = list_files + [request.output_file]
+            flattened_requests += [
+                PrintFileRequest(
+                    name = request.name,
+                    output_file = request.output_file,
+                    content = "\n".join(file.filename for file in list_files)
+                ),
+                VariableRequest(
+                    name = request.variable_name,
+                    input_files = variable_files
+                )
+            ]
+        else:
+            flattened_requests.append(request)
+    return flattened_requests
 
 
 def generate_index_file(locales, cldr_version, common_vars):
@@ -113,6 +140,8 @@ def get_all_output_files(requests, include_tmp=False):
         elif isinstance(request, PrintFileRequest):
             files += [request.output_file]
         elif isinstance(request, CopyRequest):
+            files += [request.output_file]
+        elif isinstance(request, ListRequest):
             files += [request.output_file]
         elif isinstance(request, VariableRequest):
             pass

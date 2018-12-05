@@ -60,8 +60,7 @@ RepeatedOrSingleExecutionRequest = namedtuple("RepeatedOrSingleExecutionRequest"
     "tool",
     "args",
     "format_with",
-    "repeat_with",
-    "flatten_with"
+    "repeat_with"
 ])
 
 PrintFileRequest = namedtuple("PrintFileRequest", [
@@ -79,4 +78,11 @@ CopyRequest = namedtuple("CopyRequest", [
 VariableRequest = namedtuple("VariableRequest", [
     "name",
     "input_files"
+])
+
+ListRequest = namedtuple("ListRequest", [
+    "name",
+    "variable_name",
+    "output_file",
+    "include_tmp"
 ])

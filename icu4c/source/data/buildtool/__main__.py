@@ -144,13 +144,8 @@ def main():
         # For the purposes of buildtool, force Unix-style directory separators.
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
-    build_dirs, raw_requests = BUILDRULES.generate(config, glob, common)
-    requests = []
-    for req in raw_requests:
-        if isinstance(req, RepeatedOrSingleExecutionRequest):
-            requests.append(utils.flatten(req, config.max_parallel()))
-        else:
-            requests.append(req)
+    build_dirs, requests = BUILDRULES.generate(config, glob, common)
+    requests = utils.flatten_requests(requests, config)
 
     if args.format == "gnumake":
         print(makefile.get_gnumake_rules(

@@ -16,18 +16,12 @@ def generate(config, glob, common_vars):
     requests += generate_other(config, glob, common_vars)
     requests += generate_copy(config, glob, common_vars)
 
-    all_output_files = list(sorted(utils.get_all_output_files(requests)))
-    all_output_files_with_tmp = list(sorted(utils.get_all_output_files(requests, include_tmp=True)))
-    testdata_list_file = TmpFile("testdata.lst")
     requests += [
-        PrintFileRequest(
+        ListRequest(
             name = "testdata_list",
-            output_file = testdata_list_file,
-            content = "\n".join(file.filename for file in all_output_files)
-        ),
-        VariableRequest(
-            name = "testdata_all_output_files",
-            input_files = all_output_files_with_tmp + [testdata_list_file]
+            variable_name = "testdata_all_output_files",
+            output_file = TmpFile("testdata.lst"),
+            include_tmp = True
         )
     ]
 
