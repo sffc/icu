@@ -91,10 +91,7 @@ def generate(config, glob, common_vars):
                 args = "-s {IN_DIR} -d {OUT_DIR} -c {INPUT_FILE_PLACEHOLDER}",
                 format_with = {},
                 repeat_with = {
-                    "INPUT_FILE_PLACEHOLDER": [file.filename for file in input_files]
-                },
-                flatten_with = {
-                    "INPUT_FILE_PLACEHOLDER": " ".join(file.filename for file in input_files)
+                    "INPUT_FILE_PLACEHOLDER": utils.SpaceSeparatedList(file.filename for file in input_files)
                 }
             )
         ]
@@ -305,7 +302,7 @@ def generate(config, glob, common_vars):
                         format_with = {
                             "IN_SUB_DIR": sub_dir,
                             "OUT_PREFIX": out_prefix,
-                            "INPUT_BASENAMES_SPACED": " ".join(input_basenames)
+                            "INPUT_BASENAMES_SPACED": utils.SpaceSeparatedList(input_basenames)
                         }
                     ),
                 ]
@@ -328,10 +325,7 @@ def generate(config, glob, common_vars):
                         "EXTRA_OPTION": use_pool_bundle_option
                     },
                     repeat_with = {
-                        "INPUT_BASENAME": input_basenames,
-                    },
-                    flatten_with = {
-                        "INPUT_BASENAME": " ".join(input_basenames)
+                        "INPUT_BASENAME": utils.SpaceSeparatedList(input_basenames)
                     }
                 )
             ]

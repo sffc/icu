@@ -128,3 +128,9 @@ def get_all_output_files(requests, include_tmp=False):
     # Filter for unique values.  NOTE: Cannot use set() because we need to accept same filename as
     # OutFile and TmpFile as different, and by default they evaluate as equal.
     return [f for _, f in set((type(f), f) for f in files)]
+
+
+class SpaceSeparatedList(list):
+    """A list that joins itself with spaces when converted to a string."""
+    def __str__(self):
+        return " ".join(self)

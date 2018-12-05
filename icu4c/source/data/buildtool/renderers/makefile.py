@@ -10,7 +10,7 @@ def get_gnumake_rules(build_dirs, requests, makefile_vars, **kwargs):
 
     # Common Variables
     common_vars = kwargs["common_vars"]
-    for key, value in makefile_vars.items():
+    for key, value in sorted(makefile_vars.items()):
         makefile_string += "{KEY} = {VALUE}\n".format(
             KEY = key,
             VALUE = value
