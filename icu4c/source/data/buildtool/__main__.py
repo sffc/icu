@@ -145,7 +145,7 @@ def main():
         return [v.replace("\\", "/")[len(args.glob_dir)+1:] for v in sorted(result_paths)]
 
     build_dirs, requests = BUILDRULES.generate(config, glob, common)
-    requests = utils.flatten_requests(requests, config)
+    requests = utils.flatten_requests(requests, config, common)
 
     if args.format == "gnumake":
         print(makefile.get_gnumake_rules(

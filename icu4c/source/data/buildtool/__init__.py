@@ -115,3 +115,10 @@ ListRequest = namedtuple("ListRequest", [
     "output_file",
     "include_tmp"
 ])
+
+IndexTxtRequest = namedtuple("IndexTxtRequest", [
+    "name",
+    "input_files",
+    "output_file",
+    "cldr_version"
+])

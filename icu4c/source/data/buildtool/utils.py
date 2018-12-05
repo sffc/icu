@@ -57,13 +57,14 @@ def format_repeated_request_command(request, cmd_template, loop_vars, common_var
     )
 
 
-def flatten_requests(raw_requests, config):
+def flatten_requests(raw_requests, config, common_vars):
     """Post-processes "meta" requests into normal requests.
 
     Affected classes:
     - RepeatedOrSingleExecutionRequest becomes either 
       RepeatedExecutionRequest or SingleExecutionRequest
     - ListRequest becomes PrintFileRequest and VariableRequest
+    - IndexTxtRequest becomes PrintFileRequest
     """
     flattened_requests = []
     for request in raw_requests:
@@ -106,12 +107,21 @@ def flatten_requests(raw_requests, config):
                     input_files = variable_files
                 )
             ]
+        elif isinstance(request, IndexTxtRequest):
+            flattened_requests += [
+                PrintFileRequest(
+                    name = request.name,
+                    output_file = request.output_file,
+                    content = generate_index_file(request.input_files, request.cldr_version, common_vars)
+                )
+            ]
         else:
             flattened_requests.append(request)
     return flattened_requests
 
 
-def generate_index_file(locales, cldr_version, common_vars):
+def generate_index_file(input_files, cldr_version, common_vars):
+    locales = [f.filename[f.filename.rfind("/")+1:-4] for f in input_files]
     formatted_version = "    CLDRVersion { \"%s\" }\n" % cldr_version if cldr_version else ""
     formatted_locales = "\n".join(["        %s {\"\"}" % v for v in locales])
     # TODO: CLDRVersion is required only in the base file
@@ -139,10 +149,12 @@ def get_input_files(request):
         return []
     elif isinstance(request, CopyRequest):
         return [request.input_file]
-    elif isinstance(request, ListRequest):
-        return []
     elif isinstance(request, VariableRequest):
         return []
+    elif isinstance(request, ListRequest):
+        return []
+    elif isinstance(request, IndexTxtRequest):
+        return request.input_files
     else:
         assert False
 
@@ -158,10 +170,12 @@ def get_output_files(request):
         return [request.output_file]
     elif isinstance(request, CopyRequest):
         return [request.output_file]
-    elif isinstance(request, ListRequest):
-        return [request.output_file]
     elif isinstance(request, VariableRequest):
         return []
+    elif isinstance(request, ListRequest):
+        return [request.output_file]
+    elif isinstance(request, IndexTxtRequest):
+        return [request.output_file]
     else:
         assert False
 

@@ -345,16 +345,20 @@ def generate(config, glob, common_vars):
                     **common_vars
                 ))
                 cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
-                locales = [v[:-4] for v in mk_values[source_var].split()]
+                index_input_files = [
+                    InFile("%s/%s" % (sub_dir, basename))
+                    for basename in mk_values[source_var].split()
+                ]
                 index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(
                     IN_SUB_DIR = sub_dir,
                     **common_vars
                 ))
                 requests += [
-                    PrintFileRequest(
+                    IndexTxtRequest(
                         name = "%s_index_txt" % sub_dir,
+                        input_files = index_input_files,
                         output_file = index_file_txt,
-                        content = utils.generate_index_file(locales, cldr_version, common_vars)
+                        cldr_version = cldr_version
                     )
                 ]
                 # Generate index res file
