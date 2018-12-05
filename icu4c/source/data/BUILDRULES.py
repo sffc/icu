@@ -49,6 +49,7 @@ def generate(config, glob, common_vars):
         requests += [
             SingleExecutionRequest(
                 name = "cnvalias",
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = IcuTool("gencnval"),
@@ -66,7 +67,8 @@ def generate(config, glob, common_vars):
         requests += [
             SingleExecutionRequest(
                 name = "confusables",
-                input_files = [txt1, txt2, OutFile("cnvalias.icu")],
+                dep_files = [OutFile("cnvalias.icu")],
+                input_files = [txt1, txt2],
                 output_files = [cfu],
                 tool = IcuTool("gencfu"),
                 args = "-d {OUT_DIR} -i {OUT_DIR} "
@@ -194,6 +196,7 @@ def generate(config, glob, common_vars):
         requests += [
             SingleExecutionRequest(
                 name = "coll_ucadata",
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = IcuTool("icupkg"),
@@ -209,6 +212,7 @@ def generate(config, glob, common_vars):
         requests += [
             SingleExecutionRequest(
                 name = "unames",
+                dep_files = [],
                 input_files = [input_file],
                 output_files = [output_file],
                 tool = IcuTool("icupkg"),
@@ -293,7 +297,8 @@ def generate(config, glob, common_vars):
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_pool_write" % sub_dir,
-                        input_files = dep_files + input_files,
+                        dep_files = dep_files,
+                        input_files = input_files,
                         output_files = input_pool_files,
                         tool = IcuTool("genrb"),
                         args = "-s {IN_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
@@ -362,6 +367,7 @@ def generate(config, glob, common_vars):
                 requests += [
                     SingleExecutionRequest(
                         name = "%s_index_res" % sub_dir,
+                        dep_files = [],
                         input_files = [index_file_txt],
                         output_files = [index_res_file],
                         tool = IcuTool("genrb"),

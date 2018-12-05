@@ -128,25 +128,48 @@ def generate_index_file(locales, cldr_version, common_vars):
             )
 
 
+def get_input_files(request):
+    if isinstance(request, SingleExecutionRequest):
+        return request.dep_files + request.input_files
+    elif isinstance(request, RepeatedExecutionRequest):
+        return request.dep_files + request.input_files
+    elif isinstance(request, RepeatedOrSingleExecutionRequest):
+        return request.dep_files + request.input_files
+    elif isinstance(request, PrintFileRequest):
+        return []
+    elif isinstance(request, CopyRequest):
+        return [request.input_file]
+    elif isinstance(request, ListRequest):
+        return []
+    elif isinstance(request, VariableRequest):
+        return []
+    else:
+        assert False
+
+
+def get_output_files(request):
+    if isinstance(request, SingleExecutionRequest):
+        return request.output_files
+    elif isinstance(request, RepeatedExecutionRequest):
+        return request.output_files
+    elif isinstance(request, RepeatedOrSingleExecutionRequest):
+        return request.output_files
+    elif isinstance(request, PrintFileRequest):
+        return [request.output_file]
+    elif isinstance(request, CopyRequest):
+        return [request.output_file]
+    elif isinstance(request, ListRequest):
+        return [request.output_file]
+    elif isinstance(request, VariableRequest):
+        return []
+    else:
+        assert False
+
+
 def get_all_output_files(requests, include_tmp=False):
     files = []
     for request in requests:
-        if isinstance(request, SingleExecutionRequest):
-            files += request.output_files
-        elif isinstance(request, RepeatedExecutionRequest):
-            files += request.output_files
-        elif isinstance(request, RepeatedOrSingleExecutionRequest):
-            files += request.output_files
-        elif isinstance(request, PrintFileRequest):
-            files += [request.output_file]
-        elif isinstance(request, CopyRequest):
-            files += [request.output_file]
-        elif isinstance(request, ListRequest):
-            files += [request.output_file]
-        elif isinstance(request, VariableRequest):
-            pass
-        else:
-            assert False
+        files += get_output_files(request)
 
     # Filter out all files but those in OUT_DIR if necessary.
     # It is also easy to filter for uniqueness; do it right now and return.

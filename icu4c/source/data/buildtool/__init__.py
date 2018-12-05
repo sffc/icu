@@ -33,22 +33,51 @@ IcuTool = namedtuple("IcuTool", ["name"])
 SystemTool = namedtuple("SystemTool", ["name"])
 
 SingleExecutionRequest = namedtuple("SingleExecutionRequest", [
+    # Used for identification purposes
     "name",
+
+    # Dependency files; usually generated
+    "dep_files",
+
+    # Primary input files
     "input_files",
+
+    # Output files
     "output_files",
+
+    # What tool to use
     "tool",
+
+    # Argument string to pass to the tool with optional placeholders
     "args",
+
+    # Placeholders to substitute into the argument string; if any of these have a list type, the list must be equal in length to input_files
     "format_with"
 ])
 
 RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", [
+    # Used for identification purposes
     "name",
+
+    # Dependency files; usually generated
     "dep_files",
+
+    # Primary input files
     "input_files",
+
+    # Output files
     "output_files",
+
+    # What tool to use
     "tool",
+
+    # Argument string to pass to the tool with optional placeholders
     "args",
+
+    # Placeholders to substitute into the argument string for all executions; if any of these have a list type, the list must be equal in length to input_files
     "format_with",
+
+    # Placeholders to substitute into the argument string unique to each iteration; all values must be lists equal in length to input_files
     "repeat_with"
 ])
 
