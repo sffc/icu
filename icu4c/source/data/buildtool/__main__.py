@@ -3,6 +3,7 @@
 
 import argparse
 import glob as pyglob
+import json
 import sys
 
 from . import *
@@ -84,11 +85,17 @@ features_group.add_argument(
     nargs = "+",
     choices = AVAILABLE_FEATURES
 )
+features_group.add_argument(
+    "--filter_file",
+    help = "A path to a filter file.",
+    default = None
+)
 
 
 class Config(object):
 
     def __init__(self, args):
+        # Process arguments
         if args.whitelist:
             self._feature_set = set(args.whitelist)
         elif args.blacklist:
@@ -98,6 +105,23 @@ class Config(object):
         self.max_parallel = (args.seqmode == "parallel")
         # Either "unihan" or "implicithan"
         self.coll_han_type = args.collation_ucadata
+
+        # Default fields before processing filter file
+        self.filters_json_data = {}
+
+        # Process filter file
+        if args.filter_file:
+            try:
+                with open(args.filter_file, "r") as f:
+                    print("Note: Applying filters from %s." % args.filter_file, file=sys.stderr)
+                    try:
+                        import hjson
+                        self.filters_json_data = hjson.load(f)
+                    except ImportError:
+                        self.filters_json_data = json.load(f)
+            except FileNotFoundError:
+                print("Warning: Filter file not found at %s. Will build with full ICU data." % args.filter_file, file=sys.stderr)
+                exit(1)
 
     def has_feature(self, feature_name):
         assert feature_name in AVAILABLE_FEATURES
