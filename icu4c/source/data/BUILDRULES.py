@@ -545,7 +545,7 @@ def generate_tree(
     requests += [
         SingleExecutionRequest(
             name = "%s_index_res" % sub_dir,
-            category = category,
+            category = "%s_index" % sub_dir,
             dep_files = [],
             input_files = [index_file_txt],
             output_files = [index_res_file],

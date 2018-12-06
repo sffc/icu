@@ -182,6 +182,19 @@ def get_output_files(request):
         assert False
 
 
+def get_category(request):
+    if isinstance(request, SingleExecutionRequest):
+        return request.category
+    elif isinstance(request, RepeatedExecutionRequest):
+        return request.category
+    elif isinstance(request, RepeatedOrSingleExecutionRequest):
+        return request.category
+    elif isinstance(request, IndexTxtRequest):
+        return request.category
+    else:
+        return None
+
+
 def get_all_output_files(requests, include_tmp=False):
     files = []
     for request in requests:
