@@ -95,19 +95,13 @@ class Config(object):
             self._feature_set = set(AVAILABLE_FEATURES) - set(args.blacklist)
         else:
             self._feature_set = set(AVAILABLE_FEATURES)
-        self._max_parallel = (args.seqmode == "parallel")
-        self._coll_han_type = args.collation_ucadata
+        self.max_parallel = (args.seqmode == "parallel")
+        # Either "unihan" or "implicithan"
+        self.coll_han_type = args.collation_ucadata
 
     def has_feature(self, feature_name):
         assert feature_name in AVAILABLE_FEATURES
         return feature_name in self._feature_set
-
-    def max_parallel(self):
-        return self._max_parallel
-
-    def coll_han_type(self):
-        # Either "unihan" or "implicithan"
-        return self._coll_han_type
 
 
 def main():

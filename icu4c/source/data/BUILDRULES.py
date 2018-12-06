@@ -190,7 +190,7 @@ def generate(config, glob, common_vars):
 
     # Collation Dependency File (ucadata.icu)
     if config.has_feature("coll"):
-        input_file = InFile("in/coll/ucadata-%s.icu" % config.coll_han_type())
+        input_file = InFile("in/coll/ucadata-%s.icu" % config.coll_han_type)
         output_file = OutFile("coll/ucadata.icu")
         requests += [
             SingleExecutionRequest(

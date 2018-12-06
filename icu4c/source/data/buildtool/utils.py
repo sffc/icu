@@ -69,7 +69,7 @@ def flatten_requests(raw_requests, config, common_vars):
     flattened_requests = []
     for request in raw_requests:
         if isinstance(request, RepeatedOrSingleExecutionRequest):
-            if config.max_parallel():
+            if config.max_parallel:
                 flattened_requests.append(RepeatedExecutionRequest(
                     name = request.name,
                     dep_files = request.dep_files,
