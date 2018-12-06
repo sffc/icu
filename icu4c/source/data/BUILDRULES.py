@@ -52,6 +52,7 @@ def generate(config, glob, common_vars):
     requests += generate_unames(config, glob, common_vars)
     requests += generate_misc(config, glob, common_vars)
     requests += generate_curr_supplemental(config, glob, common_vars)
+    requests += generate_translit(config, glob, common_vars)
 
     # FIXME: Clean this up (duplicated logic)
     brkitr_brk_files = []
@@ -148,15 +149,6 @@ def generate(config, glob, common_vars):
         False,
         [])
 
-    requests += generate_tree(config, glob, common_vars,
-        "translit",
-        "translit",
-        "trnsfiles.mk",
-        None,
-        "TRANSLIT_SOURCE",
-        False,
-        [])
-
     requests += [
         ListRequest(
             name = "icudata_list",
@@ -176,6 +168,7 @@ def generate_cnvalias(config, glob, common_vars):
     return [
         SingleExecutionRequest(
             name = "cnvalias",
+            category = "cnvalias",
             dep_files = [],
             input_files = [input_file],
             output_files = [output_file],
@@ -195,6 +188,7 @@ def generate_confusables(config, glob, common_vars):
     return [
         SingleExecutionRequest(
             name = "confusables",
+            category = "confusables",
             dep_files = [OutFile("cnvalias.icu")],
             input_files = [txt1, txt2],
             output_files = [cfu],
@@ -215,6 +209,7 @@ def generate_uconv(config, glob, common_vars):
     return [
         RepeatedOrSingleExecutionRequest(
             name = "uconv",
+            category = "conversion",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -235,6 +230,7 @@ def generate_brkitr_brk(config, glob, common_vars):
     return [
         RepeatedExecutionRequest(
             name = "brkitr_brk",
+            category = "brkitr_rules",
             dep_files = [OutFile("cnvalias.icu")],
             input_files = input_files,
             output_files = output_files,
@@ -256,6 +252,7 @@ def generate_stringprep(config, glob, common_vars):
     return [
         RepeatedExecutionRequest(
             name = "stringprep",
+            category = "stringprep",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -285,6 +282,7 @@ def generate_brkitr_dictionaries(config, glob, common_vars):
     return [
         RepeatedExecutionRequest(
             name = "dictionaries",
+            category = "brkitr_dictionaries",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -308,6 +306,7 @@ def generate_normalization(config, glob, common_vars):
     return [
         RepeatedExecutionRequest(
             name = "normalization",
+            category = "normalization",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -326,6 +325,7 @@ def generate_coll_ucadata(config, glob, common_vars):
     return [
         SingleExecutionRequest(
             name = "coll_ucadata",
+            category = "coll_ucadata",
             dep_files = [],
             input_files = [input_file],
             output_files = [output_file],
@@ -343,6 +343,7 @@ def generate_unames(config, glob, common_vars):
     return [
         SingleExecutionRequest(
             name = "unames",
+            category = "unames",
             dep_files = [],
             input_files = [input_file],
             output_files = [output_file],
@@ -360,7 +361,8 @@ def generate_misc(config, glob, common_vars):
     output_files = [OutFile("%s.res" % v[:-4]) for v in input_basenames]
     return [
         RepeatedExecutionRequest(
-            name = "misc",
+            name = "misc_res",
+            category = "misc",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -383,7 +385,8 @@ def generate_curr_supplemental(config, glob, common_vars):
     output_file = OutFile("curr/supplementalData.res")
     return [
         SingleExecutionRequest(
-            name = "curr_supplemental",
+            name = "curr_supplemental_res",
+            category = "curr_supplemental",
             dep_files = [],
             input_files = [input_file],
             output_files = [output_file],
@@ -393,6 +396,37 @@ def generate_curr_supplemental(config, glob, common_vars):
                 "{INPUT_BASENAME}",
             format_with = {
                 "INPUT_BASENAME": input_basename
+            }
+        )
+    ]
+
+
+def generate_translit(config, glob, common_vars):
+    input_files = [
+        InFile("translit/root.txt"),
+        InFile("translit/en.txt"),
+        InFile("translit/el.txt")
+    ]
+    input_basenames = [v.filename[9:] for v in input_files]
+    output_files = [
+        OutFile("translit/%s.res" % v[:-4])
+        for v in input_basenames
+    ]
+    return [
+        RepeatedOrSingleExecutionRequest(
+            name = "translit_res",
+            category = "translit",
+            dep_files = [],
+            input_files = input_files,
+            output_files = output_files,
+            tool = IcuTool("genrb"),
+            args = "-s {IN_DIR}/translit -d {OUT_DIR}/translit -i {OUT_DIR} "
+                "-k "
+                "{INPUT_BASENAME}",
+            format_with = {
+            },
+            repeat_with = {
+                "INPUT_BASENAME": utils.SpaceSeparatedList(input_basenames)
             }
         )
     ]
@@ -410,16 +444,10 @@ def generate_tree(
         use_pool_bundle,
         dep_files):
     requests = []
+    category = "%s_tree" % sub_dir
     out_prefix = "%s/" % out_sub_dir if out_sub_dir else ""
-    # TODO: Clean this up for translit and curr
-    if sub_dir == "translit":
-        input_files = [
-            InFile("translit/root.txt"),
-            InFile("translit/en.txt"),
-            InFile("translit/el.txt")
-        ]
-    else:
-        input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
+    # TODO: Clean this up for curr
+    input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
     if sub_dir == "curr":
         input_files.remove(InFile("curr/supplementalData.txt"))
     input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
@@ -427,6 +455,8 @@ def generate_tree(
         OutFile("%s%s.res" % (out_prefix, v[:-4]))
         for v in input_basenames
     ]
+
+    # Generate Pool Bundle
     if use_pool_bundle:
         input_pool_files = [OutFile("%spool.res" % out_prefix)]
         use_pool_bundle_option = "--usePoolBundle {OUT_DIR}/{OUT_PREFIX}".format(
@@ -436,6 +466,7 @@ def generate_tree(
         requests += [
             SingleExecutionRequest(
                 name = "%s_pool_write" % sub_dir,
+                category = category,
                 dep_files = dep_files,
                 input_files = input_files,
                 output_files = input_pool_files,
@@ -453,9 +484,12 @@ def generate_tree(
     else:
         input_pool_files = []
         use_pool_bundle_option = ""
+
+    # Generate Res File Tree
     requests += [
         RepeatedOrSingleExecutionRequest(
             name = "%s_res" % sub_dir,
+            category = category,
             dep_files = dep_files + input_pool_files,
             input_files = input_files,
             output_files = output_files,
@@ -473,53 +507,57 @@ def generate_tree(
             }
         )
     ]
+
     # Generate index txt file
-    if sub_dir != "translit":
-        # TODO: Change .mk files to .py files so they can be loaded directly.
-        # Alternatively, figure out a way to require reading this file altogether.
-        # Right now, it is required for the index list file.
-        # Reading these files as .py will be required for Bazel.
-        mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(
-            IN_SUB_DIR = sub_dir,
-            RESFILE_NAME = resfile_name,
-            **common_vars
-        ))
-        cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
-        index_input_files = [
-            InFile("%s/%s" % (sub_dir, basename))
-            for basename in mk_values[source_var].split()
-        ]
-        index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(
-            IN_SUB_DIR = sub_dir,
-            **common_vars
-        ))
-        requests += [
-            IndexTxtRequest(
-                name = "%s_index_txt" % sub_dir,
-                input_files = index_input_files,
-                output_file = index_file_txt,
-                cldr_version = cldr_version
-            )
-        ]
-        # Generate index res file
-        index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(
-            OUT_PREFIX = out_prefix,
-            **common_vars
-        ))
-        requests += [
-            SingleExecutionRequest(
-                name = "%s_index_res" % sub_dir,
-                dep_files = [],
-                input_files = [index_file_txt],
-                output_files = [index_res_file],
-                tool = IcuTool("genrb"),
-                args = "-s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
-                    "-k "
-                    "{INDEX_NAME}.txt",
-                format_with = {
-                    "IN_SUB_DIR": sub_dir,
-                    "OUT_PREFIX": out_prefix
-                }
-            )
-        ]
+    # TODO: Change .mk files to .py files so they can be loaded directly.
+    # Alternatively, figure out a way to require reading this file altogether.
+    # Right now, it is required for the index list file.
+    # Reading these files as .py will be required for Bazel.
+    mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(
+        IN_SUB_DIR = sub_dir,
+        RESFILE_NAME = resfile_name,
+        **common_vars
+    ))
+    cldr_version = mk_values[version_var] if version_var and sub_dir == "locales" else None
+    index_input_files = [
+        InFile("%s/%s" % (sub_dir, basename))
+        for basename in mk_values[source_var].split()
+    ]
+    index_file_txt = TmpFile("{IN_SUB_DIR}/{INDEX_NAME}.txt".format(
+        IN_SUB_DIR = sub_dir,
+        **common_vars
+    ))
+    requests += [
+        IndexTxtRequest(
+            name = "%s_index_txt" % sub_dir,
+            category = category,
+            input_files = index_input_files,
+            output_file = index_file_txt,
+            cldr_version = cldr_version
+        )
+    ]
+
+    # Generate index res file
+    index_res_file = OutFile("{OUT_PREFIX}{INDEX_NAME}.res".format(
+        OUT_PREFIX = out_prefix,
+        **common_vars
+    ))
+    requests += [
+        SingleExecutionRequest(
+            name = "%s_index_res" % sub_dir,
+            category = category,
+            dep_files = [],
+            input_files = [index_file_txt],
+            output_files = [index_res_file],
+            tool = IcuTool("genrb"),
+            args = "-s {TMP_DIR}/{IN_SUB_DIR} -d {OUT_DIR}/{OUT_PREFIX} -i {OUT_DIR} "
+                "-k "
+                "{INDEX_NAME}.txt",
+            format_with = {
+                "IN_SUB_DIR": sub_dir,
+                "OUT_PREFIX": out_prefix
+            }
+        )
+    ]
+
     return requests

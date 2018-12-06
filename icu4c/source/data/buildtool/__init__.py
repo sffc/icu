@@ -36,6 +36,9 @@ SingleExecutionRequest = namedtuple("SingleExecutionRequest", [
     # Used for identification purposes
     "name",
 
+    # The filter category that applies to this request
+    "category",
+
     # Dependency files; usually generated
     "dep_files",
 
@@ -58,6 +61,9 @@ SingleExecutionRequest = namedtuple("SingleExecutionRequest", [
 RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", [
     # Used for identification purposes
     "name",
+
+    # The filter category that applies to this request
+    "category",
 
     # Dependency files; usually generated
     "dep_files",
@@ -83,6 +89,7 @@ RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", [
 
 RepeatedOrSingleExecutionRequest = namedtuple("RepeatedOrSingleExecutionRequest", [
     "name",
+    "category",
     "dep_files",
     "input_files",
     "output_files",
@@ -118,6 +125,7 @@ ListRequest = namedtuple("ListRequest", [
 
 IndexTxtRequest = namedtuple("IndexTxtRequest", [
     "name",
+    "category",
     "input_files",
     "output_file",
     "cldr_version"

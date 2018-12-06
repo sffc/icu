@@ -72,6 +72,7 @@ def flatten_requests(raw_requests, config, common_vars):
             if config.max_parallel:
                 flattened_requests.append(RepeatedExecutionRequest(
                     name = request.name,
+                    category = request.category,
                     dep_files = request.dep_files,
                     input_files = request.input_files,
                     output_files = request.output_files,
@@ -83,6 +84,7 @@ def flatten_requests(raw_requests, config, common_vars):
             else:
                 flattened_requests.append(SingleExecutionRequest(
                     name = request.name,
+                    category = request.category,
                     input_files = request.dep_files + request.input_files,
                     output_files = request.output_files,
                     tool = request.tool,
