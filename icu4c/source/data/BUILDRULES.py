@@ -243,6 +243,27 @@ def generate(config, glob, common_vars):
             )
         ]
 
+    # Currency Supplemental Res File
+    if config.has_feature("curr"):
+        input_file = InFile("curr/supplementalData.txt")
+        input_basename = "supplementalData.txt"
+        output_file = OutFile("curr/supplementalData.res")
+        requests += [
+            SingleExecutionRequest(
+                name = "curr_supplemental",
+                dep_files = [],
+                input_files = [input_file],
+                output_files = [output_file],
+                tool = IcuTool("genrb"),
+                args = "-s {IN_DIR}/curr -d {OUT_DIR}/curr -i {OUT_DIR} "
+                    "-k "
+                    "{INPUT_BASENAME}",
+                format_with = {
+                    "INPUT_BASENAME": input_basename
+                }
+            )
+        ]
+
     # Specialized Locale Data Res Files
     specialized_sub_dirs = [
         # (input dirname, output dirname, resfiles.mk path, mk version var, mk source var, use pool file, dep files)
@@ -273,7 +294,7 @@ def generate(config, glob, common_vars):
     for sub_dir, out_sub_dir, resfile_name, version_var, source_var, use_pool_bundle, dep_files in specialized_sub_dirs:
         out_prefix = "%s/" % out_sub_dir if out_sub_dir else ""
         if config.has_feature(sub_dir):
-            # TODO: Clean this up for translit
+            # TODO: Clean this up for translit and curr
             if sub_dir == "translit":
                 input_files = [
                     InFile("translit/root.txt"),
@@ -282,6 +303,8 @@ def generate(config, glob, common_vars):
                 ]
             else:
                 input_files = [InFile(filename) for filename in glob("%s/*.txt" % sub_dir)]
+            if sub_dir == "curr":
+                input_files.remove(InFile("curr/supplementalData.txt"))
             input_basenames = [v.filename[len(sub_dir)+1:] for v in input_files]
             output_files = [
                 OutFile("%s%s.res" % (out_prefix, v[:-4]))
