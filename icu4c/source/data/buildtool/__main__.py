@@ -120,7 +120,7 @@ class Config(object):
                     except ImportError:
                         self.filters_json_data = json.load(f)
             except FileNotFoundError:
-                print("Warning: Filter file not found at %s. Will build with full ICU data." % args.filter_file, file=sys.stderr)
+                print("Error: Filter file not found at %s." % args.filter_file, file=sys.stderr)
                 exit(1)
 
     def has_feature(self, feature_name):

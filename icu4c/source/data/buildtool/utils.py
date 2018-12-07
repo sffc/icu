@@ -64,13 +64,11 @@ def dep_targets_to_files(this_request, all_requests):
         return []
     dep_files = []
     for dep_target in this_request.dep_files:
-        found = False
         for request in all_requests:
             if request.name == dep_target.name:
                 dep_files += get_output_files(request)
-                found = True
                 break
-        if not found:
+        else:
             print("Warning: Unable to find target %s, a dependency of %s" % (
                 dep_target.name,
                 this_request.name

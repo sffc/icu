@@ -1394,7 +1394,7 @@ else
         --format gnumake \
         --seqmode parallel \
         --glob_dir "$srcdir/data" \
-        --filter_file "$ICU_FILTER_FILE" \
+        --filter_file "$ICU_DATA_FILTER_FILE" \
         > data/rules.mk
     echo "Spawning Python to generate test/testdata/rules.mk..."
     PYTHONPATH="$srcdir/test/testdata:$srcdir/data" $PYTHON3 -m buildtool \
