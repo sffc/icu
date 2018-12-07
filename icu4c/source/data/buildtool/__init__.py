@@ -54,7 +54,8 @@ SingleExecutionRequest = namedtuple("SingleExecutionRequest", [
     # Argument string to pass to the tool with optional placeholders
     "args",
 
-    # Placeholders to substitute into the argument string; if any of these have a list type, the list must be equal in length to input_files
+    # Placeholders to substitute into the argument string; if any of these
+    # have a list type, the list must be equal in length to input_files
     "format_with"
 ])
 
@@ -80,10 +81,13 @@ RepeatedExecutionRequest = namedtuple("RepeatedExecutionRequest", [
     # Argument string to pass to the tool with optional placeholders
     "args",
 
-    # Placeholders to substitute into the argument string for all executions; if any of these have a list type, the list must be equal in length to input_files
+    # Placeholders to substitute into the argument string for all executions;
+    # if any of these have a list type, the list must be equal in length to
+    # input_files
     "format_with",
 
-    # Placeholders to substitute into the argument string unique to each iteration; all values must be lists equal in length to input_files
+    # Placeholders to substitute into the argument string unique to each
+    # iteration; all values must be lists equal in length to input_files
     "repeat_with"
 ])
 

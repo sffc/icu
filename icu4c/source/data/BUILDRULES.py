@@ -43,7 +43,7 @@ def generate(config, glob, common_vars):
 
     requests += generate_cnvalias(config, glob, common_vars)
     requests += generate_confusables(config, glob, common_vars)
-    requests += generate_uconv(config, glob, common_vars)
+    requests += generate_conversion_mappings(config, glob, common_vars)
     requests += generate_brkitr_brk(config, glob, common_vars)
     requests += generate_stringprep(config, glob, common_vars)
     requests += generate_brkitr_dictionaries(config, glob, common_vars)
@@ -201,15 +201,15 @@ def generate_confusables(config, glob, common_vars):
     ]
 
 
-def generate_uconv(config, glob, common_vars):
+def generate_conversion_mappings(config, glob, common_vars):
     # UConv Conversion Table Files
     input_files = [InFile(filename) for filename in glob("mappings/*.ucm")]
     output_files = [OutFile("%s.cnv" % v.filename[9:-4]) for v in input_files]
     # TODO: handle BUILD_SPECIAL_CNV_FILES? Means to add --ignore-siso-check flag to makeconv
     return [
         RepeatedOrSingleExecutionRequest(
-            name = "uconv",
-            category = "conversion",
+            name = "conversion_mappings",
+            category = "conversion_mappings",
             dep_files = [],
             input_files = input_files,
             output_files = output_files,
@@ -510,7 +510,7 @@ def generate_tree(
 
     # Generate index txt file
     # TODO: Change .mk files to .py files so they can be loaded directly.
-    # Alternatively, figure out a way to require reading this file altogether.
+    # Alternatively, figure out a way to not require reading this file altogether.
     # Right now, it is required for the index list file.
     # Reading these files as .py will be required for Bazel.
     mk_values = parse_makefile("{GLOB_DIR}/{IN_SUB_DIR}/{RESFILE_NAME}".format(
