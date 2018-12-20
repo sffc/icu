@@ -55,13 +55,13 @@ public interface FormattedValue extends CharSequence {
      *
      * @param cfpos
      *         The object used for iteration state. This can provide constraints to iterate over
-     *         only one specific field; see {@link ConstrainableFieldPosition#constrainField}.
+     *         only one specific field; see {@link ConstrainedFieldPosition#constrainField}.
      * @return true if a new occurrence of the field was found;
      *         false otherwise.
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
-    public boolean nextPosition(ConstrainableFieldPosition cfpos);
+    public boolean nextPosition(ConstrainedFieldPosition cfpos);
 
     /**
      * Exports the formatted number as an AttributedCharacterIterator.

@@ -25,22 +25,22 @@ class CategoryFieldPositionImpl;
  *
  * @draft ICU 64
  */
-class U_I18N_API CategoryFieldPosition : public UMemory {
+class U_I18N_API ConstrainedFieldPosition : public UMemory {
   public:
-    /** @draft ICU 64 */
-    virtual ~CategoryFieldPosition();
-
     /**
-     * Initializes a CategoryFieldPosition.
+     * Initializes a ConstrainedFieldPosition.
      *
-     * By default, the CategoryFieldPosition has no iteration constraints.
+     * By default, the ConstrainedFieldPosition has no iteration constraints.
      *
      * @draft ICU 64
      */
-    CategoryFieldPosition();
+    ConstrainedFieldPosition();
+
+    /** @draft ICU 64 */
+    virtual ~ConstrainedFieldPosition();
 
     /**
-     * Resets this CategoryFieldPosition to its initial state, as if it were newly created.
+     * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created.
      *
      * Removes any constraints that may have been set on the instance.
      *
@@ -51,14 +51,14 @@ class U_I18N_API CategoryFieldPosition : public UMemory {
     /**
      * Sets a constraint on the field category.
      * 
-     * When this instance of CategoryFieldPosition is passed to FormattedValue#nextPosition,
+     * When this instance of ConstrainedFieldPosition is passed to FormattedValue#nextPosition,
      * positions are skipped unless they have the given category.
      *
      * Any previously set constraints are cleared.
      *
      * For example, to loop over only the number-related fields:
      *
-     *     CategoryFieldPosition cfpos;
+     *     ConstrainedFieldPosition cfpos;
      *     cfpos.constrainCategory(UFIELDCATEGORY_NUMBER_FORMAT);
      *     while (fmtval.nextPosition(cfpos, status)) {
      *         // handle the number-related field position
@@ -72,14 +72,14 @@ class U_I18N_API CategoryFieldPosition : public UMemory {
     /**
      * Sets a constraint on the category and field.
      * 
-     * When this instance of CategoryFieldPosition is passed to FormattedValue#nextPosition,
+     * When this instance of ConstrainedFieldPosition is passed to FormattedValue#nextPosition,
      * positions are skipped unless they have the given category and field.
      *
      * Any previously set constraints are cleared.
      *
      * For example, to loop over all grouping separators:
      *
-     *     CategoryFieldPosition cfpos;
+     *     ConstrainedFieldPosition cfpos;
      *     cfpos.constrainField(UFIELDCATEGORY_NUMBER_FORMAT, UNUM_GROUPING_SEPARATOR_FIELD);
      *     while (fmtval.nextPosition(cfpos, status)) {
      *         // handle the grouping separator position
@@ -123,8 +123,8 @@ class U_I18N_API CategoryFieldPosition : public UMemory {
      * @return The start index saved in the instance.
      * @draft ICU 64
      */
-    inline int32_t getStartIndex() const {
-        return fStartIndex;
+    inline int32_t getStart() const {
+        return fStart;
     };
 
     /**
@@ -135,8 +135,8 @@ class U_I18N_API CategoryFieldPosition : public UMemory {
      * @return The end index saved in the instance.
      * @draft ICU 64
      */
-    inline int32_t getEndIndex() const {
-        return fEndIndex;
+    inline int32_t getLimit() const {
+        return fLimit;
     };
 
   private:
@@ -147,8 +147,8 @@ class U_I18N_API CategoryFieldPosition : public UMemory {
     } fConstraint;
     UFieldCategory fCategory;
     int32_t fField;
-    int32_t fStartIndex;
-    int32_t fEndIndex;
+    int32_t fStart;
+    int32_t fLimit;
 
     friend class CategoryFieldPositionImpl;
 };
@@ -208,7 +208,7 @@ class U_I18N_API FormattedValue {
      *
      * To loop over all field positions:
      *
-     *     CategoryFieldPosition cfpos;
+     *     ConstrainedFieldPosition cfpos;
      *     while (fmtval.nextPosition(cfpos, status)) {
      *         // handle the field position; get information from cfpos
      *     }
@@ -216,15 +216,15 @@ class U_I18N_API FormattedValue {
      * @param cfpos
      *         The object used for iteration state. This can provide constraints to iterate over
      *         only one specific category or field;
-     *         see CategoryFieldPosition#constrainCategory
-     *         and CategoryFieldPosition#constrainField.
+     *         see ConstrainedFieldPosition#constrainCategory
+     *         and ConstrainedFieldPosition#constrainField.
      * @param status Set if an error occurs.
      * @return TRUE if a new occurrence of the field was found;
      *         FALSE otherwise or if an error was set.
      *
      * @draft ICU 64
      */
-    virtual UBool nextPosition(CategoryFieldPosition& cfpos, UErrorCode& status) const = 0;
+    virtual UBool nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const = 0;
 };
 
 

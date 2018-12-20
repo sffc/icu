@@ -12,7 +12,7 @@ import java.text.Format.Field;
  * @draft ICU 64
  * @provisional This API might change or be removed in a future release.
  */
-public class ConstrainableFieldPosition {
+public class ConstrainedFieldPosition {
 
     enum ConstraintType {
         NONE,
@@ -21,8 +21,8 @@ public class ConstrainableFieldPosition {
 
     ConstraintType fConstraint;
     Field fField;
-    int fStartIndex;
-    int fEndIndex;
+    int fStart;
+    int fLimit;
     Object fValue;
 
     /**
@@ -33,7 +33,7 @@ public class ConstrainableFieldPosition {
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
-    public ConstrainableFieldPosition() {
+    public ConstrainedFieldPosition() {
         reset();
     }
 
@@ -48,8 +48,8 @@ public class ConstrainableFieldPosition {
     public void reset() {
         fConstraint = ConstraintType.NONE;
         fField = null;
-        fStartIndex = 0;
-        fEndIndex = 0;
+        fStart = 0;
+        fLimit = 0;
         fValue = null;
     }
 
@@ -101,8 +101,8 @@ public class ConstrainableFieldPosition {
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
-    public int getStartIndex() {
-        return fStartIndex;
+    public int getStart() {
+        return fStart;
     }
 
     /**
@@ -114,8 +114,8 @@ public class ConstrainableFieldPosition {
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
-    public int getEndIndex() {
-        return fEndIndex;
+    public int getLimit() {
+        return fLimit;
     }
 
     /**

@@ -23,116 +23,107 @@ typedef enum UFieldCategory {
      * 
      * @draft ICU 64
      */
-    UFIELDCATEGORY_UNDEFINED = 0,
-
-    /**
-     * For fields in UCalendarDateFields (ucal.h), from ICU 2.0.
-     *
-     * @draft ICU 64
-     */
-    UFIELDCATEGORY_CALENDAR_DATE,
+    UFIELD_CATEGORY_UNDEFINED = 0,
 
     /**
      * For fields in UDateFormatField (udat.h), from ICU 3.0.
      *
      * @draft ICU 64
      */
-    UFIELDCATEGORY_DATE_FORMAT,
-
-    /**
-     * For fields in UDateTimePatternField (udatpg.h), from ICU 3.8.
-     *
-     * @draft ICU 64
-     */
-    UFIELDCATEGORY_DATE_TIME_PATTERN,
+    UFIELD_CATEGORY_DATE,
 
     /**
      * For fields in UNumberFormatFields (unum.h), from ICU 49.
      *
      * @draft ICU 64
      */
-    UFIELDCATEGORY_NUMBER_FORMAT,
+    UFIELD_CATEGORY_NUMBER,
 
     /**
      * For fields in UListFormatterField (ulistformatter.h), from ICU 63.
      *
      * @draft ICU 64
      */
-    UFIELDCATEGORY_LIST_FORMATTER,
+    UFIELD_CATEGORY_LIST,
 
 } UFieldCategory;
 
 
-struct UCategoryFieldPosition;
+struct UConstrainedFieldPosition;
 /**
  * Represents a span of a string containing a given field.
- * Similar to UFieldPosition.
+ *
+ * This struct differs from UFieldPosition in the following ways:
+ *
+ *   1. It has information on the field category.
+ *   2. It allows you to set constraints to use when iterating over field positions.
+ *   3. It is used for the newer FormattedValue APIs.
  *
  * @draft ICU 64
  */
-typedef struct UCategoryFieldPosition UCategoryFieldPosition;
+typedef struct UConstrainedFieldPosition UConstrainedFieldPosition;
 
 
 /**
- * Creates a new UCategoryFieldPosition.
+ * Creates a new UConstrainedFieldPosition.
  *
- * By default, the UCategoryFieldPosition has no iteration constraints.
+ * By default, the UConstrainedFieldPosition has no iteration constraints.
  *
  * @param ec Set if an error occurs.
  * @return The new object, or NULL if an error occurs.
  * @draft ICU 64
  */
-U_DRAFT UCategoryFieldPosition* U_EXPORT2
+U_DRAFT UConstrainedFieldPosition* U_EXPORT2
 ucfpos_open(UErrorCode* ec);
 
 
 /**
- * Resets a UCategoryFieldPosition to its initial state, as if it were newly created.
+ * Resets a UConstrainedFieldPosition to its initial state, as if it were newly created.
  *
  * Removes any constraints that may have been set on the instance.
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @draft ICU 64
  */
 U_DRAFT void U_EXPORT2
-ucfpos_reset(UCategoryFieldPosition* ucfpos);
+ucfpos_reset(UConstrainedFieldPosition* ucfpos);
 
 
 /**
- * Destroys a UCategoryFieldPosition and releases its memory.
+ * Destroys a UConstrainedFieldPosition and releases its memory.
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @draft ICU 64
  */
 U_DRAFT void U_EXPORT2
-ucfpos_close(UCategoryFieldPosition* ucfpos);
+ucfpos_close(UConstrainedFieldPosition* ucfpos);
 
 
 /**
  * Sets a constraint on the field category.
  * 
- * When this instance of UCategoryFieldPosition is passed to ufmtval_nextPosition,
+ * When this instance of UConstrainedFieldPosition is passed to ufmtval_nextPosition,
  * positions are skipped unless they have the given category.
  *
  * Any previously set constraints are cleared.
  *
  * For example, to loop over only the number-related fields:
  *
- *     UCategoryFieldPosition* ucfpos = ucfpos_open(ec);
+ *     UConstrainedFieldPosition* ucfpos = ucfpos_open(ec);
  *     ucfpos_constrainCategory(ucfpos, UFIELDCATEGORY_NUMBER_FORMAT, ec);
  *     while (ufmtval_nextPosition(ufmtval, ucfpos, ec)) {
  *         // handle the number-related field position
  *     }
  *     ucfpos_close(ucfpos);
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param category The field category to fix when iterating.
  * @param ec Set if an error occurs.
  * @draft ICU 64
  */
 U_DRAFT void U_EXPORT2
 ucfpos_constrainCategory(
-    UCategoryFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UFieldCategory category,
     UErrorCode* ec);
 
@@ -140,21 +131,21 @@ ucfpos_constrainCategory(
 /**
  * Sets a constraint on the category and field.
  * 
- * When this instance of UCategoryFieldPosition is passed to ufmtval_nextPosition,
+ * When this instance of UConstrainedFieldPosition is passed to ufmtval_nextPosition,
  * positions are skipped unless they have the given category and field.
  *
  * Any previously set constraints are cleared.
  *
  * For example, to loop over all grouping separators:
  *
- *     UCategoryFieldPosition* ucfpos = ucfpos_open(ec);
+ *     UConstrainedFieldPosition* ucfpos = ucfpos_open(ec);
  *     ucfpos_constrainField(ucfpos, UFIELDCATEGORY_NUMBER_FORMAT, UNUM_GROUPING_SEPARATOR_FIELD, ec);
  *     while (ufmtval_nextPosition(ufmtval, ucfpos, ec)) {
  *         // handle the grouping separator position
  *     }
  *     ucfpos_close(ucfpos);
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param category The field category to fix when iterating.
  * @param field The field to fix when iterating.
  * @param ec Set if an error occurs.
@@ -162,7 +153,7 @@ ucfpos_constrainCategory(
  */
 U_DRAFT void U_EXPORT2
 ucfpos_constrainField(
-    UCategoryFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UFieldCategory category,
     int32_t field,
     UErrorCode* ec);
@@ -173,14 +164,14 @@ ucfpos_constrainField(
  *
  * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param ec Set if an error occurs.
  * @return The field category saved in the instance.
  * @draft ICU 64
  */
 U_DRAFT UFieldCategory U_EXPORT2
 ucfpos_getCategory(
-    UCategoryFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
 
 
@@ -189,46 +180,33 @@ ucfpos_getCategory(
  *
  * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param ec Set if an error occurs.
  * @return The field saved in the instance.
  * @draft ICU 64
  */
 U_DRAFT int32_t U_EXPORT2
 ucfpos_getField(
-    UCategoryFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
 
 
 /**
- * Gets the INCLUSIVE start index for the current position.
+ * Gets the INCLUSIVE start and EXCLUSIVE end index stored for the current position.
  *
- * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
+ * The output values are well-defined only after ufmtval_nextPosition returns TRUE.
  *
- * @param ucfpos The instance of UCategoryFieldPosition.
+ * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param pStartIndex Set to the start index saved in the instance. Ignored if nullptr.
+ * @param pEndIndex Set to the end index saved in the instance. Ignored if nullptr.
  * @param ec Set if an error occurs.
- * @return The start index saved in the instance.
  * @draft ICU 64
  */
-U_DRAFT int32_t U_EXPORT2
-ucfpos_getStartIndex(
-    UCategoryFieldPosition* ucfpos,
-    UErrorCode* ec);
-
-
-/**
- * Gets the EXCLUSIVE end index stored for the current position.
- *
- * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
- *
- * @param ucfpos The instance of UCategoryFieldPosition.
- * @param ec Set if an error occurs.
- * @return The end index saved in the instance.
- * @draft ICU 64
- */
-U_DRAFT int32_t U_EXPORT2
-ucfpos_getEndIndex(
-    UCategoryFieldPosition* ucfpos,
+U_DRAFT void U_EXPORT2
+ucfpos_getIndexes(
+    UConstrainedFieldPosition* ucfpos,
+    int32_t* pStart,
+    int32_t* pLimit,
     UErrorCode* ec);
 
 
@@ -268,7 +246,7 @@ ufmtval_getString(
  *
  * To loop over all field positions:
  *
- *     UCategoryFieldPosition* ucfpos = ucfpos_open(ec);
+ *     UConstrainedFieldPosition* ucfpos = ucfpos_open(ec);
  *     while (ufmtval_nextPosition(ufmtval, ucfpos, ec)) {
  *         // handle the field position; get information from ucfpos
  *     }
@@ -288,7 +266,7 @@ ufmtval_getString(
 U_DRAFT UBool U_EXPORT2
 ufmtval_nextPosition(
     const UFormattedValue* ufmtval,
-    UCategoryFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
 
 
