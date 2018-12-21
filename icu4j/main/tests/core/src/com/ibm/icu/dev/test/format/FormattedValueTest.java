@@ -112,8 +112,10 @@ public class FormattedValueTest {
                     continue;
                 }
 
-                assertTrue(baseMessage + "Current character should have expected field", currentAttributes.contains(expectedField));
-                assertTrue(baseMessage + "Field should be a known attribute", allAttributes.contains(expectedField));
+                assertTrue(baseMessage + "Character at " + i + " should have field " + expectedField,
+                        currentAttributes.contains(expectedField));
+                assertTrue(baseMessage + "Field " + expectedField + " should be a known attribute",
+                        allAttributes.contains(expectedField));
                 int actualBeginIndex = fpi.getRunStart(expectedField);
                 int actualEndIndex = fpi.getRunLimit(expectedField);
                 assertEquals(baseMessage + expectedField + " begin @" + i, expectedBeginIndex, actualBeginIndex);

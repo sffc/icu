@@ -220,4 +220,17 @@ public class ConstrainedFieldPosition {
         fStart = start;
         fLimit = limit;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CFPos[");
+        sb.append(fStart);
+        sb.append('-');
+        sb.append(fLimit);
+        sb.append(' ');
+        sb.append(fField);
+        sb.append(']');
+        return sb.toString();
+    }
 }
