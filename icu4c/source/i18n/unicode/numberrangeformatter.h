@@ -8,6 +8,7 @@
 #include <atomic>
 #include "unicode/appendable.h"
 #include "unicode/fieldpos.h"
+#include "unicode/formattedvalue.h"
 #include "unicode/fpositer.h"
 #include "unicode/numberformatter.h"
 
@@ -662,30 +663,35 @@ class U_I18N_API LocalizedNumberRangeFormatter
  *
  * @draft ICU 63
  */
-class U_I18N_API FormattedNumberRange : public UMemory {
+class U_I18N_API FormattedNumberRange : public UMemory, public FormattedValue {
   public:
     /**
-     * Returns a UnicodeString representation of the formatted number range.
+     * @copybrief FormattedValue::toString()
      *
-     * @param status
-     *            Set if an error occurs while formatting the number to the UnicodeString.
-     * @return a UnicodeString containing the localized number range.
      * @draft ICU 63
      */
-    UnicodeString toString(UErrorCode& status) const;
+    UnicodeString toString(UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * Appends the formatted number range to an Appendable.
+     * @copybrief FormattedValue::toTempString()
      *
-     * @param appendable
-     *            The Appendable to which to append the formatted number range string.
-     * @param status
-     *            Set if an error occurs while formatting the number range to the Appendable.
-     * @return The same Appendable, for chaining.
-     * @draft ICU 63
-     * @see Appendable
+     * @draft ICU 64
      */
-    Appendable &appendTo(Appendable &appendable, UErrorCode& status) const;
+    UnicodeString toTempString(UErrorCode& status) const U_OVERRIDE;
+
+    /**
+     * @copybrief FormattedValue::appendTo()
+     *
+     * @draft ICU 63
+     */
+    Appendable &appendTo(Appendable &appendable, UErrorCode& status) const U_OVERRIDE;
+
+    /**
+     * @copybrief FormattedValue::nextPosition()
+     *
+     * @draft ICU 64
+     */
+    UBool nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const U_OVERRIDE;
 
     /**
      * Determines the start (inclusive) and end (exclusive) indices of the next occurrence of the given

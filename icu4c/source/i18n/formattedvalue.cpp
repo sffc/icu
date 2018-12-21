@@ -46,6 +46,9 @@ void ConstrainedFieldPosition::setState(
 }
 
 
+FormattedValue::~FormattedValue() = default;
+
+
 ///////////////////////
 /// C API FUNCTIONS ///
 ///////////////////////

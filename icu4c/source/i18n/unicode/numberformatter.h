@@ -11,6 +11,7 @@
 #include "unicode/dcfmtsym.h"
 #include "unicode/currunit.h"
 #include "unicode/fieldpos.h"
+#include "unicode/formattedvalue.h"
 #include "unicode/fpositer.h"
 #include "unicode/measunit.h"
 #include "unicode/nounit.h"
@@ -2447,7 +2448,7 @@ class U_I18N_API LocalizedNumberFormatter
  *
  * @draft ICU 60
  */
-class U_I18N_API FormattedNumber : public UMemory {
+class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
   public:
 #ifndef U_HIDE_DEPRECATED_API
     /**
@@ -2462,14 +2463,18 @@ class U_I18N_API FormattedNumber : public UMemory {
 #endif  /* U_HIDE_DEPRECATED_API */
 
     /**
-     * Returns a UnicodeString representation of the formatted number.
+     * @copybrief FormattedValue::toString()
      *
-     * @param status
-     *            Set if an error occurs while formatting the number to the UnicodeString.
-     * @return a UnicodeString containing the localized number.
      * @draft ICU 62
      */
-    UnicodeString toString(UErrorCode& status) const;
+    UnicodeString toString(UErrorCode& status) const U_OVERRIDE;
+
+    /**
+     * @copybrief FormattedValue::toTempString()
+     *
+     * @draft ICU 64
+     */
+    UnicodeString toTempString(UErrorCode& status) const U_OVERRIDE;
 
 #ifndef U_HIDE_DEPRECATED_API
     /**
@@ -2487,17 +2492,18 @@ class U_I18N_API FormattedNumber : public UMemory {
 #endif  /* U_HIDE_DEPRECATED_API */
 
     /**
-     * Appends the formatted number to an Appendable.
+     * @copybrief FormattedValue::toString()
      *
-     * @param appendable
-     *            The Appendable to which to append the formatted number string.
-     * @param status
-     *            Set if an error occurs while formatting the number to the Appendable.
-     * @return The same Appendable, for chaining.
      * @draft ICU 62
-     * @see Appendable
      */
-    Appendable &appendTo(Appendable &appendable, UErrorCode& status) const;
+    Appendable &appendTo(Appendable &appendable, UErrorCode& status) const U_OVERRIDE;
+
+    /**
+     * @copybrief FormattedValue::nextPosition()
+     *
+     * @draft ICU 64
+     */
+    UBool nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const U_OVERRIDE;
 
 #ifndef U_HIDE_DEPRECATED_API
     /**

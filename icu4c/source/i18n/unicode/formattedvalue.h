@@ -87,8 +87,8 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
      *         // handle the grouping separator position
      *     }
      *
+     * @param category The field category to fix when iterating.
      * @param field The field to fix when iterating.
-     * @param ec Set if an error occurs.
      * @draft ICU 64
      */
     void constrainField(UFieldCategory category, int32_t field);

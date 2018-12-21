@@ -364,15 +364,25 @@ public class NumberStringBuilder implements CharSequence {
         return chars.length;
     }
 
+    /** Note: this returns a NumberStringBuilder. Do not return publicly. */
     @Override
+    @Deprecated
     public CharSequence subSequence(int start, int end) {
-        if (start < 0 || end > length || end < start) {
-            throw new IndexOutOfBoundsException();
-        }
+        assert start >= 0;
+        assert end <= length;
+        assert end >= start;
         NumberStringBuilder other = new NumberStringBuilder(this);
         other.zero = zero + start;
         other.length = end - start;
         return other;
+    }
+
+    /** Use this instead of subSequence if returning publicly. */
+    public String subString(int start, int end) {
+        if (start < 0 || end > length || end < start) {
+            throw new IndexOutOfBoundsException();
+        }
+        return new String(chars, start + zero, end - start);
     }
 
     /**

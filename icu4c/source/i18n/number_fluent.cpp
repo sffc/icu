@@ -784,6 +784,17 @@ UnicodeString FormattedNumber::toString(UErrorCode& status) const {
     return fResults->string.toUnicodeString();
 }
 
+UnicodeString FormattedNumber::toTempString(UErrorCode& status) const {
+    if (U_FAILURE(status)) {
+        return ICU_Utility::makeBogusString();
+    }
+    if (fResults == nullptr) {
+        status = fErrorCode;
+        return ICU_Utility::makeBogusString();
+    }
+    return fResults->string.toTempUnicodeString();
+}
+
 Appendable& FormattedNumber::appendTo(Appendable& appendable) {
     UErrorCode localStatus = U_ZERO_ERROR;
     return appendTo(appendable, localStatus);
@@ -799,6 +810,18 @@ Appendable& FormattedNumber::appendTo(Appendable& appendable, UErrorCode& status
     }
     appendable.appendString(fResults->string.chars(), fResults->string.length());
     return appendable;
+}
+
+UBool FormattedNumber::nextPosition(ConstrainedFieldPosition& fieldPosition, UErrorCode& status) const {
+    if (U_FAILURE(status)) {
+        return FALSE;
+    }
+    if (fResults == nullptr) {
+        status = fErrorCode;
+        return FALSE;
+    }
+    status = U_UNSUPPORTED_ERROR;
+    return FALSE;
 }
 
 void FormattedNumber::populateFieldPosition(FieldPosition& fieldPosition, UErrorCode& status) {
