@@ -25,6 +25,11 @@ void addUFormattedValueTest(TestNode** root) {
 
 
 static void TestBasic() {
+    UErrorCode status = U_ZERO_ERROR;
+    UConstrainedFieldPosition* ucfpos = ucfpos_open(&status);
+    assertSuccess("opening ucfpos", &status);
+    assertTrue("ucfpos should not be null", ucfpos != NULL);
+    ucfpos_close(ucfpos);
 }
 
 
