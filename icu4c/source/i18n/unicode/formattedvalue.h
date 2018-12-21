@@ -17,7 +17,12 @@ U_NAMESPACE_BEGIN
 
 /**
  * Represents a span of a string containing a given field.
- * Similar to FieldPosition.
+ *
+ * This class differs from FieldPosition in the following ways:
+ *
+ *   1. It has information on the field category.
+ *   2. It allows you to set constraints to use when iterating over field positions.
+ *   3. It is used for the newer FormattedValue APIs.
  *
  * @draft ICU 64
  */
@@ -193,12 +198,12 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
         int32_t limit);
 
   private:
-    int64_t fContext;
-    int32_t fField;
-    int32_t fStart;
-    int32_t fLimit;
-    UCFPosConstraintType fConstraint;
-    UFieldCategory fCategory;
+    int64_t fContext = 0LL;
+    int32_t fField = 0;
+    int32_t fStart = 0;
+    int32_t fLimit = 0;
+    UCFPosConstraintType fConstraint = UCFPOS_CONSTRAINT_NONE;
+    UFieldCategory fCategory = UFIELD_CATEGORY_UNDEFINED;
 };
 
 

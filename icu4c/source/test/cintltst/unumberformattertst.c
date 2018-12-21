@@ -23,10 +23,12 @@ static void TestExampleCode(void);
 
 void addUNumberFormatterTest(TestNode** root);
 
+#define TESTCASE(x) addTest(root, &x, "tsformat/unumberformatter/" #x)
+
 void addUNumberFormatterTest(TestNode** root) {
-    addTest(root, &TestSkeletonFormatToString, "unumberformatter/TestSkeletonFormatToString");
-    addTest(root, &TestSkeletonFormatToFields, "unumberformatter/TestSkeletonFormatToFields");
-    addTest(root, &TestExampleCode, "unumberformatter/TestExampleCode");
+    TESTCASE(TestSkeletonFormatToString);
+    TESTCASE(TestSkeletonFormatToFields);
+    TESTCASE(TestExampleCode);
 }
 
 

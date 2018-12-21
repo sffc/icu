@@ -5,7 +5,13 @@ package com.ibm.icu.text;
 import java.text.Format.Field;
 
 /**
- * Represents a span of a string containing a given field. Similar to FieldPosition.
+ * Represents a span of a string containing a given field.
+ *
+ * This class differs from FieldPosition in the following ways:
+ *
+ *   1. It has information on the field category.
+ *   2. It allows you to set constraints to use when iterating over field positions.
+ *   3. It is used for the newer FormattedValue APIs.
  *
  * @author sffc
  * @draft ICU 64
@@ -41,12 +47,12 @@ public class ConstrainedFieldPosition {
         FIELD
     };
 
-    ConstraintType fConstraint;
-    Field fField;
-    Object fValue;
-    int fStart;
-    int fLimit;
-    long fContext;
+    ConstraintType fConstraint = ConstraintType.NONE;
+    Field fField = null;
+    Object fValue= null;
+    int fStart = 0;
+    int fLimit = 0;
+    long fContext = 0L;
 
     /**
      * Initializes a CategoryFieldPosition.
