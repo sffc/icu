@@ -111,6 +111,8 @@ void TestSetters() {
         5,
         10,
         42424242424242LL);
+
+    ucfpos_close(ucfpos);
 }
 
 static void AssertAllPartsEqual(

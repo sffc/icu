@@ -1034,6 +1034,7 @@ group: formattable_cnv
 
 group: format
     format.o fphdlimp.o fpositer.o ufieldpositer.o
+    formattedvalue.o
   deps
     resourcebundle parsepos uvector32
 
