@@ -292,7 +292,7 @@ ucfpos_getInt64IterationContext(
  */
 U_DRAFT void U_EXPORT2
 ucfpos_setInt64IterationContext(
-    const UConstrainedFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     int64_t context,
     UErrorCode* ec);
 
@@ -312,7 +312,7 @@ ucfpos_setInt64IterationContext(
  */
 U_DRAFT void U_EXPORT2
 ucfpos_setState(
-    const UConstrainedFieldPosition* ucfpos,
+    UConstrainedFieldPosition* ucfpos,
     UFieldCategory category,
     int32_t field,
     int32_t start,
