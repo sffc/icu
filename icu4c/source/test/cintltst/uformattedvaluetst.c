@@ -29,6 +29,29 @@ static void TestBasic() {
     UConstrainedFieldPosition* ucfpos = ucfpos_open(&status);
     assertSuccess("opening ucfpos", &status);
     assertTrue("ucfpos should not be null", ucfpos != NULL);
+
+    UCFPosConstraintType constraintType = ucfpos_getConstraintType(ucfpos, &status);
+    assertSuccess("constraint", &status);
+    assertIntEquals("constraint", UCFPOS_CONSTRAINT_NONE, constraintType);
+
+    UFieldCategory category = ucfpos_getCategory(ucfpos, &status);
+    assertSuccess("category", &status);
+    assertIntEquals("category", UFIELD_CATEGORY_UNDEFINED, category);
+
+    int32_t field = ucfpos_getField(ucfpos, &status);
+    assertSuccess("field", &status);
+    assertIntEquals("field", 0, field);
+
+    int32_t start, limit;
+    ucfpos_getIndexes(ucfpos, &start, &limit, &status);
+    assertSuccess("indexes", &status);
+    assertIntEquals("start", 0, start);
+    assertIntEquals("limit", 0, limit);
+
+    int64_t context = ucfpos_getInt64IterationContext(ucfpos, &status);
+    assertSuccess("context", &status);
+    assertIntEquals("context", 0LL, context);
+
     ucfpos_close(ucfpos);
 }
 

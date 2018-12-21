@@ -40,10 +40,56 @@ ucfpos_open(UErrorCode* ec) {
     return impl->exportForC();
 }
 
+U_CAPI UCFPosConstraintType U_EXPORT2
+ucfpos_getConstraintType(const UConstrainedFieldPosition* ptr, UErrorCode* ec) {
+    const auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return UCFPOS_CONSTRAINT_NONE;
+    }
+    return impl->fImpl.getConstraintType();
+}
+
+U_CAPI UFieldCategory U_EXPORT2
+ucfpos_getCategory(const UConstrainedFieldPosition* ptr, UErrorCode* ec) {
+    const auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return UFIELD_CATEGORY_UNDEFINED;
+    }
+    return impl->fImpl.getCategory();
+}
+
+U_CAPI int32_t U_EXPORT2
+ucfpos_getField(const UConstrainedFieldPosition* ptr, UErrorCode* ec) {
+    const auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return 0;
+    }
+    return impl->fImpl.getField();
+}
+
 U_CAPI void U_EXPORT2
-ucfpos_close(UConstrainedFieldPosition* f) {
+ucfpos_getIndexes(const UConstrainedFieldPosition* ptr, int32_t* pStart, int32_t* pLimit, UErrorCode* ec) {
+    const auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    *pStart = impl->fImpl.getStart();
+    *pLimit = impl->fImpl.getLimit();
+}
+
+U_CAPI int64_t U_EXPORT2
+ucfpos_getInt64IterationContext(const UConstrainedFieldPosition* ptr, UErrorCode* ec) {
+    const auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return 0;
+    }
+    return impl->fImpl.getInt64IterationContext();
+}
+
+U_CAPI void U_EXPORT2
+ucfpos_close(UConstrainedFieldPosition* ptr) {
     UErrorCode localStatus = U_ZERO_ERROR;
-    auto* impl = UConstrainedFieldPositionImpl::validate(f, localStatus);
+    auto* impl = UConstrainedFieldPositionImpl::validate(ptr, localStatus);
     delete impl;
 }
 

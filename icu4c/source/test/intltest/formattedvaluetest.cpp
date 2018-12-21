@@ -29,6 +29,12 @@ void FormattedValueTest::runIndexedTest(int32_t index, UBool exec, const char *&
 void FormattedValueTest::testBasic() {
     IcuTestErrorCode status(*this, "testBasic");
     ConstrainedFieldPosition cfpos;
+    assertEquals("constraint", UCFPOS_CONSTRAINT_NONE, cfpos.getConstraintType());
+    assertEquals("category", UFIELD_CATEGORY_UNDEFINED, cfpos.getCategory());
+    assertEquals("field", 0, cfpos.getField());
+    assertEquals("start", 0, cfpos.getStart());
+    assertEquals("limit", 0, cfpos.getLimit());
+    assertEquals("context", 0LL, cfpos.getInt64IterationContext());
 }
 
 
