@@ -101,7 +101,7 @@ public class FormattedNumber implements FormattedValue {
      */
     @Override
     public boolean nextPosition(ConstrainedFieldPosition cfpos) {
-        throw new UnsupportedOperationException();
+        return nsb.nextPosition(cfpos);
     }
 
     /**

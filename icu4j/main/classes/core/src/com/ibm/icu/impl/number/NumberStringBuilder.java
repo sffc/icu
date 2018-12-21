@@ -570,7 +570,7 @@ public class NumberStringBuilder implements CharSequence {
                         // Entire field position is ignorable; skip.
                         fieldStart = -1;
                         currField = null;
-                        i--;
+                        i--;  // look at this index again
                         continue;
                     }
                     int start = trimFront(fieldStart);

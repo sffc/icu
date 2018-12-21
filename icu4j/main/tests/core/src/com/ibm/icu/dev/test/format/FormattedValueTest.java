@@ -3,6 +3,7 @@
 package com.ibm.icu.dev.test.format;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -104,7 +105,7 @@ public class FormattedValueTest {
             Set<AttributedCharacterIterator.Attribute> currentAttributes = fpi.getAttributes().keySet();
             int attributesRemaining = currentAttributes.size();
             for (Object[] cas : expectedFieldPositions) {
-                NumberFormat.Field expectedField = (NumberFormat.Field) cas[0];
+                Format.Field expectedField = (Format.Field) cas[0];
                 int expectedBeginIndex = (Integer) cas[1];
                 int expectedEndIndex = (Integer) cas[2];
                 if (expectedBeginIndex > i || expectedEndIndex <= i) {
@@ -125,5 +126,41 @@ public class FormattedValueTest {
             assertEquals(baseMessage + "Should have looked at every field", 0, attributesRemaining);
         }
         assertEquals(baseMessage + "Should have looked at every character", stringLength, i);
+
+        // Check nextPosition over all fields
+        ConstrainedFieldPosition cfpos = new ConstrainedFieldPosition();
+        i = 0;
+        for (Object[] cas : expectedFieldPositions) {
+            assertTrue(baseMessage + i, fv.nextPosition(cfpos));
+            Format.Field expectedField = (Format.Field) cas[0];
+            int expectedStart = (Integer) cas[1];
+            int expectedLimit = (Integer) cas[2];
+            assertEquals(baseMessage + "field " + i, expectedField, cfpos.getField());
+            assertEquals(baseMessage + "start " + i, expectedStart, cfpos.getStart());
+            assertEquals(baseMessage + "limit " + i, expectedLimit, cfpos.getLimit());
+            i++;
+        }
+        assertFalse(baseMessage + "after loop", fv.nextPosition(cfpos));
+
+        // Check nextPosition constrained over each field one at a time
+        for (Format.Field field : uniqueFields) {
+            cfpos.reset();
+            cfpos.constrainField(field);
+            i = 0;
+            for (Object[] cas : expectedFieldPositions) {
+                if (cas[0] != field) {
+                    continue;
+                }
+                assertTrue(baseMessage + i, fv.nextPosition(cfpos));
+                Format.Field expectedField = (Format.Field) cas[0];
+                int expectedStart = (Integer) cas[1];
+                int expectedLimit = (Integer) cas[2];
+                assertEquals(baseMessage + "field " + i, expectedField, cfpos.getField());
+                assertEquals(baseMessage + "start " + i, expectedStart, cfpos.getStart());
+                assertEquals(baseMessage + "limit " + i, expectedLimit, cfpos.getLimit());
+                i++;
+            }
+            assertFalse(baseMessage + "after loop", fv.nextPosition(cfpos));
+        }
     }
 }
