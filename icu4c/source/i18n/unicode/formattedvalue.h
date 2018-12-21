@@ -15,10 +15,6 @@
 U_NAMESPACE_BEGIN
 
 
-// Forward-declarations
-class CategoryFieldPositionImpl;
-
-
 /**
  * Represents a span of a string containing a given field.
  * Similar to FieldPosition.
@@ -27,6 +23,7 @@ class CategoryFieldPositionImpl;
  */
 class U_I18N_API ConstrainedFieldPosition : public UMemory {
   public:
+
     /**
      * Initializes a ConstrainedFieldPosition.
      *
@@ -92,6 +89,16 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
     void constrainField(UFieldCategory category, int32_t field);
 
     /**
+     * Gets the currently active constraint.
+     *
+     * @return The currently active constraint type.
+     * @draft ICU 64
+     */
+    inline UCFPosConstraintType getConstraintType() const {
+        return fConstraint;
+    }
+
+    /**
      * Gets the field category for the current position.
      *
      * The return value is well-defined only after FormattedValue#nextPosition returns TRUE.
@@ -139,18 +146,59 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
         return fLimit;
     };
 
+    ////////////////////////////////////////////////////////////////////
+    //// The following methods are for FormattedValue implementers; ////
+    //// most users can ignore them.                                ////
+    ////////////////////////////////////////////////////////////////////
+
+    /**
+     * Gets an int64 that FormattedValue implementations may use for storage.
+     *
+     * The initial value is zero.
+     *
+     * Users of FormattedValue should not need to call this method.
+     *
+     * @return The current iteration context from {@link #setInt64IterationContext}.
+     * @draft ICU 64
+     */
+    inline int64_t getInt64IterationContext() const {
+        return fContext;
+    }
+
+    /**
+     * Sets an int64 that FormattedValue implementations may use for storage.
+     *
+     * Intended to be used by FormattedValue implementations.
+     *
+     * @param context The new iteration context.
+     * @draft ICU 64
+     */
+    void setInt64IterationContext(int64_t context);
+
+    /**
+     * Sets new values for the primary public getters.
+     *
+     * Intended to be used by FormattedValue implementations.
+     *
+     * @param category The new field category.
+     * @param field The new field.
+     * @param start The new inclusive start index.
+     * @param limit The new exclusive end index.
+     * @draft ICU 64
+     */
+    void setState(
+        UFieldCategory category,
+        int32_t field,
+        int32_t start,
+        int32_t limit);
+
   private:
-    enum ConstraintType {
-        CONSTRAINT_NONE,
-        CONSTRAINT_CATEGORY,
-        CONSTRAINT_FIELD
-    } fConstraint;
-    UFieldCategory fCategory;
+    int64_t fContext;
     int32_t fField;
     int32_t fStart;
     int32_t fLimit;
-
-    friend class CategoryFieldPositionImpl;
+    UCFPosConstraintType fConstraint;
+    UFieldCategory fCategory;
 };
 
 

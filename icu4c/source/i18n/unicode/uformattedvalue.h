@@ -49,6 +49,44 @@ typedef enum UFieldCategory {
 } UFieldCategory;
 
 
+/**
+ * Represents the type of constraint for ConstrainedFieldPosition.
+ *
+ * Constraints are used to control the behavior of iteration in FormattedValue.
+ *
+ * @draft ICU 64
+ */
+typedef enum UCFPosConstraintType {
+    /**
+     * Represents the lack of a constraint.
+     *
+     * @draft ICU 64
+     */
+    UCFPOS_CONSTRAINT_NONE,
+
+    /**
+     * Represents that the field category is constrained.
+     *
+     * Use getCategory to access the category. FormattedValue implementations
+     * should not change that values while this constraint is active.
+     *
+     * @draft ICU 64
+     */
+    UCFPOS_CONSTRAINT_CATEGORY,
+
+    /**
+     * Represents that the field and field category are constrained.
+     *
+     * Use getCategory and getField to access the category and field.
+     * FormattedValue implementations should not change those values while
+     * this constraint is active.
+     *
+     * @draft ICU 64
+     */
+    UCFPOS_CONSTRAINT_FIELD
+} UCFPosConstraintType;
+
+
 struct UConstrainedFieldPosition;
 /**
  * Represents a span of a string containing a given field.
@@ -160,6 +198,20 @@ ucfpos_constrainField(
 
 
 /**
+ * Gets the currently active constraint.
+ *
+ * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param ec Set if an error occurs.
+ * @return The currently active constraint type.
+ * @draft ICU 64
+ */
+U_DRAFT UCFPosConstraintType U_EXPORT2
+ucfpos_getConstraintType(
+    const UConstrainedFieldPosition* ucfpos,
+    UErrorCode* ec);
+
+
+/**
  * Gets the field category for the current position.
  *
  * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
@@ -171,7 +223,7 @@ ucfpos_constrainField(
  */
 U_DRAFT UFieldCategory U_EXPORT2
 ucfpos_getCategory(
-    UConstrainedFieldPosition* ucfpos,
+    const UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
 
 
@@ -187,7 +239,7 @@ ucfpos_getCategory(
  */
 U_DRAFT int32_t U_EXPORT2
 ucfpos_getField(
-    UConstrainedFieldPosition* ucfpos,
+    const UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
 
 
@@ -204,9 +256,67 @@ ucfpos_getField(
  */
 U_DRAFT void U_EXPORT2
 ucfpos_getIndexes(
-    UConstrainedFieldPosition* ucfpos,
+    const UConstrainedFieldPosition* ucfpos,
     int32_t* pStart,
     int32_t* pLimit,
+    UErrorCode* ec);
+
+
+/**
+ * Gets an int64 that FormattedValue implementations may use for storage.
+ *
+ * The initial value is zero.
+ *
+ * Users of FormattedValue should not need to call this method.
+ *
+ * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param ec Set if an error occurs.
+ * @return The current iteration context from ucfpos_setInt64IterationContext.
+ * @draft ICU 64
+ */
+U_DRAFT int64_t U_EXPORT2
+ucfpos_getInt64IterationContext(
+    const UConstrainedFieldPosition* ucfpos,
+    UErrorCode* ec);
+
+
+/**
+ * Sets an int64 that FormattedValue implementations may use for storage.
+ *
+ * Intended to be used by FormattedValue implementations.
+ *
+ * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param context The new iteration context.
+ * @param ec Set if an error occurs.
+ * @draft ICU 64
+ */
+U_DRAFT void U_EXPORT2
+ucfpos_setInt64IterationContext(
+    const UConstrainedFieldPosition* ucfpos,
+    int64_t context,
+    UErrorCode* ec);
+
+
+/**
+ * Sets new values for the primary public getters.
+ *
+ * Intended to be used by FormattedValue implementations.
+ *
+ * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param category The new field category.
+ * @param field The new field.
+ * @param start The new inclusive start index.
+ * @param limit The new exclusive end index.
+ * @param ec Set if an error occurs.
+ * @draft ICU 64
+ */
+U_DRAFT void U_EXPORT2
+ucfpos_setState(
+    const UConstrainedFieldPosition* ucfpos,
+    UFieldCategory category,
+    int32_t field,
+    int32_t start,
+    int32_t limit,
     UErrorCode* ec);
 
 
