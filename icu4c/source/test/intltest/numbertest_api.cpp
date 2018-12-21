@@ -2188,7 +2188,7 @@ void NumberFormatterApiTest::fieldPositionLogic() {
             {UNUM_DECIMAL_SEPARATOR_FIELD, 14, 15},
             {UNUM_FRACTION_FIELD, 15, 17}};
 
-    assertFieldPositions(
+    assertNumberFieldPositions(
             message,
             fmtd,
             expectedFieldPositions,
@@ -2236,7 +2236,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 0, 2},
                 {UNUM_MEASURE_UNIT_FIELD, 2, 4}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2257,7 +2257,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_INTEGER_FIELD, 0, 2},
                 // coverage for old enum:
                 {DecimalFormat::kMeasureUnitField, 2, 6}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2278,7 +2278,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_INTEGER_FIELD, 0, 2},
                 // note: field starts after the space
                 {UNUM_MEASURE_UNIT_FIELD, 3, 9}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2299,7 +2299,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_MEASURE_UNIT_FIELD, 0, 11},
                 {UNUM_INTEGER_FIELD, 12, 14},
                 {UNUM_MEASURE_UNIT_FIELD, 15, 19}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2320,7 +2320,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_INTEGER_FIELD, 0, 2},
                 // Should trim leading/trailing spaces, but not inner spaces:
                 {UNUM_MEASURE_UNIT_FIELD, 3, 7}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2343,7 +2343,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 1, 3},
                 {UNUM_MEASURE_UNIT_FIELD, 4, 5}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2363,7 +2363,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 0, 2},
                 {UNUM_COMPACT_FIELD, 2, 3}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2383,7 +2383,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 0, 2},
                 {UNUM_COMPACT_FIELD, 3, 11}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2403,7 +2403,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 0, 1},
                 {UNUM_COMPACT_FIELD, 2, 9}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2423,7 +2423,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 // field, begin index, end index
                 {UNUM_INTEGER_FIELD, 1, 2},
                 {UNUM_COMPACT_FIELD, 3, 6}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2444,7 +2444,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_INTEGER_FIELD, 0, 2},
                 {UNUM_COMPACT_FIELD, 3, 8},
                 {UNUM_CURRENCY_FIELD, 9, 12}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2467,7 +2467,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 {UNUM_INTEGER_FIELD, 0, 2},
                 {UNUM_COMPACT_FIELD, 3, 11},
                 {UNUM_MEASURE_UNIT_FIELD, 12, 18}};
-        assertFieldPositions(
+        assertNumberFieldPositions(
                 message,
                 result,
                 expectedFieldPositions,
@@ -2882,10 +2882,19 @@ void NumberFormatterApiTest::assertUndefinedSkeleton(const UnlocalizedNumberForm
             status);
 }
 
-void NumberFormatterApiTest::assertFieldPositions(
+void NumberFormatterApiTest::assertNumberFieldPositions(
         const char16_t* message, const FormattedNumber& formattedNumber,
         const UFieldPosition* expectedFieldPositions, int32_t length) {
-    IcuTestErrorCode status(*this, "assertFieldPositions");
+    // Check FormattedValue functions
+    assertFieldPositions(
+        message,
+        static_cast<const FormattedValue&>(formattedNumber),
+        UFIELD_CATEGORY_NUMBER,
+        expectedFieldPositions,
+        length);
+
+    // Check FormattedNumber-specific functions
+    IcuTestErrorCode status(*this, "assertNumberFieldPositions");
     UnicodeString baseMessage = UnicodeString(message) + u": " + formattedNumber.toString(status) + u": ";
     FieldPositionIterator fpi;
     formattedNumber.getAllFieldPositions(fpi, status);

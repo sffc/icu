@@ -28,14 +28,14 @@ public class FormattedValueTest {
     public void testBasic() {
         ConstrainedFieldPosition cfpos = new ConstrainedFieldPosition();
         assertAllPartsEqual(
-                "basic",
-                cfpos,
-                ConstraintType.NONE,
-                null,
-                null,
-                0,
-                0,
-                0L);
+            "basic",
+            cfpos,
+            ConstraintType.NONE,
+            null,
+            null,
+            0,
+            0,
+            0L);
     }
 
     @Test
@@ -74,6 +74,17 @@ public class FormattedValueTest {
             5,
             10,
             42424242424242L);
+
+        cfpos.reset();
+        assertAllPartsEqual(
+            "setters 4",
+            cfpos,
+            ConstraintType.NONE,
+            null,
+            null,
+            0,
+            0,
+            0L);
     }
 
     private void assertAllPartsEqual(String messagePrefix, ConstrainedFieldPosition cfpos, ConstraintType constraint,

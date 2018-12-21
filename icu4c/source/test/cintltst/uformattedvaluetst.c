@@ -112,6 +112,18 @@ void TestSetters() {
         10,
         42424242424242LL);
 
+    ucfpos_reset(ucfpos, &status);
+    assertSuccess("setters 4", &status);
+    AssertAllPartsEqual(
+        "setters 4",
+        ucfpos,
+        UCFPOS_CONSTRAINT_NONE,
+        UFIELD_CATEGORY_UNDEFINED,
+        0,
+        0,
+        0,
+        0LL);
+
     ucfpos_close(ucfpos);
 }
 

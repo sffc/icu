@@ -412,7 +412,7 @@ Appendable& FormattedNumberRange::appendTo(Appendable& appendable, UErrorCode& s
     return appendable;
 }
 
-UBool FormattedNumberRange::nextPosition(ConstrainedFieldPosition& fieldPosition, UErrorCode& status) const {
+UBool FormattedNumberRange::nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const {
     if (U_FAILURE(status)) {
         return FALSE;
     }
@@ -420,8 +420,8 @@ UBool FormattedNumberRange::nextPosition(ConstrainedFieldPosition& fieldPosition
         status = fErrorCode;
         return FALSE;
     }
-    status = U_UNSUPPORTED_ERROR;
-    return FALSE;
+    // NOTE: MSVC sometimes complains when implicitly converting between bool and UBool
+    return fResults->string.nextPosition(cfpos, status) ? TRUE : FALSE;
 }
 
 UBool FormattedNumberRange::nextFieldPosition(FieldPosition& fieldPosition, UErrorCode& status) const {

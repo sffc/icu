@@ -5,9 +5,12 @@
 
 #if !UCONFIG_NO_FORMATTING
 
+#include <set>
+
 #include "unicode/formattedvalue.h"
 #include "unicode/unum.h"
 #include "intltest.h"
+#include "itformat.h"
 
 
 class FormattedValueTest : public IntlTest {
@@ -100,6 +103,17 @@ void FormattedValueTest::testSetters() {
         5,
         10,
         42424242424242LL);
+
+    cfpos.reset();
+    assertAllPartsEqual(
+        u"setters 4",
+        cfpos,
+        UCFPOS_CONSTRAINT_NONE,
+        UFIELD_CATEGORY_UNDEFINED,
+        0,
+        0,
+        0,
+        0LL);
 }
 
 void FormattedValueTest::assertAllPartsEqual(
@@ -123,6 +137,63 @@ void FormattedValueTest::assertAllPartsEqual(
         limit, cfpos.getLimit());
     assertEquals(messagePrefix + u": context",
         context, cfpos.getInt64IterationContext());
+}
+
+
+void IntlTestWithFieldPosition::assertFieldPositions(
+        const char16_t* message,
+        const FormattedValue& fv,
+        UFieldCategory expectedCategory,
+        const UFieldPosition* expectedFieldPositions,
+        int32_t length) {
+    IcuTestErrorCode status(*this, "assertFieldPositions");
+    UnicodeString baseMessage = UnicodeString(message) + u": " + fv.toString(status) + u": ";
+
+    // Check nextPosition over all fields
+    ConstrainedFieldPosition cfpos;
+    for (int32_t i = 0; i < length; i++) {
+        assertTrue(baseMessage + i, fv.nextPosition(cfpos, status));
+        int32_t expectedField = expectedFieldPositions[i].field;
+        int32_t expectedStart = expectedFieldPositions[i].beginIndex;
+        int32_t expectedLimit = expectedFieldPositions[i].endIndex;
+        assertEquals(baseMessage + u"category " + Int64ToUnicodeString(i),
+            expectedCategory, cfpos.getCategory());
+        assertEquals(baseMessage + u"field " + Int64ToUnicodeString(i),
+            expectedField, cfpos.getField());
+        assertEquals(baseMessage + u"start " + Int64ToUnicodeString(i),
+            expectedStart, cfpos.getStart());
+        assertEquals(baseMessage + u"limit " + Int64ToUnicodeString(i),
+            expectedLimit, cfpos.getLimit());
+    }
+    assertFalse(baseMessage + u"after loop", fv.nextPosition(cfpos, status));
+
+    // Check nextPosition constrained over each field one at a time
+    std::set<int32_t> uniqueFields;
+    for (int32_t i = 0; i < length; i++) {
+        uniqueFields.insert(expectedFieldPositions[i].field);
+    }
+    for (int32_t field : uniqueFields) {
+        cfpos.reset();
+        cfpos.constrainField(expectedCategory, field);
+        for (int32_t i = 0; i < length; i++) {
+            if (expectedFieldPositions[i].field != field) {
+                continue;
+            }
+            assertTrue(baseMessage + i, fv.nextPosition(cfpos, status));
+            int32_t expectedField = expectedFieldPositions[i].field;
+            int32_t expectedStart = expectedFieldPositions[i].beginIndex;
+            int32_t expectedLimit = expectedFieldPositions[i].endIndex;
+            assertEquals(baseMessage + u"category " + Int64ToUnicodeString(i),
+                expectedCategory, cfpos.getCategory());
+            assertEquals(baseMessage + u"field " + Int64ToUnicodeString(i),
+                expectedField, cfpos.getField());
+            assertEquals(baseMessage + u"start " + Int64ToUnicodeString(i),
+                expectedStart, cfpos.getStart());
+            assertEquals(baseMessage + u"limit " + Int64ToUnicodeString(i),
+                expectedLimit, cfpos.getLimit());
+        }
+        assertFalse(baseMessage + u"after loop", fv.nextPosition(cfpos, status));
+    }
 }
 
 

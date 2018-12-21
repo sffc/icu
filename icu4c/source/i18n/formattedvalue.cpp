@@ -19,6 +19,15 @@ ConstrainedFieldPosition::ConstrainedFieldPosition() {}
 
 ConstrainedFieldPosition::~ConstrainedFieldPosition() {}
 
+void ConstrainedFieldPosition::reset() {
+    fContext = 0LL;
+    fField = 0;
+    fStart = 0;
+    fLimit = 0;
+    fConstraint = UCFPOS_CONSTRAINT_NONE;
+    fCategory = UFIELD_CATEGORY_UNDEFINED;
+}
+
 void ConstrainedFieldPosition::constrainCategory(UFieldCategory category) {
     fConstraint = UCFPOS_CONSTRAINT_CATEGORY;
     fCategory = category;
@@ -67,6 +76,15 @@ ucfpos_open(UErrorCode* ec) {
         return nullptr;
     }
     return impl->exportForC();
+}
+
+U_CAPI void U_EXPORT2
+ucfpos_reset(UConstrainedFieldPosition* ptr, UErrorCode* ec) {
+    auto* impl = UConstrainedFieldPositionImpl::validate(ptr, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    impl->fImpl.reset();
 }
 
 U_CAPI void U_EXPORT2

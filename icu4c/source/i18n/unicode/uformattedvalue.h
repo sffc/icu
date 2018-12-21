@@ -124,7 +124,9 @@ ucfpos_open(UErrorCode* ec);
  * @draft ICU 64
  */
 U_DRAFT void U_EXPORT2
-ucfpos_reset(UConstrainedFieldPosition* ucfpos);
+ucfpos_reset(
+    UConstrainedFieldPosition* ucfpos,
+    UErrorCode* ec);
 
 
 /**
