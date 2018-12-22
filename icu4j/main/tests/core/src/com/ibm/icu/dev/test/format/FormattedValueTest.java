@@ -97,7 +97,8 @@ public class FormattedValueTest {
         assertEquals(messagePrefix + ": context", context, cfpos.getInt64IterationContext());
     }
 
-    public static void assertFieldPositions(String message, FormattedValue fv, Object[][] expectedFieldPositions) {
+    public static void checkFormattedValue(String message, FormattedValue fv, String expectedString,
+            Object[][] expectedFieldPositions) {
         // Calculate some initial expected values
         int stringLength = fv.toString().length();
         HashSet<Format.Field> uniqueFields = new HashSet<>();
@@ -105,6 +106,10 @@ public class FormattedValueTest {
             uniqueFields.add((Format.Field) expectedFieldPositions[i][0]);
         }
         String baseMessage = message + ": " + fv.toString() + ": ";
+
+        // Check the String and CharSequence
+        assertEquals(baseMessage + "string", expectedString, fv.toString());
+        assertCharSequenceEquals(expectedString, fv);
 
         // Check the AttributedCharacterIterator
         AttributedCharacterIterator fpi = fv.toCharacterIterator();
@@ -172,6 +177,21 @@ public class FormattedValueTest {
                 i++;
             }
             assertFalse(baseMessage + "after loop", fv.nextPosition(cfpos));
+        }
+    }
+
+    public static void assertCharSequenceEquals(CharSequence a, CharSequence b) {
+        assertEquals(a.toString(), b.toString());
+
+        assertEquals(a.length(), b.length());
+        for (int i = 0; i < a.length(); i++) {
+            assertEquals(a.charAt(i), b.charAt(i));
+        }
+
+        int start = Math.min(2, a.length());
+        int end = Math.min(8, a.length());
+        if (start != end) {
+            assertCharSequenceEquals(a.subSequence(start, end), b.subSequence(start, end));
         }
     }
 }

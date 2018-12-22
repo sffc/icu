@@ -318,6 +318,10 @@ void LocalizedNumberRangeFormatter::formatImpl(
         return;
     }
     impl->format(results, equalBeforeRounding, status);
+    if (U_FAILURE(status)) {
+        return;
+    }
+    results.string.writeTerminator(status);
 }
 
 const impl::NumberRangeFormatterImpl*

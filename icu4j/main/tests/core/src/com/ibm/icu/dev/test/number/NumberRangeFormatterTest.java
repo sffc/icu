@@ -713,6 +713,7 @@ public class NumberRangeFormatterTest {
     public void testFieldPositions() {
         {
             String message = "Field position test 1";
+            String expectedString = "3K – 5K m";
             FormattedNumberRange fmtd = assertFormattedRangeEquals(
                     message,
                     NumberRangeFormatter.with()
@@ -722,24 +723,25 @@ public class NumberRangeFormatterTest {
                         .locale(ULocale.US),
                     3000,
                     5000,
-                    "3K – 5K m");
+                    expectedString);
             Object[][] expectedFieldPositions = new Object[][]{
                     {NumberFormat.Field.INTEGER, 0, 1},
                     {NumberFormat.Field.COMPACT, 1, 2},
                     {NumberFormat.Field.INTEGER, 5, 6},
                     {NumberFormat.Field.COMPACT, 6, 7},
                     {NumberFormat.Field.MEASURE_UNIT, 8, 9}};
-            FormattedValueTest.assertFieldPositions(message, fmtd, expectedFieldPositions);
+            FormattedValueTest.checkFormattedValue(message, fmtd, expectedString, expectedFieldPositions);
         }
 
         {
             String message = "Field position test 2";
+            String expectedString = "87,654,321–98,765,432";
             FormattedNumberRange fmtd = assertFormattedRangeEquals(
                     message,
                     NumberRangeFormatter.withLocale(ULocale.US),
                     87654321,
                     98765432,
-                    "87,654,321–98,765,432");
+                    expectedString);
             Object[][] expectedFieldPositions = new Object[][]{
                     {NumberFormat.Field.GROUPING_SEPARATOR, 2, 3},
                     {NumberFormat.Field.GROUPING_SEPARATOR, 6, 7},
@@ -747,7 +749,7 @@ public class NumberRangeFormatterTest {
                     {NumberFormat.Field.GROUPING_SEPARATOR, 13, 14},
                     {NumberFormat.Field.GROUPING_SEPARATOR, 17, 18},
                     {NumberFormat.Field.INTEGER, 11, 21}};
-            FormattedValueTest.assertFieldPositions(message, fmtd, expectedFieldPositions);
+            FormattedValueTest.checkFormattedValue(message, fmtd, expectedString, expectedFieldPositions);
         }
     }
 

@@ -140,14 +140,24 @@ void FormattedValueTest::assertAllPartsEqual(
 }
 
 
-void IntlTestWithFieldPosition::assertFieldPositions(
+void IntlTestWithFieldPosition::checkFormattedValue(
         const char16_t* message,
         const FormattedValue& fv,
+        UnicodeString expectedString,
         UFieldCategory expectedCategory,
         const UFieldPosition* expectedFieldPositions,
         int32_t length) {
-    IcuTestErrorCode status(*this, "assertFieldPositions");
+    IcuTestErrorCode status(*this, "checkFormattedValue");
     UnicodeString baseMessage = UnicodeString(message) + u": " + fv.toString(status) + u": ";
+
+    // Check string values
+    assertEquals(baseMessage + u"string", expectedString, fv.toString(status));
+    assertEquals(baseMessage + u"temp string", expectedString, fv.toTempString(status));
+
+    // The temp string is guaranteed to be NUL-terminated
+    UnicodeString readOnlyAlias = fv.toTempString(status);
+    assertEquals(baseMessage + u"NUL-terminated",
+        0, readOnlyAlias.getBuffer()[readOnlyAlias.length()]);
 
     // Check nextPosition over all fields
     ConstrainedFieldPosition cfpos;

@@ -10,6 +10,7 @@
 #define UNISTR_FROM_STRING_EXPLICIT
 
 #include "unicode/formattedvalue.h"
+#include "number_utypes.h"
 #include "capi_helper.h"
 
 U_NAMESPACE_BEGIN
@@ -180,6 +181,26 @@ ucfpos_close(UConstrainedFieldPosition* ptr) {
     UErrorCode localStatus = U_ZERO_ERROR;
     auto* impl = UConstrainedFieldPositionImpl::validate(ptr, localStatus);
     delete impl;
+}
+
+
+U_DRAFT const UChar* U_EXPORT2
+ufmtval_getString(
+        const UFormattedValue* ufmtval,
+        int32_t* pLength,
+        UErrorCode* ec) {
+    const auto* impl = number::impl::UFormattedValueApiHelper::validate(ufmtval, *ec);
+    if (U_FAILURE(*ec)) {
+        return nullptr;
+    }
+    UnicodeString readOnlyAlias = impl->fFormattedValue->toTempString(*ec);
+    if (U_FAILURE(*ec)) {
+        return nullptr;
+    }
+    if (pLength != nullptr) {
+        *pLength = readOnlyAlias.length();
+    }
+    return readOnlyAlias.getBuffer();
 }
 
 

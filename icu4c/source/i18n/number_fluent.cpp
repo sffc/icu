@@ -670,6 +670,10 @@ void LocalizedNumberFormatter::formatImpl(impl::UFormattedNumberData* results, U
     } else {
         NumberFormatterImpl::formatStatic(fMacros, results->quantity, results->string, status);
     }
+    if (U_FAILURE(status)) {
+        return;
+    }
+    results->string.writeTerminator(status);
 }
 
 void LocalizedNumberFormatter::getAffixImpl(bool isPrefix, bool isNegative, UnicodeString& result,

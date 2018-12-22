@@ -29,9 +29,10 @@ class IntlTestFormat: public IntlTest {
 class IntlTestWithFieldPosition : public IntlTest {
 public:
     // TODO: When needed, add overload with a different category for each position
-    void assertFieldPositions(
+    void checkFormattedValue(
         const char16_t* message,
         const FormattedValue& fv,
+        UnicodeString expectedString,
         UFieldCategory expectedCategory,
         const UFieldPosition* expectedFieldPositions,
         int32_t length);

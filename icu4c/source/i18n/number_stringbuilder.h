@@ -85,6 +85,8 @@ class U_I18N_API NumberStringBuilder : public UMemory {
 
     int32_t insert(int32_t index, const NumberStringBuilder &other, UErrorCode &status);
 
+    void writeTerminator(UErrorCode& status);
+
     /**
      * Gets a "safe" UnicodeString that can be used even after the NumberStringBuilder is destructed.
      * */

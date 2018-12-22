@@ -235,6 +235,9 @@ class U_I18N_API FormattedValue {
      * The return value is valid only as long as this FormattedValue is present and unchanged in
      * memory. If you need the string outside the current scope, consider #toString.
      *
+     * The buffer returned by calling UnicodeString#getBuffer() on the return value is
+     * guaranteed to be NUL-terminated.
+     *
      * @param status Set if an error occurs.
      * @return a temporary UnicodeString containing the formatted string.
      *

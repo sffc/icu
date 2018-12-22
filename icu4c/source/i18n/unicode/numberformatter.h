@@ -147,6 +147,7 @@ class GeneratorHelpers;
 class DecNum;
 class NumberRangeFormatterImpl;
 struct RangeMacroProps;
+struct UFormattedNumberImpl;
 
 /**
  * Used for NumberRangeFormatter and implemented in numrange_fluent.cpp.
@@ -2613,6 +2614,12 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
 #endif  /* U_HIDE_INTERNAL_API */
 
     /**
+     * Default constructor; makes an empty FormattedNumber.
+     */
+    FormattedNumber()
+        : fResults(nullptr), fErrorCode(U_INVALID_STATE_ERROR) {};
+
+    /**
      * Copying not supported; use move constructor instead.
      */
     FormattedNumber(const FormattedNumber&) = delete;
@@ -2644,7 +2651,7 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
 
   private:
     // Can't use LocalPointer because UFormattedNumberData is forward-declared
-    const impl::UFormattedNumberData *fResults;
+    impl::UFormattedNumberData *fResults;
 
     // Error code for the terminal methods
     UErrorCode fErrorCode;
@@ -2661,6 +2668,9 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
 
     // To give LocalizedNumberFormatter format methods access to this class's constructor:
     friend class LocalizedNumberFormatter;
+
+    // To give C API access to internals
+    friend struct impl::UFormattedNumberImpl;
 };
 
 /**

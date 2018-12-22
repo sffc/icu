@@ -11,6 +11,8 @@
 
 #include "unicode/uformattedvalue.h"
 #include "unicode/unum.h"
+#include "unicode/ustring.h"
+#include "cformtst.h"
 #include "cintltst.h"
 #include "cmemory.h"
 #include "cstring.h"
@@ -169,6 +171,25 @@ static void AssertAllPartsEqual(
     int64_t _context = ucfpos_getInt64IterationContext(ucfpos, &status);
     assertSuccess(AAPE_MSG("context"), &status);
     assertIntEquals(AAPE_MSG("context"), context, _context);
+}
+
+
+// Declared in cformtst.h
+void checkFormattedValue(
+        const char* message,
+        const UFormattedValue* fv,
+        const UChar* expectedString,
+        UFieldCategory expectedCategory,
+        const UFieldPosition* expectedFieldPositions,
+        int32_t expectedFieldPositionsLength) {
+    UErrorCode status = U_ZERO_ERROR;
+    int32_t length;
+    const UChar* actualString = ufmtval_getString(fv, &length, &status);
+    assertSuccess(message, &status);
+    // The string is guaranteed to be NUL-terminated.
+    int32_t actualLength = u_strlen(actualString);
+    assertIntEquals(message, actualLength, length);
+    assertUEquals(message, expectedString, actualString);
 }
 
 

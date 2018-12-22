@@ -727,53 +727,57 @@ void NumberRangeFormatterTest::testPlurals() {
 void NumberRangeFormatterTest::testFieldPositions() {
     {
         const char16_t* message = u"Field position test 1";
+        const char16_t* expectedString = u"3K – 5K m";
         FormattedNumberRange result = assertFormattedRangeEquals(
-                message,
-                NumberRangeFormatter::with()
-                    .numberFormatterBoth(NumberFormatter::with()
-                        .unit(METER)
-                        .notation(Notation::compactShort()))
-                    .locale("en-us"),
-                3000,
-                5000,
-                u"3K – 5K m");
+            message,
+            NumberRangeFormatter::with()
+                .numberFormatterBoth(NumberFormatter::with()
+                    .unit(METER)
+                    .notation(Notation::compactShort()))
+                .locale("en-us"),
+            3000,
+            5000,
+            expectedString);
         static const UFieldPosition expectedFieldPositions[] = {
-                // field, begin index, end index
-                {UNUM_INTEGER_FIELD, 0, 1},
-                {UNUM_COMPACT_FIELD, 1, 2},
-                {UNUM_INTEGER_FIELD, 5, 6},
-                {UNUM_COMPACT_FIELD, 6, 7},
-                {UNUM_MEASURE_UNIT_FIELD, 8, 9}};
-        assertFieldPositions(
-                message,
-                result,
-                UFIELD_CATEGORY_NUMBER,
-                expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+            // field, begin index, end index
+            {UNUM_INTEGER_FIELD, 0, 1},
+            {UNUM_COMPACT_FIELD, 1, 2},
+            {UNUM_INTEGER_FIELD, 5, 6},
+            {UNUM_COMPACT_FIELD, 6, 7},
+            {UNUM_MEASURE_UNIT_FIELD, 8, 9}};
+        checkFormattedValue(
+            message,
+            result,
+            expectedString,
+            UFIELD_CATEGORY_NUMBER,
+            expectedFieldPositions,
+            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
     }
 
     {
         const char16_t* message = u"Field position test 2";
+        const char16_t* expectedString = u"87,654,321–98,765,432";
         FormattedNumberRange result = assertFormattedRangeEquals(
-                message,
-                NumberRangeFormatter::withLocale("en-us"),
-                87654321,
-                98765432,
-                u"87,654,321–98,765,432");
+            message,
+            NumberRangeFormatter::withLocale("en-us"),
+            87654321,
+            98765432,
+            expectedString);
         static const UFieldPosition expectedFieldPositions[] = {
-                // field, begin index, end index
-                {UNUM_GROUPING_SEPARATOR_FIELD, 2, 3},
-                {UNUM_GROUPING_SEPARATOR_FIELD, 6, 7},
-                {UNUM_INTEGER_FIELD, 0, 10},
-                {UNUM_GROUPING_SEPARATOR_FIELD, 13, 14},
-                {UNUM_GROUPING_SEPARATOR_FIELD, 17, 18},
-                {UNUM_INTEGER_FIELD, 11, 21}};
-        assertFieldPositions(
-                message,
-                result,
-                UFIELD_CATEGORY_NUMBER,
-                expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+            // field, begin index, end index
+            {UNUM_GROUPING_SEPARATOR_FIELD, 2, 3},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 6, 7},
+            {UNUM_INTEGER_FIELD, 0, 10},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 13, 14},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 17, 18},
+            {UNUM_INTEGER_FIELD, 11, 21}};
+        checkFormattedValue(
+            message,
+            result,
+            expectedString,
+            UFIELD_CATEGORY_NUMBER,
+            expectedFieldPositions,
+            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
     }
 }
 

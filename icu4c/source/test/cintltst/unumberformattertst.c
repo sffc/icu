@@ -12,6 +12,7 @@
 #include "unicode/unumberformatter.h"
 #include "unicode/umisc.h"
 #include "unicode/unum.h"
+#include "cformtst.h"
 #include "cintltst.h"
 #include "cmemory.h"
 
@@ -21,6 +22,8 @@ static void TestSkeletonFormatToFields(void);
 
 static void TestExampleCode(void);
 
+static void TestFormattedValue(void);
+
 void addUNumberFormatterTest(TestNode** root);
 
 #define TESTCASE(x) addTest(root, &x, "tsformat/unumberformatter/" #x)
@@ -29,6 +32,7 @@ void addUNumberFormatterTest(TestNode** root) {
     TESTCASE(TestSkeletonFormatToString);
     TESTCASE(TestSkeletonFormatToFields);
     TESTCASE(TestExampleCode);
+    TESTCASE(TestFormattedValue);
 }
 
 
@@ -187,6 +191,41 @@ static void TestExampleCode() {
     unumf_close(uformatter);
     unumf_closeResult(uresult);
     uprv_free(buffer);
+}
+
+
+static void TestFormattedValue() {
+    UErrorCode ec = U_ZERO_ERROR;
+    UNumberFormatter* uformatter = unumf_openForSkeletonAndLocale(
+            u".00 compact-short", -1, "en", &ec);
+    assertSuccessCheck("Should create without error", &ec, TRUE);
+    UFormattedNumber* uresult = unumf_openResult(&ec);
+    assertSuccess("Should create result without error", &ec);
+
+    unumf_formatInt(uformatter, 55000, uresult, &ec); // "55.00 K"
+    if (assertSuccessCheck("Should format without error", &ec, TRUE)) {
+        const UFormattedValue* fv = unumf_resultAsFormattedValue(uresult, &ec);
+        assertSuccess("Should convert without error", &ec);
+        static const UFieldPosition expectedFieldPositions[] = {
+            // field, begin index, end index
+            {UNUM_GROUPING_SEPARATOR_FIELD, 2, 3},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 6, 7},
+            {UNUM_INTEGER_FIELD, 0, 10},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 13, 14},
+            {UNUM_GROUPING_SEPARATOR_FIELD, 17, 18},
+            {UNUM_INTEGER_FIELD, 11, 21}};
+        checkFormattedValue(
+            "FormattedNumber as FormattedValue",
+            fv,
+            u"55.00K",
+            UFIELD_CATEGORY_NUMBER,
+            expectedFieldPositions,
+            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+    }
+
+    // cleanup:
+    unumf_closeResult(uresult);
+    unumf_close(uformatter);
 }
 
 

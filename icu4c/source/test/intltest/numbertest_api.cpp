@@ -2885,16 +2885,18 @@ void NumberFormatterApiTest::assertUndefinedSkeleton(const UnlocalizedNumberForm
 void NumberFormatterApiTest::assertNumberFieldPositions(
         const char16_t* message, const FormattedNumber& formattedNumber,
         const UFieldPosition* expectedFieldPositions, int32_t length) {
+    IcuTestErrorCode status(*this, "assertNumberFieldPositions");
+
     // Check FormattedValue functions
-    assertFieldPositions(
+    checkFormattedValue(
         message,
         static_cast<const FormattedValue&>(formattedNumber),
+        formattedNumber.toString(status),
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         length);
 
     // Check FormattedNumber-specific functions
-    IcuTestErrorCode status(*this, "assertNumberFieldPositions");
     UnicodeString baseMessage = UnicodeString(message) + u": " + formattedNumber.toString(status) + u": ";
     FieldPositionIterator fpi;
     formattedNumber.getAllFieldPositions(fpi, status);

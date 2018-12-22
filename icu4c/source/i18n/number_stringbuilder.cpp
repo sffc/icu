@@ -33,7 +33,15 @@ inline void uprv_memmove2(void* dest, const void* src, size_t len) {
 
 } // namespace
 
-NumberStringBuilder::NumberStringBuilder() = default;
+NumberStringBuilder::NumberStringBuilder() {
+#if U_DEBUG
+    // Initializing the memory to non-zero helps catch some bugs that involve
+    // reading from an improperly terminated string.
+    for (int32_t i=0; i<getCapacity(); i++) {
+        getCharPtr()[i] = 1;
+    }
+#endif
+};
 
 NumberStringBuilder::~NumberStringBuilder() {
     if (fUsingHeap) {
@@ -239,6 +247,16 @@ NumberStringBuilder::insert(int32_t index, const NumberStringBuilder &other, UEr
         getFieldPtr()[position + i] = other.fieldAt(i);
     }
     return count;
+}
+
+void NumberStringBuilder::writeTerminator(UErrorCode& status) {
+    int32_t position = prepareForInsert(fLength, 1, status);
+    if (U_FAILURE(status)) {
+        return;
+    }
+    getCharPtr()[position] = 0;
+    getFieldPtr()[position] = UNUM_FIELD_COUNT;
+    fLength--;
 }
 
 int32_t NumberStringBuilder::prepareForInsert(int32_t index, int32_t count, UErrorCode &status) {
