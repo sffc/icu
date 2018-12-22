@@ -565,7 +565,11 @@ public class NumberStringBuilder implements CharSequence {
             // Case 1: currently scanning a field.
             if (currField != null) {
                 if (currField != _field) {
-                    int end = trimBack(i - zero);
+                    int end = i - zero;
+                    // Grouping separators can be whitespace; don't throw them out!
+                    if (currField != NumberFormat.Field.GROUPING_SEPARATOR) {
+                        end = trimBack(end);
+                    }
                     if (end <= fieldStart) {
                         // Entire field position is ignorable; skip.
                         fieldStart = -1;
@@ -573,7 +577,10 @@ public class NumberStringBuilder implements CharSequence {
                         i--;  // look at this index again
                         continue;
                     }
-                    int start = trimFront(fieldStart);
+                    int start = fieldStart;
+                    if (currField != NumberFormat.Field.GROUPING_SEPARATOR) {
+                        start = trimFront(start);
+                    }
                     cfpos.setState(currField, null, start, end);
                     return true;
                 }

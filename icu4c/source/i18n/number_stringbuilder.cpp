@@ -498,7 +498,11 @@ bool NumberStringBuilder::nextPosition(ConstrainedFieldPosition& cfpos, UErrorCo
         // Case 1: currently scanning a field.
         if (currField != UNUM_FIELD_COUNT) {
             if (currField != _field) {
-                int32_t end = trimBack(i - fZero);
+                int32_t end = i - fZero;
+                // Grouping separators can be whitespace; don't throw them out!
+                if (currField != UNUM_GROUPING_SEPARATOR_FIELD) {
+                    end = trimBack(i - fZero);
+                }
                 if (end <= fieldStart) {
                     // Entire field position is ignorable; skip.
                     fieldStart = -1;
@@ -506,7 +510,10 @@ bool NumberStringBuilder::nextPosition(ConstrainedFieldPosition& cfpos, UErrorCo
                     i--;  // look at this index again
                     continue;
                 }
-                int32_t start = trimFront(fieldStart);
+                int32_t start = fieldStart;
+                if (currField != UNUM_GROUPING_SEPARATOR_FIELD) {
+                    start = trimFront(start);
+                }
                 cfpos.setState(UFIELD_CATEGORY_NUMBER, currField, start, end);
                 return true;
             }
