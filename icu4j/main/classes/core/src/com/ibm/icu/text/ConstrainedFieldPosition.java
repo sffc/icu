@@ -67,9 +67,10 @@ public class ConstrainedFieldPosition {
     }
 
     /**
-     * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created.
+     * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created:
      *
-     * Removes any constraints that may have been set on the instance.
+     * - Removes any constraints that may have been set on the instance.
+     * - Resets the iteration position.
      *
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
@@ -93,8 +94,16 @@ public class ConstrainedFieldPosition {
      *
      * For example, to loop over all grouping separators:
      *
-     * ConstrainedFieldPosition cfpos; cfpos.constrainField(NumberFormat.Field.GROUPING_SEPARATOR); while
-     * (fmtval.nextPosition(cfpos)) { // handle the grouping separator position }
+     * <pre>
+     * ConstrainedFieldPosition cfpos;
+     * cfpos.constrainField(NumberFormat.Field.GROUPING_SEPARATOR);
+     * while (fmtval.nextPosition(cfpos)) {
+     *   // handle the grouping separator position
+     * }
+     * </pre>
+     *
+     * Changing the constraint while in the middle of iterating over a FormattedValue
+     * does not generally have well-defined behavior.
      *
      * @param field
      *            The field to fix when iterating.
@@ -120,7 +129,9 @@ public class ConstrainedFieldPosition {
     /**
      * Gets the field for the current position.
      *
-     * The return value is well-defined only after FormattedValue#nextPosition returns TRUE.
+     * If a field constraint was set, this function returns the constrained
+     * field. Otherwise, the return value is well-defined only after
+     * FormattedValue#nextPosition returns TRUE.
      *
      * @return The field saved in the instance.
      * @draft ICU 64

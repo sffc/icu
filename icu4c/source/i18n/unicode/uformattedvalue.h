@@ -156,6 +156,9 @@ ucfpos_close(UConstrainedFieldPosition* ucfpos);
  *     }
  *     ucfpos_close(ucfpos);
  *
+ * Changing the constraint while in the middle of iterating over a FormattedValue
+ * does not generally have well-defined behavior.
+ *
  * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param category The field category to fix when iterating.
  * @param ec Set if an error occurs.
@@ -184,6 +187,9 @@ ucfpos_constrainCategory(
  *         // handle the grouping separator position
  *     }
  *     ucfpos_close(ucfpos);
+ *
+ * Changing the constraint while in the middle of iterating over a FormattedValue
+ * does not generally have well-defined behavior.
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param category The field category to fix when iterating.
@@ -216,7 +222,9 @@ ucfpos_getConstraintType(
 /**
  * Gets the field category for the current position.
  *
- * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
+ * If a category or field constraint was set, this function returns the constrained
+ * category. Otherwise, the return value is well-defined only after
+ * ufmtval_nextPosition returns TRUE.
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param ec Set if an error occurs.
@@ -232,7 +240,9 @@ ucfpos_getCategory(
 /**
  * Gets the field for the current position.
  *
- * The return value is well-defined only after ufmtval_nextPosition returns TRUE.
+ * If a field constraint was set, this function returns the constrained
+ * field. Otherwise, the return value is well-defined only after
+ * ufmtval_nextPosition returns TRUE.
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param ec Set if an error occurs.
@@ -251,8 +261,8 @@ ucfpos_getField(
  * The output values are well-defined only after ufmtval_nextPosition returns TRUE.
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
- * @param pStartIndex Set to the start index saved in the instance. Ignored if nullptr.
- * @param pEndIndex Set to the end index saved in the instance. Ignored if nullptr.
+ * @param pStart Set to the start index saved in the instance. Ignored if nullptr.
+ * @param pLimit Set to the end index saved in the instance. Ignored if nullptr.
  * @param ec Set if an error occurs.
  * @draft ICU 64
  */
@@ -380,6 +390,29 @@ ufmtval_nextPosition(
     const UFormattedValue* ufmtval,
     UConstrainedFieldPosition* ucfpos,
     UErrorCode* ec);
+
+
+#if U_SHOW_CPLUSPLUS_API
+U_NAMESPACE_BEGIN
+
+/**
+ * \class LocalUConstrainedFieldPositionPointer
+ * "Smart pointer" class; closes a UConstrainedFieldPosition via ucfpos_close().
+ * For most methods see the LocalPointerBase base class.
+ *
+ * Usage:
+ *
+ *     LocalUConstrainedFieldPositionPointer ucfpos(ucfpos_open(ec));
+ *     // no need to explicitly call ucfpos_close()
+ *
+ * @draft ICU 64
+ */
+U_DEFINE_LOCAL_OPEN_POINTER(LocalUConstrainedFieldPositionPointer,
+    UConstrainedFieldPosition,
+    ucfpos_close);
+
+U_NAMESPACE_END
+#endif // U_SHOW_CPLUSPLUS_API
 
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

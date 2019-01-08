@@ -19,6 +19,7 @@ public:
 private:
     void testBasic();
     void testSetters();
+    void testLocalPointer();
 
     void assertAllPartsEqual(
         UnicodeString messagePrefix,
@@ -38,6 +39,7 @@ void FormattedValueTest::runIndexedTest(int32_t index, UBool exec, const char *&
     TESTCASE_AUTO_BEGIN;
     TESTCASE_AUTO(testBasic);
     TESTCASE_AUTO(testSetters);
+    TESTCASE_AUTO(testLocalPointer);
     TESTCASE_AUTO_END;
 }
 
@@ -114,6 +116,16 @@ void FormattedValueTest::testSetters() {
         0,
         0,
         0LL);
+}
+
+void FormattedValueTest::testLocalPointer() {
+    UErrorCode status = U_ZERO_ERROR;
+    LocalUConstrainedFieldPositionPointer ucfpos(ucfpos_open(&status));
+    assertSuccess("Openining LocalUConstrainedFieldPositionPointer", status);
+    assertEquals(u"Test that object is valid",
+        UCFPOS_CONSTRAINT_NONE,
+        ucfpos_getConstraintType(ucfpos.getAlias(), &status));
+    assertSuccess("Using LocalUConstrainedFieldPositionPointer", status);
 }
 
 void FormattedValueTest::assertAllPartsEqual(

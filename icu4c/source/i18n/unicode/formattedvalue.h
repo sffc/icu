@@ -42,9 +42,10 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
     virtual ~ConstrainedFieldPosition();
 
     /**
-     * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created.
+     * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created:
      *
-     * Removes any constraints that may have been set on the instance.
+     * - Removes any constraints that may have been set on the instance.
+     * - Resets the iteration position.
      *
      * @draft ICU 64
      */
@@ -65,6 +66,9 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
      *     while (fmtval.nextPosition(cfpos, status)) {
      *         // handle the number-related field position
      *     }
+     *
+     * Changing the constraint while in the middle of iterating over a FormattedValue
+     * does not generally have well-defined behavior.
      *
      * @param category The field category to fix when iterating.
      * @draft ICU 64
@@ -87,6 +91,9 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
      *         // handle the grouping separator position
      *     }
      *
+     * Changing the constraint while in the middle of iterating over a FormattedValue
+     * does not generally have well-defined behavior.
+     *
      * @param category The field category to fix when iterating.
      * @param field The field to fix when iterating.
      * @draft ICU 64
@@ -106,7 +113,9 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
     /**
      * Gets the field category for the current position.
      *
-     * The return value is well-defined only after FormattedValue#nextPosition returns TRUE.
+     * If a category or field constraint was set, this function returns the constrained
+     * category. Otherwise, the return value is well-defined only after
+     * FormattedValue#nextPosition returns TRUE.
      *
      * @return The field category saved in the instance.
      * @draft ICU 64
@@ -118,7 +127,9 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
     /**
      * Gets the field for the current position.
      *
-     * The return value is well-defined only after FormattedValue#nextPosition returns TRUE.
+     * If a field constraint was set, this function returns the constrained
+     * field. Otherwise, the return value is well-defined only after
+     * FormattedValue#nextPosition returns TRUE.
      *
      * @return The field saved in the instance.
      * @draft ICU 64

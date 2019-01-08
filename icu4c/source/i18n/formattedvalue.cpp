@@ -5,10 +5,6 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-// Allow implicit conversion from char16_t* to UnicodeString for this file:
-// Helpful in toString methods and elsewhere.
-#define UNISTR_FROM_STRING_EXPLICIT
-
 #include "unicode/formattedvalue.h"
 #include "number_utypes.h"
 #include "capi_helper.h"
