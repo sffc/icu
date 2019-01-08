@@ -751,7 +751,7 @@ void NumberRangeFormatterTest::testFieldPositions() {
             expectedString,
             UFIELD_CATEGORY_NUMBER,
             expectedFieldPositions,
-            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+            UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -777,7 +777,7 @@ void NumberRangeFormatterTest::testFieldPositions() {
             expectedString,
             UFIELD_CATEGORY_NUMBER,
             expectedFieldPositions,
-            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+            UPRV_LENGTHOF(expectedFieldPositions));
     }
 }
 

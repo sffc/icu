@@ -2192,7 +2192,7 @@ void NumberFormatterApiTest::fieldPositionLogic() {
             message,
             fmtd,
             expectedFieldPositions,
-            sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+            UPRV_LENGTHOF(expectedFieldPositions));
 
     // Test the iteration functionality of nextFieldPosition
     FieldPosition actual = {UNUM_GROUPING_SEPARATOR_FIELD};
@@ -2240,7 +2240,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2261,7 +2261,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2282,7 +2282,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2303,7 +2303,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2324,7 +2324,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2347,7 +2347,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2367,7 +2367,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2387,7 +2387,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2407,7 +2407,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2427,7 +2427,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2448,7 +2448,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 
     {
@@ -2471,7 +2471,7 @@ void NumberFormatterApiTest::fieldPositionCoverage() {
                 message,
                 result,
                 expectedFieldPositions,
-                sizeof(expectedFieldPositions)/sizeof(*expectedFieldPositions));
+                UPRV_LENGTHOF(expectedFieldPositions));
     }
 }
 
