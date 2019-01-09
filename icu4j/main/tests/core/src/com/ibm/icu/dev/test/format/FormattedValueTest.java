@@ -31,6 +31,7 @@ public class FormattedValueTest {
             "basic",
             cfpos,
             ConstraintType.NONE,
+            Object.class,
             null,
             null,
             0,
@@ -47,7 +48,20 @@ public class FormattedValueTest {
             "setters 1",
             cfpos,
             ConstraintType.FIELD,
+            Object.class,
             NumberFormat.Field.COMPACT,
+            null,
+            0,
+            0,
+            0L);
+
+        cfpos.constrainClass(NumberFormat.Field.class);
+        assertAllPartsEqual(
+            "setters 1.5",
+            cfpos,
+            ConstraintType.CLASS,
+            NumberFormat.Field.class,
+            null,
             null,
             0,
             0,
@@ -57,8 +71,9 @@ public class FormattedValueTest {
         assertAllPartsEqual(
             "setters 2",
             cfpos,
-            ConstraintType.FIELD,
-            NumberFormat.Field.COMPACT,
+            ConstraintType.CLASS,
+            NumberFormat.Field.class,
+            null,
             null,
             0,
             0,
@@ -68,7 +83,8 @@ public class FormattedValueTest {
         assertAllPartsEqual(
             "setters 3",
             cfpos,
-            ConstraintType.FIELD,
+            ConstraintType.CLASS,
+            NumberFormat.Field.class,
             NumberFormat.Field.COMPACT,
             BigDecimal.ONE,
             5,
@@ -80,6 +96,7 @@ public class FormattedValueTest {
             "setters 4",
             cfpos,
             ConstraintType.NONE,
+            Object.class,
             null,
             null,
             0,
@@ -88,8 +105,9 @@ public class FormattedValueTest {
     }
 
     private void assertAllPartsEqual(String messagePrefix, ConstrainedFieldPosition cfpos, ConstraintType constraint,
-            Field field, Object value, int start, int limit, long context) {
+            Class<?> classConstraint, Field field, Object value, int start, int limit, long context) {
         assertEquals(messagePrefix + ": constraint", constraint, cfpos.getConstraintType());
+        assertEquals(messagePrefix + ": class constraint", classConstraint, cfpos.getClassConstraint());
         assertEquals(messagePrefix + ": field", field, cfpos.getField());
         assertEquals(messagePrefix + ": field value", value, cfpos.getFieldValue());
         assertEquals(messagePrefix + ": start", start, cfpos.getStart());
@@ -102,8 +120,10 @@ public class FormattedValueTest {
         // Calculate some initial expected values
         int stringLength = fv.toString().length();
         HashSet<Format.Field> uniqueFields = new HashSet<>();
+        Set<Class<?>> uniqueFieldClasses = new HashSet<>();
         for (int i=0; i<expectedFieldPositions.length; i++) {
             uniqueFields.add((Format.Field) expectedFieldPositions[i][0]);
+            uniqueFieldClasses.add(expectedFieldPositions[i][0].getClass());
         }
         String baseMessage = message + ": " + fv.toString() + ": ";
 
@@ -157,6 +177,32 @@ public class FormattedValueTest {
             i++;
         }
         assertFalse(baseMessage + "after loop", fv.nextPosition(cfpos));
+
+        // Check nextPosition constrained over each class one at a time
+        for (Class<?> classConstraint : uniqueFieldClasses) {
+            cfpos.reset();
+            cfpos.constrainClass(classConstraint);
+            i = 0;
+            for (Object[] cas : expectedFieldPositions) {
+                if (cas[0].getClass() != classConstraint) {
+                    continue;
+                }
+                assertTrue(baseMessage + i, fv.nextPosition(cfpos));
+                Format.Field expectedField = (Format.Field) cas[0];
+                int expectedStart = (Integer) cas[1];
+                int expectedLimit = (Integer) cas[2];
+                assertEquals(baseMessage + "field " + i, expectedField, cfpos.getField());
+                assertEquals(baseMessage + "start " + i, expectedStart, cfpos.getStart());
+                assertEquals(baseMessage + "limit " + i, expectedLimit, cfpos.getLimit());
+                i++;
+            }
+            assertFalse(baseMessage + "after loop", fv.nextPosition(cfpos));
+        }
+
+        // Check nextPosition constrained over an unrelated class
+        cfpos.reset();
+        cfpos.constrainClass(HashSet.class);
+        assertFalse(baseMessage + "unrelated class", fv.nextPosition(cfpos));
 
         // Check nextPosition constrained over each field one at a time
         for (Format.Field field : uniqueFields) {

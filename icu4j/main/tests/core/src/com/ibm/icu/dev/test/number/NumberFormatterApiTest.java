@@ -2164,7 +2164,7 @@ public class NumberFormatterApiTest {
                 {NumberFormat.Field.DECIMAL_SEPARATOR, 14, 15},
                 {NumberFormat.Field.FRACTION, 15, 17}};
 
-        checkFormattedValue(message, fmtd, expectedFieldPositions);
+        assertNumberFieldPositions(message, fmtd, expectedFieldPositions);
 
         // Test the iteration functionality of nextFieldPosition
         FieldPosition actual = new FieldPosition(NumberFormat.Field.GROUPING_SEPARATOR);
@@ -2211,7 +2211,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.MEASURE_UNIT, 2, 4}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2230,7 +2230,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.MEASURE_UNIT, 2, 6}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2250,7 +2250,7 @@ public class NumberFormatterApiTest {
                     {NumberFormat.Field.INTEGER, 0, 2},
                     // note: field starts after the space
                     {NumberFormat.Field.MEASURE_UNIT, 3, 9}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2270,7 +2270,7 @@ public class NumberFormatterApiTest {
                     {NumberFormat.Field.MEASURE_UNIT, 0, 11},
                     {NumberFormat.Field.INTEGER, 12, 14},
                     {NumberFormat.Field.MEASURE_UNIT, 15, 19}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2290,7 +2290,7 @@ public class NumberFormatterApiTest {
                     {NumberFormat.Field.INTEGER, 0, 2},
                     // Should trim leading/trailing spaces, but not inner spaces:
                     {NumberFormat.Field.MEASURE_UNIT, 3, 7}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2312,7 +2312,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 1, 3},
                     {NumberFormat.Field.MEASURE_UNIT, 4, 5}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2331,7 +2331,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.COMPACT, 2, 3}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2350,7 +2350,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.COMPACT, 3, 11}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2369,7 +2369,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 0, 1},
                     {NumberFormat.Field.COMPACT, 2, 9}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2388,7 +2388,7 @@ public class NumberFormatterApiTest {
                     // field, begin index, end index
                     {NumberFormat.Field.INTEGER, 1, 2},
                     {NumberFormat.Field.COMPACT, 3, 6}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2408,7 +2408,7 @@ public class NumberFormatterApiTest {
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.COMPACT, 3, 8},
                     {NumberFormat.Field.CURRENCY, 9, 12}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2430,7 +2430,7 @@ public class NumberFormatterApiTest {
                     {NumberFormat.Field.INTEGER, 0, 2},
                     {NumberFormat.Field.COMPACT, 3, 11},
                     {NumberFormat.Field.MEASURE_UNIT, 12, 18}};
-            checkFormattedValue(
+            assertNumberFieldPositions(
                     message,
                     result,
                     expectedFieldPositions);
@@ -2726,7 +2726,7 @@ public class NumberFormatterApiTest {
         } catch (UnsupportedOperationException expected) {}
     }
 
-    private void checkFormattedValue(String message, FormattedNumber result, Object[][] expectedFieldPositions) {
+    private void assertNumberFieldPositions(String message, FormattedNumber result, Object[][] expectedFieldPositions) {
         FormattedValueTest.checkFormattedValue(message, result, result.toString(), expectedFieldPositions);
     }
 }

@@ -556,6 +556,11 @@ public class NumberStringBuilder implements CharSequence {
     }
 
     public boolean nextPosition(ConstrainedFieldPosition cfpos) {
+        if (cfpos.getConstraintType() == ConstraintType.CLASS
+                && !cfpos.getClassConstraint().isAssignableFrom(NumberFormat.Field.class)) {
+            return false;
+        }
+
         boolean isSearchingForField = (cfpos.getConstraintType() == ConstraintType.FIELD);
 
         int fieldStart = -1;

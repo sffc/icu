@@ -31,13 +31,34 @@ public class ConstrainedFieldPosition {
         /**
          * Represents the lack of a constraint.
          *
+         * This is the return value of {@link #getConstraintType}
+         * if no "constrain" methods were called.
+         *
          * @draft ICU 64
          * @provisional This API might change or be removed in a future release.
          */
         NONE,
 
         /**
-         * Represents that the field is constrained. Use {@link #getField} to access the field.
+         * Represents that the field class is constrained.
+         * Use {@link #getClassConstraint} to access the class.
+         *
+         * This is the return value of @link #getConstraintType}
+         * after {@link #constrainClass} is called.
+         *
+         * FormattedValue implementations should not change the field when this constraint is active.
+         *
+         * @draft ICU 64
+         * @provisional This API might change or be removed in a future release.
+         */
+        CLASS,
+
+        /**
+         * Represents that the field is constrained.
+         * Use {@link #getField} to access the field.
+         *
+         * This is the return value of @link #getConstraintType}
+         * after {@link #constrainField} is called.
          *
          * FormattedValue implementations should not change the field when this constraint is active.
          *
@@ -47,12 +68,13 @@ public class ConstrainedFieldPosition {
         FIELD
     };
 
-    ConstraintType fConstraint = ConstraintType.NONE;
-    Field fField = null;
-    Object fValue= null;
-    int fStart = 0;
-    int fLimit = 0;
-    long fContext = 0L;
+    private ConstraintType fConstraint;
+    private Class<?> fClassConstraint;
+    private Field fField;
+    private Object fValue;
+    private int fStart;
+    private int fLimit;
+    private long fContext;
 
     /**
      * Initializes a CategoryFieldPosition.
@@ -77,6 +99,7 @@ public class ConstrainedFieldPosition {
      */
     public void reset() {
         fConstraint = ConstraintType.NONE;
+        fClassConstraint = Object.class;
         fField = null;
         fValue = null;
         fStart = 0;
@@ -111,8 +134,44 @@ public class ConstrainedFieldPosition {
      * @provisional This API might change or be removed in a future release.
      */
     public void constrainField(Field field) {
+        if (field == null) {
+            throw new IllegalArgumentException("Cannot constrain on null field");
+        }
         fConstraint = ConstraintType.FIELD;
+        fClassConstraint = Object.class;
         fField = field;
+    }
+
+    /**
+     * Sets a constraint on the field class.
+     *
+     * When this instance of ConstrainedFieldPosition is passed to {@link FormattedValue#nextPosition}, positions are
+     * skipped unless the field is an instance of the class constraint, including subclasses.
+     *
+     * Any previously set constraints are cleared.
+     *
+     * For example, to loop over only the number-related fields:
+     *
+     * <pre>
+     * ConstrainedFieldPosition cfpos;
+     * cfpos.constrainClass(NumberFormat.Field.class);
+     * while (fmtval.nextPosition(cfpos)) {
+     *   // handle the number-related field position
+     * }
+     * </pre>
+     *
+     * @param classConstraint
+     *            The field class to fix when iterating.
+     * @draft ICU 64
+     * @provisional This API might change or be removed in a future release.
+     */
+    public void constrainClass(Class<?> classConstraint) {
+        if (classConstraint == null) {
+            throw new IllegalArgumentException("Cannot constrain on null field class");
+        }
+        fConstraint = ConstraintType.CLASS;
+        fClassConstraint = classConstraint;
+        fField = null;
     }
 
     /**
@@ -127,13 +186,24 @@ public class ConstrainedFieldPosition {
     }
 
     /**
+     * Gets the class on which field positions are currently constrained.
+     *
+     * @return The class constraint from {@link #constrainClass}, or Object.class by default.
+     * @draft ICU 64
+     * @provisional This API might change or be removed in a future release.
+     */
+    public Class<?> getClassConstraint() {
+        return fClassConstraint;
+    }
+
+    /**
      * Gets the field for the current position.
      *
      * If a field constraint was set, this function returns the constrained
-     * field. Otherwise, the return value is well-defined only after
+     * field. Otherwise, the return value is well-defined and non-null only after
      * FormattedValue#nextPosition returns TRUE.
      *
-     * @return The field saved in the instance.
+     * @return The field saved in the instance. See above for null conditions.
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
@@ -172,7 +242,7 @@ public class ConstrainedFieldPosition {
      *
      * The return value is well-defined only after FormattedValue#nextPosition returns TRUE.
      *
-     * @return The end index saved in the instance.
+     * @return The value for the current position. Might be null.
      * @draft ICU 64
      * @provisional This API might change or be removed in a future release.
      */
@@ -213,6 +283,9 @@ public class ConstrainedFieldPosition {
      * Sets new values for the primary public getters.
      *
      * Intended to be used by FormattedValue implementations.
+     *
+     * It is up to the implementation to ensure that the user-requested
+     * constraints are satisfied. This method does not check!
      *
      * @param field
      *            The new field.

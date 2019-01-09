@@ -204,6 +204,9 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
      *
      * Intended to be used by FormattedValue implementations.
      *
+     * It is up to the implementation to ensure that the user-requested
+     * constraints are satisfied. This method does not check!
+     *
      * @param category The new field category.
      * @param field The new field.
      * @param start The new inclusive start index.

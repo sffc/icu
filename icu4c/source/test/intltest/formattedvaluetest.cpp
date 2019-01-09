@@ -173,6 +173,7 @@ void IntlTestWithFieldPosition::checkFormattedValue(
 
     // Check nextPosition over all fields
     ConstrainedFieldPosition cfpos;
+    cfpos.constrainCategory(expectedCategory);
     for (int32_t i = 0; i < length; i++) {
         assertTrue(baseMessage + i, fv.nextPosition(cfpos, status));
         int32_t expectedField = expectedFieldPositions[i].field;

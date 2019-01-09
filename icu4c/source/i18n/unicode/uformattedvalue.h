@@ -68,12 +68,19 @@ typedef enum UCFPosConstraintType {
     /**
      * Represents the lack of a constraint.
      *
+     * This is the return value of ConstrainedFieldPosition#getConstraintType or
+     * ucfpos_getConstraintType if no "constrain" methods were called.
+     *
      * @draft ICU 64
      */
     UCFPOS_CONSTRAINT_NONE,
 
     /**
      * Represents that the field category is constrained.
+     *
+     * This is the return value of ConstrainedFieldPosition#getConstraintType or
+     * cfpos_getConstraintType after ConstrainedFieldPosition#constrainCategory or
+     * cfpos_constrainCategory is called.
      *
      * Use getCategory to access the category. FormattedValue implementations
      * should not change that values while this constraint is active.
@@ -84,6 +91,10 @@ typedef enum UCFPosConstraintType {
 
     /**
      * Represents that the field and field category are constrained.
+     *
+     * This is the return value of ConstrainedFieldPosition#getConstraintType or
+     * cfpos_getConstraintType after ConstrainedFieldPosition#constrainField or
+     * cfpos_constrainField is called.
      *
      * Use getCategory and getField to access the category and field.
      * FormattedValue implementations should not change those values while
@@ -322,6 +333,9 @@ ucfpos_setInt64IterationContext(
  * Sets new values for the primary public getters.
  *
  * Intended to be used by FormattedValue implementations.
+ *
+ * It is up to the implementation to ensure that the user-requested
+ * constraints are satisfied. This method does not check!
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
  * @param category The new field category.

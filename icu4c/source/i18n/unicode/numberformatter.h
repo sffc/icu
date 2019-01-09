@@ -2464,16 +2464,12 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
 #endif  /* U_HIDE_DEPRECATED_API */
 
     /**
-     * @copybrief FormattedValue::toString()
-     *
-     * @draft ICU 62
+     * @copydoc FormattedValue::toString()
      */
     UnicodeString toString(UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * @copybrief FormattedValue::toTempString()
-     *
-     * @draft ICU 64
+     * @copydoc FormattedValue::toTempString()
      */
     UnicodeString toTempString(UErrorCode& status) const U_OVERRIDE;
 
@@ -2489,20 +2485,16 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
      *                See http://bugs.icu-project.org/trac/ticket/13746
      * @see Appendable
      */
-    Appendable &appendTo(Appendable &appendable);
+    Appendable &appendTo(Appendable& appendable);
 #endif  /* U_HIDE_DEPRECATED_API */
 
     /**
-     * @copybrief FormattedValue::toString()
-     *
-     * @draft ICU 62
+     * @copydoc FormattedValue::appendTo()
      */
-    Appendable &appendTo(Appendable &appendable, UErrorCode& status) const U_OVERRIDE;
+    Appendable &appendTo(Appendable& appendable, UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * @copybrief FormattedValue::nextPosition()
-     *
-     * @draft ICU 64
+     * @copydoc FormattedValue::nextPosition()
      */
     UBool nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const U_OVERRIDE;
 
