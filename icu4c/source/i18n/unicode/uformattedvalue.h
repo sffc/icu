@@ -10,6 +10,14 @@
 
 #include "unicode/ufieldpositer.h"
 
+/**
+ * \file
+ * \brief C API: Abstract operations for localized strings.
+ * 
+ * This file contains declarations for classes that deal with formatted strings. A number
+ * of APIs throughout ICU use these classes for expressing their localized output.
+ */
+
 
 /**
  * All possible field categories in ICU. Every entry in this enum corresponds
@@ -121,6 +129,7 @@ ucfpos_open(UErrorCode* ec);
  * Removes any constraints that may have been set on the instance.
  *
  * @param ucfpos The instance of UConstrainedFieldPosition.
+ * @param ec Set if an error occurs.
  * @draft ICU 64
  */
 U_DRAFT void U_EXPORT2

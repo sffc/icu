@@ -14,6 +14,14 @@
 
 U_NAMESPACE_BEGIN
 
+/**
+ * \file
+ * \brief C++ API: Abstract operations for localized strings.
+ * 
+ * This file contains declarations for classes that deal with formatted strings. A number
+ * of APIs throughout ICU use these classes for expressing their localized output.
+ */
+
 
 /**
  * Represents a span of a string containing a given field.
