@@ -666,30 +666,22 @@ class U_I18N_API LocalizedNumberRangeFormatter
 class U_I18N_API FormattedNumberRange : public UMemory, public FormattedValue {
   public:
     /**
-     * @copybrief FormattedValue::toString()
-     *
-     * @draft ICU 63
+     * @copydoc FormattedValue::toString()
      */
     UnicodeString toString(UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * @copybrief FormattedValue::toTempString()
-     *
-     * @draft ICU 64
+     * @copydoc FormattedValue::toTempString()
      */
     UnicodeString toTempString(UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * @copybrief FormattedValue::appendTo()
-     *
-     * @draft ICU 63
+     * @copydoc FormattedValue::appendTo()
      */
     Appendable &appendTo(Appendable &appendable, UErrorCode& status) const U_OVERRIDE;
 
     /**
-     * @copybrief FormattedValue::nextPosition()
-     *
-     * @draft ICU 64
+     * @copydoc FormattedValue::nextPosition()
      */
     UBool nextPosition(ConstrainedFieldPosition& cfpos, UErrorCode& status) const U_OVERRIDE;
 
