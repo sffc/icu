@@ -2451,6 +2451,43 @@ class U_I18N_API LocalizedNumberFormatter
  */
 class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
   public:
+
+    /**
+     * Default constructor; makes an empty FormattedNumber.
+     */
+    FormattedNumber()
+        : fResults(nullptr), fErrorCode(U_INVALID_STATE_ERROR) {};
+
+    /**
+     * Copying not supported; use move constructor instead.
+     */
+    FormattedNumber(const FormattedNumber&) = delete;
+
+    /**
+     * Move constructor:
+     * Leaves the source FormattedNumber in an undefined state.
+     * @draft ICU 62
+     */
+    FormattedNumber(FormattedNumber&& src) U_NOEXCEPT;
+
+    /**
+     * Destruct an instance of FormattedNumber, cleaning up any memory it might own.
+     * @draft ICU 60
+     */
+    virtual ~FormattedNumber() U_OVERRIDE;
+
+    /**
+     * Copying not supported; use move assignment instead.
+     */
+    FormattedNumber& operator=(const FormattedNumber&) = delete;
+
+    /**
+     * Move assignment:
+     * Leaves the source FormattedNumber in an undefined state.
+     * @draft ICU 62
+     */
+    FormattedNumber& operator=(FormattedNumber&& src) U_NOEXCEPT;
+
 #ifndef U_HIDE_DEPRECATED_API
     /**
      * Returns a UnicodeString representation of the formatted number.
@@ -2604,42 +2641,6 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
     void getAllFieldPositionsImpl(FieldPositionIteratorHandler& fpih, UErrorCode& status) const;
 
 #endif  /* U_HIDE_INTERNAL_API */
-
-    /**
-     * Default constructor; makes an empty FormattedNumber.
-     */
-    FormattedNumber()
-        : fResults(nullptr), fErrorCode(U_INVALID_STATE_ERROR) {};
-
-    /**
-     * Copying not supported; use move constructor instead.
-     */
-    FormattedNumber(const FormattedNumber&) = delete;
-
-    /**
-     * Copying not supported; use move assignment instead.
-     */
-    FormattedNumber& operator=(const FormattedNumber&) = delete;
-
-    /**
-     * Move constructor:
-     * Leaves the source FormattedNumber in an undefined state.
-     * @draft ICU 62
-     */
-    FormattedNumber(FormattedNumber&& src) U_NOEXCEPT;
-
-    /**
-     * Move assignment:
-     * Leaves the source FormattedNumber in an undefined state.
-     * @draft ICU 62
-     */
-    FormattedNumber& operator=(FormattedNumber&& src) U_NOEXCEPT;
-
-    /**
-     * Destruct an instance of FormattedNumber, cleaning up any memory it might own.
-     * @draft ICU 60
-     */
-    ~FormattedNumber();
 
   private:
     // Can't use LocalPointer because UFormattedNumberData is forward-declared

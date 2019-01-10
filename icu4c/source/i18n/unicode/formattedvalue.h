@@ -32,6 +32,8 @@ U_NAMESPACE_BEGIN
  *   2. It allows you to set constraints to use when iterating over field positions.
  *   3. It is used for the newer FormattedValue APIs.
  *
+ * This class is not intended for public subclassing.
+ *
  * @draft ICU 64
  */
 class U_I18N_API ConstrainedFieldPosition : public UMemory {
@@ -47,7 +49,7 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
     ConstrainedFieldPosition();
 
     /** @draft ICU 64 */
-    virtual ~ConstrainedFieldPosition();
+    ~ConstrainedFieldPosition();
 
     /**
      * Resets this ConstrainedFieldPosition to its initial state, as if it were newly created:
@@ -235,7 +237,7 @@ class U_I18N_API ConstrainedFieldPosition : public UMemory {
  *
  * @draft ICU 64
  */
-class U_I18N_API FormattedValue {
+class U_I18N_API FormattedValue /* not : public UObject because this is an interface/mixin class */ {
   public:
     virtual ~FormattedValue();
 
