@@ -2089,8 +2089,8 @@ void NumberFormatterApiTest::formatTypes() {
 
 void NumberFormatterApiTest::fieldPosition() {
     IcuTestErrorCode status(*this, "fieldPosition");
-    FormattedNumber fmtd = NumberFormatter::withLocale("en").formatDouble(-9876543210.12, status);
-    assertEquals("Should have expected format output", u"-9,876,543,210.12", fmtd.toString(status));
+    FormattedNumber fmtd = NumberFormatter::withLocale("fr").unit(CurrencyUnit(u"USD", status)).unitWidth(UNUM_UNIT_WIDTH_FULL_NAME).formatDouble(-9876543210.12, status);
+    assertEquals("Should have expected format output", u"-9 876 543 210,12 dollars des États-Unis", fmtd.toString(status));
 
     static const UFieldPosition expectedFieldPositions[] = {
             // field, begin index, end index
@@ -2100,7 +2100,8 @@ void NumberFormatterApiTest::fieldPosition() {
             {UNUM_GROUPING_SEPARATOR_FIELD, 10, 11},
             {UNUM_INTEGER_FIELD, 1, 14},
             {UNUM_DECIMAL_SEPARATOR_FIELD, 14, 15},
-            {UNUM_FRACTION_FIELD, 15, 17}};
+            {UNUM_FRACTION_FIELD, 15, 17},
+            {UNUM_CURRENCY_FIELD, 18, 40}};
 
     FieldPositionIterator fpi;
     fmtd.getAllFieldPositions(fpi, status);

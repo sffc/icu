@@ -6,6 +6,7 @@
 #if !UCONFIG_NO_FORMATTING
 
 #include "number_stringbuilder.h"
+#include "static_unicode_sets.h"
 #include "unicode/utf16.h"
 
 using namespace icu;
@@ -443,6 +444,16 @@ bool NumberStringBuilder::nextFieldPosition(FieldPosition& fp, UErrorCode& statu
                 continue;
             }
             fp.setEndIndex(i - fZero);
+            // Trim ignorables (whitespace, etc.) from the edge of the field.
+            UFieldPosition ufp = {0, fp.getBeginIndex(), fp.getEndIndex()};
+            if (field == UNUM_GROUPING_SEPARATOR_FIELD || trimFieldPosition(ufp)) {
+                fp.setBeginIndex(ufp.beginIndex);
+                fp.setEndIndex(ufp.endIndex);
+                break;
+            }
+            // This position was all ignorables; continue to the next position.
+            fp.setEndIndex(fp.getBeginIndex());
+            seenStart = false;
             break;
         } else if (!seenStart && field == _field) {
             fp.setBeginIndex(i - fZero);
@@ -474,7 +485,10 @@ void NumberStringBuilder::getAllFieldPositions(FieldPositionIteratorHandler& fpi
             fpih.addAttribute(UNUM_GROUPING_SEPARATOR_FIELD, i, i + 1);
         } else if (current != field) {
             if (current != UNUM_FIELD_COUNT) {
-                fpih.addAttribute(current, currentStart, i);
+                UFieldPosition fp = {0, currentStart, i};
+                if (trimFieldPosition(fp)) {
+                    fpih.addAttribute(current, fp.beginIndex, fp.endIndex);
+                }
             }
             current = field;
             currentStart = i;
@@ -484,8 +498,33 @@ void NumberStringBuilder::getAllFieldPositions(FieldPositionIteratorHandler& fpi
         }
     }
     if (current != UNUM_FIELD_COUNT) {
-        fpih.addAttribute(current, currentStart, fLength);
+        UFieldPosition fp = {0, currentStart, fLength};
+        if (trimFieldPosition(fp)) {
+            fpih.addAttribute(current, fp.beginIndex, fp.endIndex);
+        }
     }
+}
+
+bool NumberStringBuilder::trimFieldPosition(UFieldPosition& fp) const {
+    // Trim ignorables from the back
+    int32_t endIgnorablesRelPos = unisets::get(unisets::DEFAULT_IGNORABLES)->spanBack(
+        getCharPtr() + fZero + fp.beginIndex,
+        fp.endIndex - fp.beginIndex,
+        USET_SPAN_CONTAINED);
+
+     // Check if the entire segment is ignorables
+    if (endIgnorablesRelPos == 0) {
+        return false;
+    }
+    fp.endIndex = fp.beginIndex + endIgnorablesRelPos;
+
+     // Trim ignorables from the front
+    int32_t startIgnorablesRelPos = unisets::get(unisets::DEFAULT_IGNORABLES)->span(
+        getCharPtr() + fZero + fp.beginIndex,
+        fp.endIndex - fp.beginIndex,
+        USET_SPAN_CONTAINED);
+    fp.beginIndex = fp.beginIndex + startIgnorablesRelPos;
+    return true;
 }
 
 bool NumberStringBuilder::containsField(Field field) const {
