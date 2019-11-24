@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: a7e378d58788962bd520052cf92ae5cc63be5d8f
+- Latest Commit: 017c8b762ec148ad6c500296c829e31bef36aaf4
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
 - Authenticated: Yes
@@ -121,6 +121,11 @@ Tip: Consider closing the ticket if it is fixed.
 
 ##### Commits with Issue ICU-20857
 
+- 04c8616 `ICU-20857 integrate CLDR release-36-1-preview to maint-66`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2019-11-22T19:01:36-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/04c8616f936b4dfaa6bf144eb39241f9c45f8ffb
+
 - e95840c `ICU-20857 Update version numbers to 66.0.1`
 	- Authored by Daniel Ju <daju@microsoft.com>
 	- Committed at 2019-10-21T12:32:39-07:00
@@ -130,24 +135,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Authored by Daniel Ju <daju@microsoft.com>
 	- Committed at 2019-10-09T16:47:02-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/f5b951d50530e1f586d9470b8cdd2302315c6b11
-
-#### Issue ICU-20863
-
-- ICU-20863: `[Memory] Reduce the default capacity or lazily initialize RegexPattern::fNamedCaptureMap because many regex patterns do not have named capturing`
-	- Assigned to Andy Heninger
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20863
-
-##### Commits with Issue ICU-20863
-
-- 1206f07 `ICU-20863 Regex Named Capture map, add a missing nullptr check.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2019-10-28T21:10:41-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/1206f07a5245fdc1ab4db234ecf320fbb0351f9d
-
-- 0393734 `ICU-20863 Regex, lazy creation and reduced size of map from capture group names to numbers.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2019-10-22T17:23:26-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/03937347fbe800c63af14aa4739a806697a53ed2
 
 #### Issue ICU-20893
 
@@ -163,4 +150,4 @@ Tip: Consider closing the ticket if it is fixed.
 	- GitHub Link: https://github.com/unicode-org/icu/commit/a7e378d58788962bd520052cf92ae5cc63be5d8f
 
 
-## Total Problems: 5
+## Total Problems: 4
