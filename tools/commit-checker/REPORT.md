@@ -7,10 +7,10 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: 017c8b762ec148ad6c500296c829e31bef36aaf4
+- Latest Commit: ffbc8cf85f1379a1461b6928d40cfd6ae2464694
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
-- Authenticated: Yes
+No (sensitive tickets not shown)
 
 ## Problem Categories
 ### Closed Issues with No Commit
@@ -121,6 +121,31 @@ Tip: Consider closing the ticket if it is fixed.
 
 ##### Commits with Issue ICU-20857
 
+- ffbc8cf `ICU-20857 update API Change Report for ICU 66preview`
+	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
+	- Committed at 2019-12-03T17:11:37-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/ffbc8cf85f1379a1461b6928d40cfd6ae2464694
+
+- 26ea0c2 `ICU-20857 BRS66 Updated ICU4J API change report (also regenerated`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2019-12-03T18:33:18-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/26ea0c22f2d7ef2c38befe05a157f1605c45095d
+
+- db3fce9 `ICU-20857 BRS 66 Clean up import statement`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2019-12-03T17:33:11-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/db3fce9d5261123f4086b1be55007b09b4fbea77
+
+- e2afc54 `ICU-20857 BRS66 update urename.h`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2019-12-03T08:53:23-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/e2afc5486dc73dc86710f13ec39446d90ffb2c73
+
+- f3e2f4f `ICU-20857 Update Readme for ICU 66 Preview.`
+	- Authored by Jeff Genovy <jefgen@microsoft.com>
+	- Committed at 2019-12-02T15:13:15-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/f3e2f4f02ee9579cfc7a6f7c86104e1e1ac04df6
+
 - 04c8616 `ICU-20857 integrate CLDR release-36-1-preview to maint-66`
 	- Authored by Peter Edberg <pedberg@unicode.org>
 	- Committed at 2019-11-22T19:01:36-08:00
@@ -143,6 +168,11 @@ Tip: Consider closing the ticket if it is fixed.
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20893
 
 ##### Commits with Issue ICU-20893
+
+- 197e023 `ICU-20893 Line break tailorings updated to Unicode 13.`
+	- Authored by Andy Heninger <andy.heninger@gmail.com>
+	- Committed at 2019-11-26T15:25:06-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/197e0239ab5dd3b0da75eba7c390e4f3a035f5a0
 
 - a7e378d `ICU-20893 Unicode 13 beta`
 	- Authored by Markus Scherer <markus.icu@gmail.com>
