@@ -7,10 +7,10 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: ffbc8cf85f1379a1461b6928d40cfd6ae2464694
+- Latest Commit: 7a5139ad95469def008b3a86eedd0e5768fa39bf
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
-No (sensitive tickets not shown)
+- Authenticated: Yes
 
 ## Problem Categories
 ### Closed Issues with No Commit
@@ -179,5 +179,18 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2019-11-21T17:35:53-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/a7e378d58788962bd520052cf92ae5cc63be5d8f
 
+#### Issue ICU-20942
 
-## Total Problems: 4
+- ICU-20942: `ICU4J Builds failing due to old version of Apache Ivy using HTTP instead of HTTPS`
+	- Assigned to Jeff Genovy
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20942
+
+##### Commits with Issue ICU-20942
+
+- b0f76ab `ICU-20942 Update Apache Ivy to 2.5.0 to fix failing ICU4J builds.`
+	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
+	- Committed at 2020-01-20T14:58:55+01:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b0f76abadae88086560aafff4fc972a4f16fce67
+
+
+## Total Problems: 5
