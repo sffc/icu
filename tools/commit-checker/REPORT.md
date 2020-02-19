@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: 7a5139ad95469def008b3a86eedd0e5768fa39bf
+- Latest Commit: ea907cdf5fc044739f60622d1f4e5f7debcdb200
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
 - Authenticated: Yes
@@ -179,18 +179,23 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2019-11-21T17:35:53-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/a7e378d58788962bd520052cf92ae5cc63be5d8f
 
-#### Issue ICU-20942
+#### Issue ICU-20975
 
-- ICU-20942: `ICU4J Builds failing due to old version of Apache Ivy using HTTP instead of HTTPS`
-	- Assigned to Jeff Genovy
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20942
+- ICU-20975: `ICU 66 RC BRS`
+	- Assigned to Markus Scherer
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20975
 
-##### Commits with Issue ICU-20942
+##### Commits with Issue ICU-20975
 
-- b0f76ab `ICU-20942 Update Apache Ivy to 2.5.0 to fix failing ICU4J builds.`
-	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
-	- Committed at 2020-01-20T14:58:55+01:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b0f76abadae88086560aafff4fc972a4f16fce67
+- ea907cd `ICU-20975 integrate CLDR release-36-1-beta to maint-66`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-02-18T23:02:26-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/ea907cdf5fc044739f60622d1f4e5f7debcdb200
+
+- 925f255 `ICU-20975 BRS66RC Update version numbers, README files, configure`
+	- Authored by Daniel Ju <daju@microsoft.com>
+	- Committed at 2020-02-18T14:40:46-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/925f2550924f9b275d21ae801bc8b52f3bd0aa18
 
 
 ## Total Problems: 5
