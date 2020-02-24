@@ -279,19 +279,13 @@ void substituteSingleConstant(Factor &factor, int32_t constValue,
     bool positive = constValue >= 0;
     int32_t absConstValue = std::abs(constValue);
 
-    double testConst = constSub.toDouble();
     DecNum finalConstSub;
     finalConstSub.setTo(constSub, status);
     finalConstSub.power(absConstValue, status);
 
-    double testfinalconst = finalConstSub.toDouble();
 
     if (positive) {
-        double testfactNum = factor.factorNum.toDouble();
-
         factor.factorNum.multiplyBy(finalConstSub, status);
-        
-        testfactNum = factor.factorNum.toDouble();
     } else {
         factor.factorDen.multiplyBy(finalConstSub, status);
     }
@@ -309,9 +303,6 @@ void substituteConstants(Factor &factor, UErrorCode &status) {
     constSubs[CONSTANT_LB2KG].setTo("0.45359237", status);
 
     for (int i = 0; i < CONSTANTS_COUNT; i++) {
-        double test1 = factor.factorNum.toDouble();
-        double test2 = factor.factorDen.toDouble();
-
         if (factor.constants[i] == 0) continue;
 
         substituteSingleConstant(factor, factor.constants[i], constSubs[i], status);
@@ -354,24 +345,10 @@ void loadConversionRate(ConversionRate &conversionRate, StringPiece source, Stri
     loadCompoundFactor(SourcetoMiddle, source, status);
     loadCompoundFactor(TargettoMiddle, target, status);
 
-    double testing00 = finalFactor.factorNum.toDouble();
-    double testing0 = finalFactor.factorDen.toDouble();
-
-    double testing1 = SourcetoMiddle.factorNum.toDouble();
-    double testing2 = SourcetoMiddle.factorDen.toDouble();
-    double testing3 = TargettoMiddle.factorNum.toDouble();
-    double testing4 = TargettoMiddle.factorDen.toDouble();
-
     finalFactor.multiplyBy(SourcetoMiddle, status);
     finalFactor.divideBy(TargettoMiddle, status);
 
-    double testing5 = finalFactor.factorNum.toDouble();
-    double testing6 = finalFactor.factorDen.toDouble();
-
     substituteConstants(finalFactor, status);
-
-    double testing8 = finalFactor.factorNum.toDouble();
-    double testing9 = finalFactor.factorDen.toDouble();
 
     conversionRate.source = source;
     conversionRate.target = target;
@@ -401,46 +378,20 @@ void loadConversionRate(ConversionRate &conversionRate, StringPiece source, Stri
 
 UnitConverter::UnitConverter(MeasureUnit source, MeasureUnit target, UErrorCode status)
     : conversion_rate_(status) {
-    // TODO(younies):: add the test of non-compound units here.
-    // Deal with non-compound units only.
-    // if (source.getCompoundUnits(status).length() > 1 || target.getCompoundUnits(status).length() > 1
-    // ||
-    //     U_FAILURE(status)) {
-    //     status = UErrorCode::U_ILLEGAL_ARGUMENT_ERROR;
-    //     return;
-    // }
-
     loadConversionRate(conversion_rate_, source.getIdentifier(), target.getIdentifier(), status);
 }
 
 void UnitConverter::convert(const DecNum &input_value, DecNum &output_value, UErrorCode status) {
-
-    /*
+ 
     DecNum result(input_value, status);
+    result.add(conversion_rate_.sourceOffset, status);
+    
     result.multiplyBy(conversion_rate_.factorNum, status);
     result.divideBy(conversion_rate_.factorDen, status);
-    // TODO(younies): result.add(conversion_rate_.offset, status);
+
+    result.subtract(conversion_rate_.targetOffset, status);
 
     if (U_FAILURE(status)) return;
-
-    if (conversion_rate_.reciprocal) {
-        DecNum reciprocalResult;
-        reciprocalResult.setTo(1, status);
-        reciprocalResult.divideBy(result, status);
-
-        output_value.setTo(result, status);
-    } else {
-        output_value.setTo(result, status);
-    }*/
-
-    double result = input_value.toDouble() + conversion_rate_.sourceOffset.toDouble();
-    double num = conversion_rate_.factorNum.toDouble();
-    double den = conversion_rate_.factorDen.toDouble();
-    result *= num / den;
-
-    result -= conversion_rate_.targetOffset.toDouble();
-
-    output_value.setTo(result, status);
 }
 
 U_NAMESPACE_END

@@ -246,6 +246,7 @@ int32_t DecNum::toInt32() const {
 double DecNum::toDouble() const {
     UErrorCode status = U_ZERO_ERROR;
     StringPiece strNumber = toString(status);
+
     if (U_FAILURE(status)) {
         return std::numeric_limits<double>::quiet_NaN();
     }
@@ -262,17 +263,10 @@ void DecNum::multiplyBy(double rhs, UErrorCode &status) {
 }
 
 void DecNum::multiplyBy(const DecNum &rhs, UErrorCode &status) {
-    // TODO(younies): this division temporary until we fix it
-    double dLhs = toDouble();
-    double dRhs = rhs.toDouble();
-    double result = dLhs * dRhs;
-    setTo(result, status);
-    return;
-
-    // uprv_decNumberMultiply(fData, fData, rhs.fData, &fContext);
-    // if (fContext.status != 0) {
-    //     status = U_INTERNAL_PROGRAM_ERROR;
-    // }
+    uprv_decNumberMultiply(fData, fData, rhs.fData, &fContext);
+    if (fContext.status != 0) {
+        status = U_INTERNAL_PROGRAM_ERROR;
+    }
 }
 
 void DecNum::divideBy(double rhs, UErrorCode &status) {
@@ -287,19 +281,12 @@ void DecNum::divideBy(const DecNum &rhs, UErrorCode &status) {
         return;
     }
 
-    // TODO(younies): this division temporary until we fix it
-    double dLhs = toDouble();
-    double dRhs = rhs.toDouble();
-
-    setTo(dLhs / dRhs, status);
-    return;
-
-    // uprv_decNumberDivide(fData, fData, rhs.fData, &fContext);
-    // if ((fContext.status & DEC_Inexact) != 0) { // TODO(younies): write clarifications.
-    //     // Ignore.
-    // } else if (fContext.status != 0) {
-    //     status = U_INTERNAL_PROGRAM_ERROR;
-    // }
+    uprv_decNumberDivide(fData, fData, rhs.fData, &fContext);
+    if ((fContext.status & DEC_Inexact) != 0) { // TODO(younies): write clarifications.(fContext.status & DEC_Inexact) ==  fContext.status)
+        // Ignore.
+    } else if (fContext.status != 0) {
+        status = U_INTERNAL_PROGRAM_ERROR;
+    }
 }
 
 void DecNum::add(double rhs, UErrorCode &status) {
@@ -374,7 +361,7 @@ bool DecNum::equalTo(const DecNum &rhs, UErrorCode &status) const {
 
 StringPiece DecNum::toString(UErrorCode &status) const {
     if (U_FAILURE(status)) {
-        return StringPiece();
+        return StringPiece("");
     }
 
     // "string must be at least dn->digits+14 characters long"

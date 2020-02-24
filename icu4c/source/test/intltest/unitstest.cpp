@@ -5,9 +5,10 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-#include "../../i18n/unitconverter.h"
+#include "unitconverter.h"
 #include "intltest.h"
 #include "number_decnum.h"
+#include <iostream>
 
 struct UnitConversionTestCase {
     const StringPiece source;
@@ -386,7 +387,8 @@ void UnitsTest::testCLDRUnitsTests() {
     int i = 0;
     for (const auto &testCase : testCases) {
         UErrorCode status = U_ZERO_ERROR;
-        i++;
+
+        std::cerr << testCase.source.data() << "  " << testCase.target.data() << std::endl;
         MeasureUnit sourceUnit = MeasureUnit::forIdentifier(testCase.source, status);
         MeasureUnit targetUnit = MeasureUnit::forIdentifier(testCase.target, status);
 
