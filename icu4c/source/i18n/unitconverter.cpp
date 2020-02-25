@@ -295,9 +295,9 @@ void substituteConstants(Factor &factor, UErrorCode &status) {
 
     DecNum constSubs[CONSTANTS_COUNT];
 
-    constSubs[CONSTANT_FT2M].setTo(0.3048, status);
-    constSubs[CONSTANT_PI].setTo(3.14159265359, status);
-    constSubs[CONSTANT_GRAVITY].setTo(9.80665, status);
+    constSubs[CONSTANT_FT2M].setTo("0.3048", status);
+    constSubs[CONSTANT_PI].setTo("3.14159265359", status);
+    constSubs[CONSTANT_GRAVITY].setTo("9.80665", status);
     constSubs[CONSTANT_G].setTo("6.67408E-11", status);
     constSubs[CONSTANT_CUP2M3].setTo("0.000236588", status);
     constSubs[CONSTANT_LB2KG].setTo("0.45359237", status);
