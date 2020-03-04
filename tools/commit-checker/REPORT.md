@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: ea907cdf5fc044739f60622d1f4e5f7debcdb200
+- Latest Commit: e1aa9119ad37ff1ea727ee42afb13c64d7f14170
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
 - Authenticated: Yes
@@ -169,6 +169,11 @@ Tip: Consider closing the ticket if it is fixed.
 
 ##### Commits with Issue ICU-20893
 
+- af9ef26 `ICU-20893 Unicode 13 data 2020feb19`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2020-02-19T22:02:35-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/af9ef2650be5d91ba2ff7daa77e23f22209a509c
+
 - 197e023 `ICU-20893 Line break tailorings updated to Unicode 13.`
 	- Authored by Andy Heninger <andy.heninger@gmail.com>
 	- Committed at 2019-11-26T15:25:06-08:00
@@ -186,6 +191,26 @@ Tip: Consider closing the ticket if it is fixed.
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20975
 
 ##### Commits with Issue ICU-20975
+
+- e1aa911 `ICU-20975 BRS66rc Fix warnings found when building ICU4C samples.`
+	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
+	- Committed at 2020-02-26T13:04:08-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/e1aa9119ad37ff1ea727ee42afb13c64d7f14170
+
+- 62bd8ac `ICU-20975 BRS ICU 66rc - J API signature, API change report and serialization test data`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-02-26T14:01:27-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/62bd8ac914f7d2b109764d0b7dcc4653bee72bb4
+
+- d95621c `ICU-20975 BRS66rc update Unicode license copyright`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-02-19T15:23:29-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/d95621c57f2becc1efd1be1d5c914624a715dac0
+
+- 532954b `ICU-20975 update API Change Report for 66`
+	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
+	- Committed at 2020-02-19T14:56:41-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/532954ba1404109189a3dceeb58ccf09cdfdb062
 
 - ea907cd `ICU-20975 integrate CLDR release-36-1-beta to maint-66`
 	- Authored by Peter Edberg <pedberg@unicode.org>
