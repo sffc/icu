@@ -191,9 +191,8 @@ StringPiece trimField(char *(&field)[2]) {
  * WIP(hugovdm): deals with a single data-driven unit test for unit conversions.
  * This is a UParseLineFn as required by u_parseDelimitedFile.
  */
-static void U_CALLCONV unitsTestDataLineFn(void *context, char *fields[][2],
-                                           int32_t fieldCount,
-                                           UErrorCode *pErrorCode) {
+void unitsTestDataLineFn(void *context, char *fields[][2], int32_t fieldCount,
+                         UErrorCode *pErrorCode) {
   (void)fieldCount; // unused UParseLineFn variable
   IcuTestErrorCode status(*(UnitsTest *)context, "unitsTestDatalineFn");
 
@@ -273,11 +272,9 @@ void UnitsTest::testConversions() {
  * WIP(hugovdm): deals with a single data-driven unit test for unit preferences.
  * This is a UParseLineFn as required by u_parseDelimitedFile.
  */
-static void U_CALLCONV unitPreferencesTestDataLineFn(void *context,
-                                                     char *fields[][2],
-                                                     int32_t fieldCount,
-                                                     UErrorCode *pErrorCode) {
-  (void)fieldCount;  // unused UParseLineFn variable
+void unitPreferencesTestDataLineFn(void *context, char *fields[][2],
+                                   int32_t fieldCount, UErrorCode *pErrorCode) {
+  (void)fieldCount; // unused UParseLineFn variable
   IcuTestErrorCode status(*(UnitsTest *)context, "unitPreferencesTestDatalineFn");
 
   StringPiece quantity = trimField(fields[0]);
