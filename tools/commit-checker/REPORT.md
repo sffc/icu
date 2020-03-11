@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: e1aa9119ad37ff1ea727ee42afb13c64d7f14170
+- Latest Commit: 5f681ecbc75898a6484217b322f3883b6d1b2049
 - Jira Query: project=ICU AND fixVersion=66.1
 - Rev Range: release-65-1..upstream/maint/maint-66
 - Authenticated: Yes
@@ -100,127 +100,36 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2019-09-24T19:53:41+02:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/791980cf416149fb779f4f687806f4c664b35194
 
-#### Issue ICU-20728
+#### Issue ICU-20965
 
-- ICU-20728: `Improve output from RBBI Monkey Test`
-	- Assigned to Craig Cornelius
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20728
+- ICU-20965: `Azure DevOps to remove VS2015 build images, need to update the CI pipelines`
+	- Assigned to Jeff Genovy
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20965
 
-##### Commits with Issue ICU-20728
+##### Commits with Issue ICU-20965
 
-- 2baf0a7 `ICU-20728 Improve debug output for old C++ RBBI monkey test`
-	- Authored by Craig Cornelius <cwcornelius@gmail.com>
-	- Committed at 2019-10-10T13:26:03-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/2baf0a75b0647e2f29143a7d5de8e95ce55afd38
-
-#### Issue ICU-20857
-
-- ICU-20857: `ICU 66 Preview BRS`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20857
-
-##### Commits with Issue ICU-20857
-
-- ffbc8cf `ICU-20857 update API Change Report for ICU 66preview`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2019-12-03T17:11:37-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/ffbc8cf85f1379a1461b6928d40cfd6ae2464694
-
-- 26ea0c2 `ICU-20857 BRS66 Updated ICU4J API change report (also regenerated`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2019-12-03T18:33:18-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/26ea0c22f2d7ef2c38befe05a157f1605c45095d
-
-- db3fce9 `ICU-20857 BRS 66 Clean up import statement`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2019-12-03T17:33:11-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/db3fce9d5261123f4086b1be55007b09b4fbea77
-
-- e2afc54 `ICU-20857 BRS66 update urename.h`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2019-12-03T08:53:23-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e2afc5486dc73dc86710f13ec39446d90ffb2c73
-
-- f3e2f4f `ICU-20857 Update Readme for ICU 66 Preview.`
-	- Authored by Jeff Genovy <jefgen@microsoft.com>
-	- Committed at 2019-12-02T15:13:15-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f3e2f4f02ee9579cfc7a6f7c86104e1e1ac04df6
-
-- 04c8616 `ICU-20857 integrate CLDR release-36-1-preview to maint-66`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2019-11-22T19:01:36-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/04c8616f936b4dfaa6bf144eb39241f9c45f8ffb
-
-- e95840c `ICU-20857 Update version numbers to 66.0.1`
-	- Authored by Daniel Ju <daju@microsoft.com>
-	- Committed at 2019-10-21T12:32:39-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e95840c59ca2b439c7f38f26370b58c26ad6d210
-
-- f5b951d `ICU-20857 Update version numbers to 66.1`
-	- Authored by Daniel Ju <daju@microsoft.com>
-	- Committed at 2019-10-09T16:47:02-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f5b951d50530e1f586d9470b8cdd2302315c6b11
-
-#### Issue ICU-20893
-
-- ICU-20893: `Unicode 13`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20893
-
-##### Commits with Issue ICU-20893
-
-- af9ef26 `ICU-20893 Unicode 13 data 2020feb19`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2020-02-19T22:02:35-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/af9ef2650be5d91ba2ff7daa77e23f22209a509c
-
-- 197e023 `ICU-20893 Line break tailorings updated to Unicode 13.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2019-11-26T15:25:06-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/197e0239ab5dd3b0da75eba7c390e4f3a035f5a0
-
-- a7e378d `ICU-20893 Unicode 13 beta`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2019-11-21T17:35:53-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/a7e378d58788962bd520052cf92ae5cc63be5d8f
-
-#### Issue ICU-20975
-
-- ICU-20975: `ICU 66 RC BRS`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20975
-
-##### Commits with Issue ICU-20975
-
-- e1aa911 `ICU-20975 BRS66rc Fix warnings found when building ICU4C samples.`
+- 5f681ec `ICU-20965 Remove VS2015 from CI builds, no longer supported by Azure Pipelines`
 	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
-	- Committed at 2020-02-26T13:04:08-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e1aa9119ad37ff1ea727ee42afb13c64d7f14170
+	- Committed at 2020-03-11T10:21:07-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/5f681ecbc75898a6484217b322f3883b6d1b2049
 
-- 62bd8ac `ICU-20975 BRS ICU 66rc - J API signature, API change report and serialization test data`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2020-02-26T14:01:27-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/62bd8ac914f7d2b109764d0b7dcc4653bee72bb4
+#### Issue ICU-20980
 
-- d95621c `ICU-20975 BRS66rc update Unicode license copyright`
+- ICU-20980: `ICU 66.1 Release BRS`
+	- Assigned to Markus Scherer
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20980
+
+##### Commits with Issue ICU-20980
+
+- ad00aca `ICU-20980 integrate CLDR release-36-1 (final) to maint-66`
 	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2020-02-19T15:23:29-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/d95621c57f2becc1efd1be1d5c914624a715dac0
+	- Committed at 2020-03-05T13:25:35-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/ad00acac128120cda4b90854a158db195692c2e8
 
-- 532954b `ICU-20975 update API Change Report for 66`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-02-19T14:56:41-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/532954ba1404109189a3dceeb58ccf09cdfdb062
-
-- ea907cd `ICU-20975 integrate CLDR release-36-1-beta to maint-66`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2020-02-18T23:02:26-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/ea907cdf5fc044739f60622d1f4e5f7debcdb200
-
-- 925f255 `ICU-20975 BRS66RC Update version numbers, README files, configure`
+- 6119662 `ICU-20980 BRS66GA Update version numbers and README files`
 	- Authored by Daniel Ju <daju@microsoft.com>
-	- Committed at 2020-02-18T14:40:46-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/925f2550924f9b275d21ae801bc8b52f3bd0aa18
+	- Committed at 2020-03-04T11:12:47-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/6119662f03c4d99d4756e372cf4e7aa87031b848
 
 
-## Total Problems: 5
+## Total Problems: 3
