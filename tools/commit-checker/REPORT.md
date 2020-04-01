@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: ea9ce7e34f85d1db5e484641f6fe653c6a61d795
+- Latest Commit: c1aa8b9a7553d672082ab0d77f0a43ba19e7565f
 - Jira Query: project=ICU AND fixVersion=67.1
 - Rev Range: release-66-1..upstream/master
 - Authenticated: Yes
@@ -32,105 +32,10 @@ Tip: If you see your name here, make sure to label your commits correctly in the
 ### Commits with Jira Issue Not Found
 Tip: Check that these tickets have the correct fixVersion tag.
 
-#### Issue ICU-20975
-
-- ICU-20975: `ICU 66 RC BRS`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20975
-
-##### Commits with Issue ICU-20975
-
-- 0a1bd3c `ICU-20975 update KEYS`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-09T18:22:38-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/0a1bd3caa9cc8bf7e0bc42c96d7e4f95ecfc9a48
-
+*Success: No problems in this category!*
 
 ### Commits with Open Jira Issue
 Tip: Consider closing the ticket if it is fixed.
-
-#### Issue ICU-10858
-
-- ICU-10858: `ICU4C SimpleDateFormat operator= and operator== need updating`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-10858
-
-##### Commits with Issue ICU-10858
-
-- b525045 `ICU-10858 Fix missing fTimeZoneFormat assignment in SimpleDateFormat::operator= (#963)`
-	- Authored by Campion <cloong@mathworks.com>
-	- Committed at 2020-03-24T20:04:35-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b525045209843feebe46d1655c0318ac3286b93a
-
-#### Issue ICU-20303
-
-- ICU-20303: `RBBI look-ahead rule limitation`
-	- Assigned to Andy Heninger
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20303
-
-##### Commits with Issue ICU-20303
-
-- faa2f9f `ICU-20303 Break Iterator, improve handling of look-ahead rules.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2019-12-13T13:17:21-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/faa2f9f9e1fe74c5ed00eba371d2830134cdbea1
-
-#### Issue ICU-20435
-
-- ICU-20435: `ICU4C no longer builds with Cygwin (new version of Cygwin 3.0.0 causes build failures)`
-	- Assigned to Jeff Genovy
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20435
-
-##### Commits with Issue ICU-20435
-
-- f78136f `ICU-20435 Fix parallel builds with Cygwin to 3.x`
-	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
-	- Committed at 2020-03-26T10:18:23-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f78136f653826c00bc0274fb211856a73f89566d
-
-- a8b07c9 `ICU-20435 Update Cygwin to 3.x to fix CI builds.`
-	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
-	- Committed at 2020-03-25T10:46:51-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/a8b07c98d0f5717ba10a10a5fb008ba66c58aa97
-
-#### Issue ICU-20600
-
-- ICU-20600: `export ICU data files in dist?`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20600
-
-##### Commits with Issue ICU-20600
-
-- f63a8bb `ICU-20600 build icu-data-bin files`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-17T08:30:33-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f63a8bb4e7852e133ffd2cefa6c81056cb6010f8
-
-#### Issue ICU-20605
-
-- ICU-20605: `ci: Make Unixy C builds available for download`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20605
-
-##### Commits with Issue ICU-20605
-
-- b1af32b `ICU-20605 travis: make dist`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-17T11:37:24-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b1af32bfa75e368943f8cca49b99eb4b1133866a
-
-#### Issue ICU-20767
-
-- ICU-20767: `Potential negative index access in one of the sample codes`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20767
-
-##### Commits with Issue ICU-20767
-
-- a4a5c60 `ICU-20767 Potential negative index access in one of the sample codes`
-	- Authored by Keita Suzuki <keitasuzuki.park@sslab.ics.keio.ac.jp>
-	- Committed at 2020-01-22T13:13:27-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/a4a5c603ac4e06d9d62e1ac35db2a2d9b9b0a51f
 
 #### Issue ICU-20797
 
@@ -158,18 +63,23 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-02-19T12:42:40-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/4a3a457b38cd828b7b3fa4fdbc6e2504a57275e9
 
-#### Issue ICU-20892
+#### Issue ICU-20920
 
-- ICU-20892: `Highlight `.cpyskip.txt` on GitHub.com`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20892
+- ICU-20920: `Build ICU API for SI Prefix Patterns`
+	- Assigned to Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20920
 
-##### Commits with Issue ICU-20892
+##### Commits with Issue ICU-20920
 
-- d895e3f `ICU-20892 Highlight `.cpyskip.txt` on GitHub.com`
-	- Authored by Alhadis <gardnerjohng@gmail.com>
-	- Committed at 2019-12-18T10:39:43-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/d895e3f1640ddf5cfa1c193497e16f184212e397
+- b03feb6 `ICU-20920 Changing "Sequence" to "Mixed" in ICU4C MeasureUnit`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-03-25T16:13:39-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b03feb6338737c6bbab61e64c224f275e6059d87
+
+- fc6612c `ICU-20920 Add support for CLDR 37 unit identifiers in ICU4C`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-03-24T14:15:19-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/fc6612cc56fa1e6ae0dccc55451e6a686085aab3
 
 #### Issue ICU-20939
 
@@ -196,19 +106,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Authored by Younies Mahmoud <younies.mahmoud@gmail.com>
 	- Committed at 2020-03-27T09:16:55-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/20c29becd69b19c62cb6618665fd773eeb73dab1
-
-#### Issue ICU-20975
-
-- ICU-20975: `ICU 66 RC BRS`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20975
-
-##### Commits with Issue ICU-20975
-
-- 0a1bd3c `ICU-20975 update KEYS`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-09T18:22:38-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/0a1bd3caa9cc8bf7e0bc42c96d7e4f95ecfc9a48
 
 #### Issue ICU-20976
 
@@ -244,6 +141,21 @@ Tip: Consider closing the ticket if it is fixed.
 
 ##### Commits with Issue ICU-20979
 
+- c1aa8b9 `ICU-20979 BRS67RC ICU4J API status promotion`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-04-01T14:14:32-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/c1aa8b9a7553d672082ab0d77f0a43ba19e7565f
+
+- 0a1edd9 `ICU-20979 BRS67RC Adding ICU4J serialization test data generated by 67`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-04-01T13:15:39-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/0a1edd994760b096513fe3ea245cf506a85d42c5
+
+- e799557 `ICU-20979 BRS 67rc, update urename.h`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-03-31T09:14:17-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/e7995571db2d202d33cadbccc71d4aae64ea0d2c
+
 - ea9ce7e `ICU-20979 BRS67RC Fixed a java doc issue`
 	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
 	- Committed at 2020-03-30T15:10:54-04:00
@@ -278,4 +190,4 @@ Tip: Consider closing the ticket if it is fixed.
 	- GitHub Link: https://github.com/unicode-org/icu/commit/1084c1430aad6006d269d32941689defeeee2991
 
 
-## Total Problems: 17
+## Total Problems: 9
