@@ -16,19 +16,13 @@ Environment:
 ### Closed Issues with No Commit
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-- ICU-20068: `Clean up .gitignore`
-	- Assigned to Fredrik Roubert
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20068
-
+*Success: No problems in this category!*
 ### Closed Issues with Illegal Resolution or Commit
 Tip: Fixed tickets should have resolution 'Fixed by Other Ticket' or 'Fixed'.
 Duplicate tickets should have their fixVersion tag removed.
 Tickets with resolution 'Fixed by Other Ticket' are not allowed to have commits.
 
-- ICU-20068: `Clean up .gitignore`
-	- Assigned to Fredrik Roubert
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20068
-
+*Success: No problems in this category!*
 
 ### Commits without Jira Issue Tag
 Tip: If you see your name here, make sure to label your commits correctly in the future.
@@ -159,19 +153,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T13:28:54-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c163f7dc29ea21cacd7c7c9000f1ba8a2f0698b1
 
-#### Issue ICU-21015
-
-- ICU-21015: `Fix gcc warnings before ICU 67`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21015
-
-##### Commits with Issue ICU-21015
-
-- 3b0772f `ICU-21015 Fixing gcc compiler warnings`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2020-04-03T01:56:07-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/3b0772fff9c880b1c048878e9a11bf2d1278c69f
-
 #### Issue ICU-21060
 
 - ICU-21060: `MeasureUnit bugs: identifier memory management, parsing *-per-x-y, more`
@@ -190,18 +171,5 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-04-06T18:46:51-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/99f9802fec08d1479dc4bfcc0776a8c2a7285c68
 
-#### Issue ICU-21065
 
-- ICU-21065: `U_DEFINE_LOCAL_OPEN_POINTER should be declare outside U_CDECL_BEGIN/END`
-	- Assigned to Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21065
-
-##### Commits with Issue ICU-21065
-
-- 7924891 `ICU-21065 Move U_DEFINE_LOCAL_OPEN_POINTER`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2020-04-07T22:01:24-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/79248911dc04c38b2bd77b15678115c17eb8fa43
-
-
-## Total Problems: 7
+## Total Problems: 3
