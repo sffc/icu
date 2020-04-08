@@ -7,22 +7,28 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: c1aa8b9a7553d672082ab0d77f0a43ba19e7565f
+- Latest Commit: 79248911dc04c38b2bd77b15678115c17eb8fa43
 - Jira Query: project=ICU AND fixVersion=67.1
-- Rev Range: release-66-1..upstream/master
+- Rev Range: release-66-1..upstream/maint/maint-67
 - Authenticated: Yes
 
 ## Problem Categories
 ### Closed Issues with No Commit
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-*Success: No problems in this category!*
+- ICU-20068: `Clean up .gitignore`
+	- Assigned to Fredrik Roubert
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20068
+
 ### Closed Issues with Illegal Resolution or Commit
 Tip: Fixed tickets should have resolution 'Fixed by Other Ticket' or 'Fixed'.
 Duplicate tickets should have their fixVersion tag removed.
 Tickets with resolution 'Fixed by Other Ticket' are not allowed to have commits.
 
-*Success: No problems in this category!*
+- ICU-20068: `Clean up .gitignore`
+	- Assigned to Fredrik Roubert
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20068
+
 
 ### Commits without Jira Issue Tag
 Tip: If you see your name here, make sure to label your commits correctly in the future.
@@ -37,76 +43,6 @@ Tip: Check that these tickets have the correct fixVersion tag.
 ### Commits with Open Jira Issue
 Tip: Consider closing the ticket if it is fixed.
 
-#### Issue ICU-20797
-
-- ICU-20797: `c: can't compile tests with UBSan`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20797
-
-##### Commits with Issue ICU-20797
-
-- cb8e278 `ICU-20797 fix UBS compilation error and UBS in test code`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-17T09:11:58-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/cb8e278ee6994dce769337f53c39acff5f68fb16
-
-#### Issue ICU-20852
-
-- ICU-20852: `build issue on Solaris/sparc`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20852
-
-##### Commits with Issue ICU-20852
-
-- 4a3a457 `ICU-20852 Fix Makefile to build on Sparc Solaris`
-	- Authored by Mojca Miklavec <mojca.miklavec.lists@gmail.com>
-	- Committed at 2020-02-19T12:42:40-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/4a3a457b38cd828b7b3fa4fdbc6e2504a57275e9
-
-#### Issue ICU-20920
-
-- ICU-20920: `Build ICU API for SI Prefix Patterns`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20920
-
-##### Commits with Issue ICU-20920
-
-- b03feb6 `ICU-20920 Changing "Sequence" to "Mixed" in ICU4C MeasureUnit`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2020-03-25T16:13:39-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b03feb6338737c6bbab61e64c224f275e6059d87
-
-- fc6612c `ICU-20920 Add support for CLDR 37 unit identifiers in ICU4C`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2020-03-24T14:15:19-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/fc6612cc56fa1e6ae0dccc55451e6a686085aab3
-
-#### Issue ICU-20939
-
-- ICU-20939: `Incorrect word \b boundaries w UTF-8 input and non-ASCII text`
-	- Assigned to Andy Heninger
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20939
-
-##### Commits with Issue ICU-20939
-
-- d6b88d4 `ICU-20939 Fix problem w regexp \b boundaries & UTF-8 text`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2020-02-03T16:51:17-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/d6b88d49e3be7096baf3828776c2b482a8ed1780
-
-#### Issue ICU-20964
-
-- ICU-20964: `ICU jira ticket for all the errors related to typos.`
-	- Assigned to Younies Mahmoud
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20964
-
-##### Commits with Issue ICU-20964
-
-- 20c29be `ICU-20964 Fix small typo mistake`
-	- Authored by Younies Mahmoud <younies.mahmoud@gmail.com>
-	- Committed at 2020-03-27T09:16:55-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/20c29becd69b19c62cb6618665fd773eeb73dab1
-
 #### Issue ICU-20976
 
 - ICU-20976: `truncation warnings (GCC8)`
@@ -120,19 +56,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T11:51:20-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/2ced2624fc3629cf067675e20beaf399ab199533
 
-#### Issue ICU-20978
-
-- ICU-20978: `Reduce unnecessary building for tools when cross-building`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20978
-
-##### Commits with Issue ICU-20978
-
-- 1a01c5e `ICU-20978 Reduce unnecessary building for tools when cross-building`
-	- Authored by Yuta Saito <kateinoigakukun@gmail.com>
-	- Committed at 2020-03-17T18:42:30-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/1a01c5edc1c6333e1123697ae27dd7c0729dc6a7
-
 #### Issue ICU-20979
 
 - ICU-20979: `ICU 67 RC BRS`
@@ -140,6 +63,66 @@ Tip: Consider closing the ticket if it is fixed.
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20979
 
 ##### Commits with Issue ICU-20979
+
+- 628a935 `ICU-20979 API Change Report for 67 RC`
+	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
+	- Committed at 2020-04-03T10:14:01-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/628a935488a8ff9ca26fcb0b02da1b0bd2b52a94
+
+- 94c2c57 `ICU-20979 Update TODOs in formatting code to point to open issues.`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-04-03T01:57:33-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/94c2c578a92b287772637ad6f7a30c2280a1a661
+
+- b7facd4 `ICU-20979 Updating double-conversion from upstream master`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-04-02T14:39:11-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b7facd487444508c5724f8217d53bc41a76a8950
+
+- d45bf0c `ICU-20979 delete no-longer-relevant comment related to U_HIDE macros`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-04-02T09:38:35-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/d45bf0c80a681448487d565a1b0c91ef94f395a7
+
+- b8a338f `ICU-20979 integrate CLDR release-37-beta2 to master`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-04-01T18:27:51-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b8a338fd7daed14a628008b7b43c6503c3bf1e72
+
+- dcfe6c4 `ICU-20979 BRS 67rc, ICU4C API promotion`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2020-04-01T16:28:42-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/dcfe6c4adae694755ef39819b3cc34170c493738
+
+- b718ccf `ICU-20979 Update ICU4C readme`
+	- Authored by Daniel Ju <daju@microsoft.com>
+	- Committed at 2020-04-01T15:43:18-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b718ccf17a7114201461f015dcef36794f133b07
+
+- 4807a89 `ICU-20979 BRS67RC Updating ICU4J readme`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-04-01T18:26:09-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/4807a89297cdab1f5264e813361bf373b85e3b21
+
+- d0f2aa6 `ICU-20979 BRS67RC Adding ICU4J 67 API signature data file`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-04-01T18:06:42-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/d0f2aa6c5809a435d6816b5a8afa59f13c2784ec
+
+- 3c006a5 `ICU-20979 BRS67RC Updating ICU4J API change report`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2020-04-01T18:05:17-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/3c006a5ffffef7cde93e3729062f784ebf053261
+
+- e9b6c1b `ICU-20979 Fixing instructions in commit report tool`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-04-01T16:44:12-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/e9b6c1b779a47ceb1f3b5ff167b6506da000864d
+
+- 822eb4e `ICU-20979 Fixing minor MSVC warnings`
+	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
+	- Committed at 2020-04-01T14:31:28-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/822eb4e6225f34a3e980c0c4937a5f2c2694a081
 
 - c1aa8b9 `ICU-20979 BRS67RC ICU4J API status promotion`
 	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
@@ -176,18 +159,49 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T13:28:54-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c163f7dc29ea21cacd7c7c9000f1ba8a2f0698b1
 
-#### Issue ICU-21022
+#### Issue ICU-21015
 
-- ICU-21022: `ICU4C: TestDateFormatRoundTrip fails in exhaustive test mode`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21022
+- ICU-21015: `Fix gcc warnings before ICU 67`
+	- Assigned to Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21015
 
-##### Commits with Issue ICU-21022
+##### Commits with Issue ICU-21015
 
-- 1084c14 `ICU-21022 Use logKnownIssue to avoid TestDateFormatRoundTrip exhaustive fail`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2020-03-25T10:50:42-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/1084c1430aad6006d269d32941689defeeee2991
+- 3b0772f `ICU-21015 Fixing gcc compiler warnings`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-04-03T01:56:07-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/3b0772fff9c880b1c048878e9a11bf2d1278c69f
+
+#### Issue ICU-21060
+
+- ICU-21060: `MeasureUnit bugs: identifier memory management, parsing *-per-x-y, more`
+	- Assigned to Hugo van der Merwe
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21060
+
+##### Commits with Issue ICU-21060
+
+- cb544f4 `ICU-21060 Fix heap-use-after-free bug.`
+	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
+	- Committed at 2020-04-07T12:40:39-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/cb544f47e075f1b5b71714d7ffdee0ad12cfe77c
+
+- 99f9802 `ICU-21060 Fix the foo-per-a-b -> foo-b-per-a bug.`
+	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
+	- Committed at 2020-04-06T18:46:51-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/99f9802fec08d1479dc4bfcc0776a8c2a7285c68
+
+#### Issue ICU-21065
+
+- ICU-21065: `U_DEFINE_LOCAL_OPEN_POINTER should be declare outside U_CDECL_BEGIN/END`
+	- Assigned to Frank Yung-Fong Tang
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21065
+
+##### Commits with Issue ICU-21065
+
+- 7924891 `ICU-21065 Move U_DEFINE_LOCAL_OPEN_POINTER`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2020-04-07T22:01:24-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/79248911dc04c38b2bd77b15678115c17eb8fa43
 
 
-## Total Problems: 9
+## Total Problems: 7
