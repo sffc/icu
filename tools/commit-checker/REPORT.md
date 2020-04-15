@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: 79248911dc04c38b2bd77b15678115c17eb8fa43
+- Latest Commit: b9d1ba87f545744f2b81f1f413484f55a0da3d2f
 - Jira Query: project=ICU AND fixVersion=67.1
 - Rev Range: release-66-1..upstream/maint/maint-67
 - Authenticated: Yes
@@ -36,19 +36,6 @@ Tip: Check that these tickets have the correct fixVersion tag.
 
 ### Commits with Open Jira Issue
 Tip: Consider closing the ticket if it is fixed.
-
-#### Issue ICU-20976
-
-- ICU-20976: `truncation warnings (GCC8)`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20976
-
-##### Commits with Issue ICU-20976
-
-- 2ced262 `ICU-20976 GCC 8 fixes phase 1`
-	- Authored by Steven R. Loomis <srloomis@us.ibm.com>
-	- Committed at 2020-03-24T11:51:20-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/2ced2624fc3629cf067675e20beaf399ab199533
 
 #### Issue ICU-20979
 
@@ -153,6 +140,19 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T13:28:54-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c163f7dc29ea21cacd7c7c9000f1ba8a2f0698b1
 
+#### Issue ICU-21040
+
+- ICU-21040: `Segmentation faults in numfmtst.cpp when testing without data`
+	- Assigned to Elango Cheran
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21040
+
+##### Commits with Issue ICU-21040
+
+- 3fb3929 `ICU-21040 Fix segfaults in no data tests`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2020-04-10T13:56:10-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/3fb3929f80370f974f26c40015fed91c626594d5
+
 #### Issue ICU-21060
 
 - ICU-21060: `MeasureUnit bugs: identifier memory management, parsing *-per-x-y, more`
@@ -171,5 +171,18 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-04-06T18:46:51-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/99f9802fec08d1479dc4bfcc0776a8c2a7285c68
 
+#### Issue ICU-21061
 
-## Total Problems: 3
+- ICU-21061: `ICU 67 release tasks`
+	- Assigned to Markus Scherer
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21061
+
+##### Commits with Issue ICU-21061
+
+- 7a434a4 `ICU-21061 Update version numbers for 67GA`
+	- Authored by Daniel Ju <daju@microsoft.com>
+	- Committed at 2020-04-08T13:45:27-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/7a434a413f78fac3b0318d004fd6703fd4ffc390
+
+
+## Total Problems: 4
