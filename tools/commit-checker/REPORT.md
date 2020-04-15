@@ -140,19 +140,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T13:28:54-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c163f7dc29ea21cacd7c7c9000f1ba8a2f0698b1
 
-#### Issue ICU-21040
-
-- ICU-21040: `Segmentation faults in numfmtst.cpp when testing without data`
-	- Assigned to Elango Cheran
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21040
-
-##### Commits with Issue ICU-21040
-
-- 3fb3929 `ICU-21040 Fix segfaults in no data tests`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2020-04-10T13:56:10-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/3fb3929f80370f974f26c40015fed91c626594d5
-
 #### Issue ICU-21060
 
 - ICU-21060: `MeasureUnit bugs: identifier memory management, parsing *-per-x-y, more`
@@ -185,4 +172,4 @@ Tip: Consider closing the ticket if it is fixed.
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7a434a413f78fac3b0318d004fd6703fd4ffc390
 
 
-## Total Problems: 4
+## Total Problems: 3
