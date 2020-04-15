@@ -740,10 +740,17 @@ int32_t MeasureUnit::getDimensionality(UErrorCode& status) const {
     return SingleUnitImpl::forMeasureUnit(*this, status).dimensionality;
 }
 
-MeasureUnit MeasureUnit::withDimensionality(int32_t dimensionality, UErrorCode& status) const {
-    SingleUnitImpl singleUnit = SingleUnitImpl::forMeasureUnit(*this, status);
-    singleUnit.dimensionality = dimensionality;
-    return singleUnit.build(status);
+MeasureUnit MeasureUnit::withDimensionality(int32_t dimensionality, UErrorCode &status) const {
+    MeasureUnit result;
+    int32_t unitsCount;
+    auto singleUnits = this->splitToSingleUnits(unitsCount, status);
+    for (int i = 0; i < unitsCount; i++) {
+        SingleUnitImpl singleUnit = SingleUnitImpl::forMeasureUnit(singleUnits[i], status);
+        singleUnit.dimensionality = dimensionality;
+        result.product(singleUnit.build(status), status);
+    }
+
+    return result;
 }
 
 MeasureUnit MeasureUnit::reciprocal(UErrorCode& status) const {
