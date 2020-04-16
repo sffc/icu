@@ -381,18 +381,20 @@ class U_I18N_API MeasureUnit: public UObject {
     UMeasureSIPrefix getSIPrefix(UErrorCode& status) const;
 
     /**
-     * Creates a MeasureUnit which is this SINGLE unit augmented with the specified dimensionality
-     * (power). For example, if dimensionality is 2, the unit will be squared.
+     * Creates a `MeasureUnit` by applying a specific dimensionality (power).
+     * For example,
+     *     if `dimensionality` is 2, the `MeasureUnit` will be squared.
+     *     Thus means
+     *        if the `MeasureUnit` is "meter", the returned `MeasureUnit` will be "square-meter".
+     *        if the `MeasureUnit` is "square-meter", the returned `MeasureUnit` will be "p4-meter".
      *
-     * NOTE: Only works on SINGLE units. If this is a COMPOUND or MIXED unit, an error will
-     * occur. For more information, see UMeasureUnitComplexity.
      *
      * @param dimensionality The dimensionality (power).
      * @param status Set if this is not a SINGLE unit or if another error occurs.
      * @return A new SINGLE unit.
      * @draft ICU 67
      */
-    MeasureUnit withDimensionality(int32_t dimensionality, UErrorCode& status) const;
+    MeasureUnit withDimensionality(int32_t dimensionality, UErrorCode &status) const;
 
     /**
      * Gets the dimensionality (power) of this MeasureUnit. For example, if the unit is square,

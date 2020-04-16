@@ -746,7 +746,7 @@ MeasureUnit MeasureUnit::withDimensionality(int32_t dimensionality, UErrorCode &
     auto singleUnits = this->splitToSingleUnits(unitsCount, status);
     for (int i = 0; i < unitsCount; i++) {
         SingleUnitImpl singleUnit = SingleUnitImpl::forMeasureUnit(singleUnits[i], status);
-        singleUnit.dimensionality = dimensionality;
+        singleUnit.dimensionality *= dimensionality;
         result.product(singleUnit.build(status), status);
     }
 
