@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Latest Commit: b9d1ba87f545744f2b81f1f413484f55a0da3d2f
+- Latest Commit: b5973eee648e2d99273a085836e66a9deda57fa1
 - Jira Query: project=ICU AND fixVersion=67.1
 - Rev Range: release-66-1..upstream/maint/maint-67
 - Authenticated: Yes
@@ -140,24 +140,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-03-24T13:28:54-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c163f7dc29ea21cacd7c7c9000f1ba8a2f0698b1
 
-#### Issue ICU-21060
-
-- ICU-21060: `MeasureUnit bugs: identifier memory management, parsing *-per-x-y, more`
-	- Assigned to Hugo van der Merwe
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21060
-
-##### Commits with Issue ICU-21060
-
-- cb544f4 `ICU-21060 Fix heap-use-after-free bug.`
-	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
-	- Committed at 2020-04-07T12:40:39-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/cb544f47e075f1b5b71714d7ffdee0ad12cfe77c
-
-- 99f9802 `ICU-21060 Fix the foo-per-a-b -> foo-b-per-a bug.`
-	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
-	- Committed at 2020-04-06T18:46:51-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/99f9802fec08d1479dc4bfcc0776a8c2a7285c68
-
 #### Issue ICU-21061
 
 - ICU-21061: `ICU 67 release tasks`
@@ -166,10 +148,15 @@ Tip: Consider closing the ticket if it is fixed.
 
 ##### Commits with Issue ICU-21061
 
+- b5973ee `ICU-21061 ICU-21085 Merge latest changes from double-conversion`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2020-04-21T20:31:38-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/b5973eee648e2d99273a085836e66a9deda57fa1
+
 - 7a434a4 `ICU-21061 Update version numbers for 67GA`
 	- Authored by Daniel Ju <daju@microsoft.com>
 	- Committed at 2020-04-08T13:45:27-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7a434a413f78fac3b0318d004fd6703fd4ffc390
 
 
-## Total Problems: 3
+## Total Problems: 2
