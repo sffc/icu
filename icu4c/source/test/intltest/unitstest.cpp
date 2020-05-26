@@ -14,9 +14,11 @@
 #include "unicode/measunit.h"
 #include "unicode/unistr.h"
 #include "unicode/unum.h"
+#include "unicode/ures.h"
 #include "unitconverter.h"
 #include "unitsdata.h"
 #include "uparse.h"
+#include "uresimp.h"
 
 using icu::number::impl::DecimalQuantity;
 
@@ -26,6 +28,7 @@ class UnitsTest : public IntlTest {
 
     void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par = NULL);
 
+    void testConstantFreshness();
     void testConversionCapability();
     void testConversions();
     void testPreferences();
@@ -41,6 +44,7 @@ extern IntlTest *createUnitsTest() { return new UnitsTest(); }
 void UnitsTest::runIndexedTest(int32_t index, UBool exec, const char *&name, char * /*par*/) {
     if (exec) { logln("TestSuite UnitsTest: "); }
     TESTCASE_AUTO_BEGIN;
+    TESTCASE_AUTO(testConstantFreshness);
     TESTCASE_AUTO(testConversionCapability);
     TESTCASE_AUTO(testConversions);
     TESTCASE_AUTO(testPreferences);
@@ -50,6 +54,75 @@ void UnitsTest::runIndexedTest(int32_t index, UBool exec, const char *&name, cha
     TESTCASE_AUTO(testTemperature);
     TESTCASE_AUTO(testArea);
     TESTCASE_AUTO_END;
+}
+
+// Tests freshness of the constants in units.txt by simply loading each directly
+// specified conversion rate into UnitConverter.
+void UnitsTest::testConstantFreshness() {
+    IcuTestErrorCode status(*this, "testConstantFreshness");
+    LocalUResourceBundlePointer unitsBundle(ures_openDirect(NULL, "units", status));
+    LocalUResourceBundlePointer unitConstants(
+        ures_getByKey(unitsBundle.getAlias(), "unitConstants", NULL, status));
+    LocalUResourceBundlePointer convertUnits(
+        ures_getByKey(unitsBundle.getAlias(), "convertUnits", NULL, status));
+
+    CharString constants;
+    while (ures_hasNext(unitConstants.getAlias())) {
+        int32_t len;
+        const char *constant = NULL;
+        ures_getNextString(unitConstants.getAlias(), &len, &constant, status);
+        constants.append(" \"", status);
+        constants.append(constant, status);
+        constants.append("\"", status);
+    }
+
+    if (status.errDataIfFailureAndReset("ures_getByKey(unitsBundle, \"convertUnits\", ...)")) {
+        return;
+    }
+    int categoryCount = ures_getSize(convertUnits.getAlias());
+    ConversionRates conversionRates(status);
+    StackUResourceBundle stackBundle;
+    while (ures_hasNext(convertUnits.getAlias())) {
+        ures_getNextResource(convertUnits.getAlias(), stackBundle.getAlias(), status);
+        const char *sourceKey = ures_getKey(stackBundle.getAlias());
+
+        int32_t targetLen;
+        const UChar *uTarget = ures_getStringByKey(stackBundle.getAlias(), "target", &targetLen, status);
+        CharString target;
+        target.appendInvariantChars(uTarget, targetLen, status);
+
+        int32_t factorLen;
+        const UChar *uFactor = ures_getStringByKey(stackBundle.getAlias(), "factor", &factorLen, status);
+        CharString factor;
+        factor.appendInvariantChars(uFactor, factorLen, status);
+
+        if (status.errDataIfFailureAndReset("Resource loading failure")) { return; }
+        // fprintf(stderr, "sourceKey: %s, target: %s\n", sourceKey, target.data());
+        UnitConverter(MeasureUnit::forIdentifier(sourceKey, status),
+                      MeasureUnit::forIdentifier(target.data(), status), conversionRates, status);
+        if (status.errDataIfFailureAndReset(
+                "UnitConverter(<%s>, <%s>, status).\n"
+                "If U_INVALID_FORMAT_ERROR, please check that \"icu4c/source/i18n/unitconverter.cpp\" "
+                "has all constants?\n"
+                "Factor for \"%s\" is: \"%s\".\n"
+                "Full list of constants:%s",
+                sourceKey, target.data(), sourceKey, factor.data(), constants.data())) {
+            continue;
+        }
+    }
+    for (int32_t i = 0; i < categoryCount; i++) {
+        // const UChar *uCategory =
+        //     ures_getStringByIndex(convertUnits.getAlias(), i, &categoryLength, &status);
+        if (U_FAILURE(status)) {
+            // if (uprv_strcmp(baseUnitIdentifier, "meter-per-cubic-meter") == 0) {
+            //     status = U_ZERO_ERROR;
+            //     result.append("consumption-inverse", status);
+            //     return result;
+            // }
+        }
+        // result.appendInvariantChars(uCategory, categoryLength, status);
+        // return result;
+    }
 }
 
 // Just for testing quick conversion ability.

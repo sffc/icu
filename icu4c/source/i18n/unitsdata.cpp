@@ -293,10 +293,7 @@ int32_t binarySearch(const MaybeStackVector<UnitPreferenceMetadata> *metadata, c
  * hierarchy was found.
  *
  * @param metadata The full list of UnitPreferenceMetadata instances.
- * @param category The category to search for. If category is not known, it can
- * be resolved from the baseunit of the input (for supported unit categories).
- * TODO(hugovdm): implement the unit->category lookup (via "unitQuantities" in
- * the units resource bundle).
+ * @param category The category to search for (found via getUnitCategory).
  * @param usage The usage for which formatting preferences is needed. If the
  * given usage is not known, this function automatically falls back to "default"
  * usage.

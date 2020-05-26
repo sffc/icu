@@ -117,7 +117,9 @@ struct Factor {
     void substituteConstants() {
         double constantsValues[CONSTANTS_COUNT];
 
-        // TODO: Load those constant values from units data.
+        // TODO(hugovdm): Consider loading these constants from units data, as
+        // described in
+        // docs/userguide/format_parse/numbers/measurement_units.md.
         constantsValues[CONSTANT_FT2M] = 0.3048;
         constantsValues[CONSTANT_PI] = 411557987.0 / 131002976.0;
         constantsValues[CONSTANT_GRAVITY] = 9.80665;
@@ -217,7 +219,8 @@ MeasureUnit extractCompoundBaseUnit(const MeasureUnit &source, const ConversionR
     return result;
 }
 
-// TODO: Load those constant from units data.
+// TODO(hugovdm): Consider loading these constants from units data, as described
+// in docs/userguide/format_parse/numbers/measurement_units.md.
 /*
  * Adds a single factor element to the `Factor`. e.g "ft3m", "2.333" or "cup2m3". But not "cup2m3^3".
  */
