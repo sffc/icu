@@ -81,7 +81,6 @@ void UnitsTest::testConstantFreshness() {
     if (status.errDataIfFailureAndReset("ures_getByKey(unitsBundle, \"convertUnits\", ...)")) {
         return;
     }
-    int categoryCount = ures_getSize(convertUnits.getAlias());
     ConversionRates conversionRates(status);
     StackUResourceBundle stackBundle;
     while (ures_hasNext(convertUnits.getAlias())) {
