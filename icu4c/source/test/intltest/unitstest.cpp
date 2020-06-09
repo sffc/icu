@@ -28,7 +28,7 @@ class UnitsTest : public IntlTest {
 
     void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par = NULL);
 
-    void testConstantFreshness();
+    void testHardcodeFreshnessForConvertUnits();
     void testConversionCapability();
     void testConversions();
     void testPreferences();
@@ -44,7 +44,7 @@ extern IntlTest *createUnitsTest() { return new UnitsTest(); }
 void UnitsTest::runIndexedTest(int32_t index, UBool exec, const char *&name, char * /*par*/) {
     if (exec) { logln("TestSuite UnitsTest: "); }
     TESTCASE_AUTO_BEGIN;
-    TESTCASE_AUTO(testConstantFreshness);
+    TESTCASE_AUTO(testHardcodeFreshnessForConvertUnits);
     TESTCASE_AUTO(testConversionCapability);
     TESTCASE_AUTO(testConversions);
     TESTCASE_AUTO(testPreferences);
@@ -56,11 +56,16 @@ void UnitsTest::runIndexedTest(int32_t index, UBool exec, const char *&name, cha
     TESTCASE_AUTO_END;
 }
 
-// Tests the hard-coded constants in the code against constants that appear in
-// units.txt by simply loading each conversion rate into UnitConverter.
-// UnitConverter returns an error if it fails to recognise a constant, which
+// Tests the hard-coded constants in the code against constants and unit
+// identifiers that appear in units.txt, by simply parsing unit identifiers and
+// then loading each conversion rate from the convertUnits resource into
+// UnitConverter.
+//
+// MeasureUnit::forIdentifier() will fail for invalid unit identifiers.
+//
+// UnitConverter() returns an error if it fails to recognise a constant, which
 // would thereby alert us if the hard-coded constants are stale.
-void UnitsTest::testConstantFreshness() {
+void UnitsTest::testHardcodeFreshnessForConvertUnits() {
     IcuTestErrorCode status(*this, "testConstantFreshness");
     LocalUResourceBundlePointer unitsBundle(ures_openDirect(NULL, "units", status));
     LocalUResourceBundlePointer unitConstants(
@@ -98,10 +103,20 @@ void UnitsTest::testConstantFreshness() {
         factor.appendInvariantChars(uFactor, factorLen, status);
 
         if (status.errDataIfFailureAndReset("Resource loading failure")) { return; }
-        UnitConverter(MeasureUnit::forIdentifier(sourceKey, status),
-                      MeasureUnit::forIdentifier(target.data(), status), conversionRates, status);
+        MeasureUnit sourceUnit = MeasureUnit::forIdentifier(sourceKey, status);
+        MeasureUnit targetUnit = MeasureUnit::forIdentifier(target.data(), status);
         if (status.errDataIfFailureAndReset(
-                "UnitConverter(<%s>, <%s>, status).\n"
+                "MeasureUnit::forIdentifier(\"%s\", status); "
+                "MeasureUnit::forIdentifier(\"%s\", status);\n\n"
+                "If U_ILLEGAL_ARGUMENT_ERROR, please check that "
+                "\"icu4c/source/i18n/measunit_extra.cpp\" has the necessary unit identifiers in the "
+                "gSimpleUnits[] array. (Also check the gSubTypes[] array in measunit.cpp?)",
+                sourceKey, target.data())) {
+            continue;
+        }
+        UnitConverter(sourceUnit, targetUnit, conversionRates, status);
+        if (status.errDataIfFailureAndReset(
+                "UnitConverter(<%s>, <%s>, status).\n\n"
                 "If U_INVALID_FORMAT_ERROR, please check that \"icu4c/source/i18n/unitconverter.cpp\" "
                 "has all constants?\n"
                 "Factor for \"%s\" is: \"%s\".\n"
