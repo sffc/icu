@@ -56,8 +56,10 @@ void UnitsTest::runIndexedTest(int32_t index, UBool exec, const char *&name, cha
     TESTCASE_AUTO_END;
 }
 
-// Tests freshness of the constants in units.txt by simply loading each directly
-// specified conversion rate into UnitConverter.
+// Tests the hard-coded constants in the code against constants that appear in
+// units.txt by simply loading each conversion rate into UnitConverter.
+// UnitConverter returns an error if it fails to recognise a constant, which
+// would thereby alert us if the hard-coded constants are stale.
 void UnitsTest::testConstantFreshness() {
     IcuTestErrorCode status(*this, "testConstantFreshness");
     LocalUResourceBundlePointer unitsBundle(ures_openDirect(NULL, "units", status));
@@ -97,7 +99,6 @@ void UnitsTest::testConstantFreshness() {
         factor.appendInvariantChars(uFactor, factorLen, status);
 
         if (status.errDataIfFailureAndReset("Resource loading failure")) { return; }
-        // fprintf(stderr, "sourceKey: %s, target: %s\n", sourceKey, target.data());
         UnitConverter(MeasureUnit::forIdentifier(sourceKey, status),
                       MeasureUnit::forIdentifier(target.data(), status), conversionRates, status);
         if (status.errDataIfFailureAndReset(
@@ -109,19 +110,6 @@ void UnitsTest::testConstantFreshness() {
                 sourceKey, target.data(), sourceKey, factor.data(), constants.data())) {
             continue;
         }
-    }
-    for (int32_t i = 0; i < categoryCount; i++) {
-        // const UChar *uCategory =
-        //     ures_getStringByIndex(convertUnits.getAlias(), i, &categoryLength, &status);
-        if (U_FAILURE(status)) {
-            // if (uprv_strcmp(baseUnitIdentifier, "meter-per-cubic-meter") == 0) {
-            //     status = U_ZERO_ERROR;
-            //     result.append("consumption-inverse", status);
-            //     return result;
-            // }
-        }
-        // result.appendInvariantChars(uCategory, categoryLength, status);
-        // return result;
     }
 }
 
