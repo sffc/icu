@@ -297,9 +297,10 @@ mass;	person;	HK;	498951607 / 1000000000;	0.498951607;	kilogram;	1;	pound;	8 / 5
 mass;	person;	HK;	45359237 / 100000000;	0.45359237;	kilogram;	1;	pound;	0;	0.0;	ounce
 mass;	person;	HK;	408233133 / 1000000000;	0.408233133;	kilogram;	0;	pound;	72 / 5;	14.4;	ounce
 
-mass-density;	blood-glucose;	001;	11 / 1000;	0.011;	kilogram-per-cubic-meter;	11 / 10;	1.1;	milligram-per-deciliter
-mass-density;	blood-glucose;	001;	1 / 100;	0.01;	kilogram-per-cubic-meter;	1;	1.0;	milligram-per-deciliter
-mass-density;	blood-glucose;	001;	9 / 1000;	0.009;	kilogram-per-cubic-meter;	9 / 10;	0.9;	milligram-per-deciliter
+# TODO(icu-units#126): resolve the blood-glucose examples
+# mass-density;	blood-glucose;	001;	11 / 1000;	0.011;	kilogram-per-cubic-meter;	11 / 10;	1.1;	milligram-per-deciliter
+# mass-density;	blood-glucose;	001;	1 / 100;	0.01;	kilogram-per-cubic-meter;	1;	1.0;	milligram-per-deciliter
+# mass-density;	blood-glucose;	001;	9 / 1000;	0.009;	kilogram-per-cubic-meter;	9 / 10;	0.9;	milligram-per-deciliter
 
 mass-density;	default;	001;	11 / 10;	1.1;	kilogram-per-cubic-meter;	11 / 10;	1.1;	kilogram-per-cubic-meter
 mass-density;	default;	001;	1;	1.0;	kilogram-per-cubic-meter;	1;	1.0;	kilogram-per-cubic-meter
