@@ -16,19 +16,13 @@ Environment:
 ### Closed Issues with No Commit
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-- ICU-21479: `Add unum_formatDecimalCurrency (to avoid truncating or rounding large amounts)`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21479
-
+*Success: No problems in this category!*
 ### Closed Issues with Illegal Resolution or Commit
 Tip: Fixed tickets should have resolution 'Fixed by Other Ticket' or 'Fixed'.
 Duplicate tickets should have their fixVersion tag removed.
 Tickets with resolution 'Fixed by Other Ticket' are not allowed to have commits.
 
-- ICU-21479: `Add unum_formatDecimalCurrency (to avoid truncating or rounding large amounts)`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21479
-
+*Success: No problems in this category!*
 
 ### Commits without Jira Issue Tag
 Tip: If you see your name here, make sure to label your commits correctly in the future.
@@ -443,4 +437,4 @@ Tip: Consider closing the ticket if it is fixed.
 	- GitHub Link: https://github.com/unicode-org/icu/commit/3333fd557c398c98805f1ffdc63df796dc2bdcbd
 
 
-## Total Problems: 15
+## Total Problems: 13
