@@ -112,9 +112,12 @@ def get_jira_instance(jira_hostname, jira_username, jira_password, **kwargs):
 def make_icu_issue(jira_issue):
     # Resolution ID 10004 is "Fixed"
     # Resolution ID 10015 is "Fixed by Other Ticket"
+    # Resolution ID 10025 is "Fixed non-repo"
     if not jira_issue.fields.resolution:
         commit_wanted = CommitWanted["OPTIONAL"]
     elif jira_issue.fields.resolution.id == "10015":
+        commit_wanted = CommitWanted["FORBIDDEN"]
+    elif jira_issue.fields.resolution.id == "10025":
         commit_wanted = CommitWanted["FORBIDDEN"]
     elif jira_issue.fields.resolution.id != "10004":
         commit_wanted = CommitWanted["ERROR"]
