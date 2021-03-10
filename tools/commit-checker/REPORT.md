@@ -16,13 +16,19 @@ Environment:
 ### Closed Issues with No Commit
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-*Success: No problems in this category!*
+- ICU-21479: `Add unum_formatDecimalCurrency (to avoid truncating or rounding large amounts)`
+	- Assigned to Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21479
+
 ### Closed Issues with Illegal Resolution or Commit
 Tip: Fixed tickets should have resolution 'Fixed by Other Ticket' or 'Fixed'.
 Duplicate tickets should have their fixVersion tag removed.
 Tickets with resolution 'Fixed by Other Ticket' are not allowed to have commits.
 
-*Success: No problems in this category!*
+- ICU-21479: `Add unum_formatDecimalCurrency (to avoid truncating or rounding large amounts)`
+	- Assigned to Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21479
+
 
 ### Commits without Jira Issue Tag
 Tip: If you see your name here, make sure to label your commits correctly in the future.
@@ -37,19 +43,6 @@ Tip: Check that these tickets have the correct fixVersion tag.
 ### Commits with Open Jira Issue
 Tip: Consider closing the ticket if it is fixed.
 
-#### Issue ICU-20421
-
-- ICU-20421: `Add span fields to NumberRangeFormatter`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20421
-
-##### Commits with Issue ICU-20421
-
-- b6687af `ICU-20421 Add span fields to NumberRangeFormatter`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2021-02-18T09:56:48-06:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b6687af59c295664086f64477fca6fe76d055e77
-
 #### Issue ICU-20886
 
 - ICU-20886: `Add option to remove fraction digits on integers after rounding`
@@ -62,19 +55,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Authored by Shane F. Carr <shane@unicode.org>
 	- Committed at 2021-03-04T08:19:59-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/b79c299f90d4023ac237db3d0335d568bf21cd36
-
-#### Issue ICU-20918
-
-- ICU-20918: `uenum_openTimeZones can return NULL without setting *ec to an error.`
-	- Assigned to Yoshito Umaoka
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20918
-
-##### Commits with Issue ICU-20918
-
-- 33104d7 `ICU-20918 ucal_openTimeZones() to call ucal_openTimeZoneIDEnumeration()`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2021-03-09T14:22:16-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/33104d7eaba543560cd35fcc1cb0b0610177edc6
 
 #### Issue ICU-20941
 
@@ -149,32 +129,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
 	- Committed at 2021-02-17T23:36:40+01:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/1dbe70ac189328afc3b6515b2f1964445c07d1da
-
-#### Issue ICU-21203
-
-- ICU-21203: `Where is the documentation for icu::NumberFormatter?`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21203
-
-##### Commits with Issue ICU-21203
-
-- e85938b `ICU-21203 ICU-21198 ICU-21479 Improve docs discoverability for NumberFormatter`
-	- Authored by Shane F. Carr <sffc@google.com>
-	- Committed at 2021-02-25T14:16:25-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e85938bd2c759a478c8ab3de18e4a14fa7ec872e
-
-#### Issue ICU-21207
-
-- ICU-21207: `Java Illegal reflective access in TimeZoneTest`
-	- Assigned to Yoshito Umaoka
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21207
-
-##### Commits with Issue ICU-21207
-
-- 09149bc `ICU-21207 Remove unnecessary reflection call`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2021-03-09T16:07:47-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/09149bc795cccaa2c70f3d25879341dbf0998216
 
 #### Issue ICU-21310
 
@@ -335,19 +289,6 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2020-10-27T14:23:08+01:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/21dde41f9e2c2b72ae7aea2018e1dcf05655934d
 
-#### Issue ICU-21351
-
-- ICU-21351: `Don't coalesce adjacent list formatter fields in ICU4J`
-	- Assigned to Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21351
-
-##### Commits with Issue ICU-21351
-
-- 9ac51f2 `ICU-21351 Don't coalesce adjacent list formatter fields in ICU4J`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2021-02-08T20:49:03-06:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/9ac51f21eda8ad47344802226674694eb70d83af
-
 #### Issue ICU-21369
 
 - ICU-21369: `Deprecate @provisional API doc tags`
@@ -502,4 +443,4 @@ Tip: Consider closing the ticket if it is fixed.
 	- GitHub Link: https://github.com/unicode-org/icu/commit/3333fd557c398c98805f1ffdc63df796dc2bdcbd
 
 
-## Total Problems: 18
+## Total Problems: 15
