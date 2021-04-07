@@ -32,48 +32,10 @@ Tip: If you see your name here, make sure to label your commits correctly in the
 ### Commits with Jira Issue Not Found
 Tip: Check that these tickets have the correct fixVersion tag.
 
-#### Issue ICU-21513
-
-- ICU-21513: `ICU no longer compile on older macOS version with clang 11`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21513
-
-##### Commits with Issue ICU-21513
-
-- ff702ad `ICU-21513 check if TARGET_OS_SIMULATOR has been defined`
-	- Authored by Mojca Miklavec <mojca.miklavec.lists@gmail.com>
-	- Committed at 2021-04-07T13:47:42-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/ff702ad727d958426c222c45123085c5f943ab89
-
-#### Issue ICU-21550
-
-- ICU-21550: `Fix Locale canonicalization to add "zzzz" for sd/rg replacement if the replacement  is alpha{2}`
-	- Assigned to Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21550
-
-##### Commits with Issue ICU-21550
-
-- b926f52 `ICU-21550 Add zzzz to subdivision if len==2`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2021-04-07T13:47:42-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b926f52688603fbcfb1df082b2711850b3127007
-
+*Success: No problems in this category!*
 
 ### Commits with Open Jira Issue
 Tip: Consider closing the ticket if it is fixed.
-
-#### Issue ICU-21513
-
-- ICU-21513: `ICU no longer compile on older macOS version with clang 11`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21513
-
-##### Commits with Issue ICU-21513
-
-- ff702ad `ICU-21513 check if TARGET_OS_SIMULATOR has been defined`
-	- Authored by Mojca Miklavec <mojca.miklavec.lists@gmail.com>
-	- Committed at 2021-04-07T13:47:42-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/ff702ad727d958426c222c45123085c5f943ab89
 
 #### Issue ICU-21546
 
@@ -103,18 +65,5 @@ Tip: Consider closing the ticket if it is fixed.
 	- Committed at 2021-03-25T17:02:23-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/e7db5754ba2720c18248a2c66cb54ccba5a74296
 
-#### Issue ICU-21550
 
-- ICU-21550: `Fix Locale canonicalization to add "zzzz" for sd/rg replacement if the replacement  is alpha{2}`
-	- Assigned to Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21550
-
-##### Commits with Issue ICU-21550
-
-- b926f52 `ICU-21550 Add zzzz to subdivision if len==2`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2021-04-07T13:47:42-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/b926f52688603fbcfb1df082b2711850b3127007
-
-
-## Total Problems: 5
+## Total Problems: 1
