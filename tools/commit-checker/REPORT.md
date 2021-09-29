@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2021-09-29T02:49:54.317385
-- Latest Commit: https://github.com/unicode-org/icu/commit/2b76d335fb8c51a57048e4d3d40db12b67e114d0
+- Now: 2021-09-29T13:06:32.084442
+- Latest Commit: https://github.com/unicode-org/icu/commit/6115e5896665a7d6ae12af99d36c0218b453da22
 - Jira Query: `project=ICU AND fixVersion=70.1`
 - Rev Range: `release-69-1..upstream/main`
 - Authenticated: `Yes`
@@ -58,55 +58,13 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-21680](#issue-icu-21680) [ICU-21623](#issue-icu-21623)
- - **build_j**: [ICU-21038](#issue-icu-21038) [ICU-21708](#issue-icu-21708)
- - **format_number**: [ICU-21685](#issue-icu-21685)
- - **locale_id**: [ICU-20870](#issue-icu-20870)
- - **others**: [ICU-21630](#issue-icu-21630) [ICU-21555](#issue-icu-21555) [ICU-21638](#issue-icu-21638) [ICU-21580](#issue-icu-21580) [ICU-21579](#issue-icu-21579)
- - **team_processes_tools**: [ICU-21568](#issue-icu-21568) [ICU-21727](#issue-icu-21727) [ICU-21581](#issue-icu-21581)
+ - **build_c**: [ICU-21680](#issue-icu-21680) [ICU-21623](#issue-icu-21623) [ICU-21764](#issue-icu-21764)
+ - **build_j**: [ICU-21708](#issue-icu-21708)
+ - **others**: [ICU-21638](#issue-icu-21638) [ICU-21555](#issue-icu-21555) [ICU-21580](#issue-icu-21580) [ICU-21579](#issue-icu-21579)
+ - **team_processes_tools**: [ICU-21581](#issue-icu-21581) [ICU-21568](#issue-icu-21568) [ICU-21727](#issue-icu-21727)
  - **test_fmwk_util**: [ICU-21756](#issue-icu-21756)
- - **time_calc**: [ICU-21767](#issue-icu-21767) [ICU-21530](#issue-icu-21530) [ICU-21429](#issue-icu-21429)
- - **units**: [ICU-21730](#issue-icu-21730)
+ - **time_calc**: [ICU-21767](#issue-icu-21767) [ICU-21429](#issue-icu-21429)
 
-
-#### Issue ICU-20870
-
-_Jira issue is open_
-- ICU-20870: `Canonicalize locales when looking up names`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-20870
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): locale_id
-
-##### Commits with Issue ICU-20870
-
-- ff8516b `ICU-20870 Fix breakage on UCONFIG_NO_FORMATTING`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2021-09-13T20:21:13-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/ff8516b0dddcf49d760144f84ec0be07b53f4e66
-
-- 0da0fab `ICU-20870 If locale/lang name lookup fails, canonicalize lang and try again`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2021-09-13T09:50:33-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/0da0fabfaefc479ffde61b1ed8c413803362915a
-
-#### Issue ICU-21038
-
-_Jira issue is open_
-- ICU-21038: `Include localespiCheck in the standard test target`
-	- Assigned to Yoshito Umaoka
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21038
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): build_j
-
-##### Commits with Issue ICU-21038
-
-- 26c61c2 `ICU-21038 Run ICU4J localespiCheck as a part of CI build`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2021-09-03T09:05:51-04:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/26c61c236cead4cae68a1e35f8b9e3b023a4ad39
 
 #### Issue ICU-21429
 
@@ -125,27 +83,10 @@ _Jira issue is open_
 	- Committed at 2021-09-17T15:26:06-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/43276e8c34b7073fae266d0ff821391c7607c47e
 
-#### Issue ICU-21530
-
-_Jira issue is open_
-- ICU-21530: `TimeZone::createEnumeration() should take UErrorCode& as a method argument`
-	- Assigned to Yoshito Umaoka
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21530
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-21530
-
-- 369357a `ICU-21530 Added U_HIDE_DEPRECATED_API to deprecated methods.`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2021-09-03T09:04:54-04:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/369357aaa7ff13553ac9943de31d2e69f9313de4
-
 #### Issue ICU-21555
 
 _Jira issue is open_
-- ICU-21555: `Follow up on bug: 500+ spelling errors in various source files`
+- ICU-21555: `Follow up on bug: 500+ spelling errors in various source files, part 2`
 	- Assigned to Erik Torres Aguilar
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21555
 	- Status: Accepted
@@ -256,6 +197,16 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-21581
+
+- 6115e58 `ICU-21581 Update double-conversion`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2021-09-29T12:41:28-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/6115e5896665a7d6ae12af99d36c0218b453da22
+
+- 4fd10ba `ICU-21581 check non-stable API macros (mostly U_HIDE_INTERNAL_API)`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2021-09-29T09:05:40-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/4fd10ba2b753d2fd3c08b446dd1133c1b199bf53
 
 - 2b76d33 `ICU-21581 BRS 70rc, update urename.h pass 2`
 	- Authored by Peter Edberg <pedberg@unicode.org>
@@ -379,23 +330,6 @@ _Jira issue is open_
 	- Committed at 2021-05-20T11:49:40-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/5518bb0c84ad8cc27d5a9b684ea322cb7dc979fe
 
-#### Issue ICU-21630
-
-_Jira issue is open_
-- ICU-21630: `Ignore .DS_Store files`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21630
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21630
-
-- 635a037 `ICU-21630 Ignore .DS_Store files`
-	- Authored by Leander Schulten <Leander.Schulten@rwth-aachen.de>
-	- Committed at 2021-09-08T10:44:09-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/635a0371213f2a6d8a31f31cd5e1cb29ad681326
-
 #### Issue ICU-21638
 
 _Jira issue is open_
@@ -429,23 +363,6 @@ _Jira issue is open_
 	- Authored by David Haney <david.haney@gmail.com>
 	- Committed at 2021-07-27T08:40:09-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/9ff39368b26ffae32bff1b49885eeb788e6c66e7
-
-#### Issue ICU-21685
-
-_Jira issue is open_
-- ICU-21685: `In list of currencies from ucurr_openISOCurrencies(): Add VES, remove EQE`
-	- Assigned to Peter Edberg
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21685
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): format_number
-
-##### Commits with Issue ICU-21685
-
-- 6244d57 `ICU-21685 In list of currencies from ucurr_openISOCurrencies(): add VES, remove EQE`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2021-09-08T10:49:14-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/6244d57559790eedf1ca88082c5baa1be6e638d9
 
 #### Issue ICU-21708
 
@@ -481,28 +398,6 @@ _Jira issue is open_
 	- Committed at 2021-09-03T11:46:32-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/0d407fc616bc3a6178c3acdc912aef38858ac3ba
 
-#### Issue ICU-21730
-
-_Jira issue is open_
-- ICU-21730: `Units improvements / performance / cleanup`
-	- Assigned to Younies Mahmoud
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21730
-	- Status: New
-	- Fix Version: 70.1
-	- Component(s): units
-
-##### Commits with Issue ICU-21730
-
-- e03dce6 `ICU-21730 Port `testGetPreferencesFor` ICU4C tests to ICU4J`
-	- Authored by Younies <younies.mahmoud@gmail.com>
-	- Committed at 2021-09-08T23:30:18+02:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e03dce66effc836eb6d81edc100c2cff17f1c33a
-
-- f811ae9 `ICU-21730 Check unit aliases support.`
-	- Authored by Younies <younies.mahmoud@gmail.com>
-	- Committed at 2021-08-31T18:34:12+02:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f811ae946f86c986a905134d92f465cee7bdb7f7
-
 #### Issue ICU-21756
 
 _Jira issue is open_
@@ -519,6 +414,23 @@ _Jira issue is open_
 	- Authored by Steven R. Loomis <srl295@gmail.com>
 	- Committed at 2021-09-21T12:16:57-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7bc2009f7f0bfcfc71eb4018046f6ceb8bb9f655
+
+#### Issue ICU-21764
+
+_Jira issue is open_
+- ICU-21764: `icu4c-data-bin*.zip files have wrong name`
+	- Assigned to Steven R. Loomis
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21764
+	- Status: Accepted
+	- Fix Version: 70.1
+	- Component(s): build_c
+
+##### Commits with Issue ICU-21764
+
+- 4a8b160 `ICU-21764 icu-data-bin: fix filenames to nn_n`
+	- Authored by Steven R. Loomis <srl295@gmail.com>
+	- Committed at 2021-09-29T10:40:55-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/4a8b16056f157cebc0f42350e0f6b3b6360ae06c
 
 #### Issue ICU-21767
 
@@ -575,5 +487,5 @@ These issues are otherwise accounted for above, but are in review.
 	- Fix Version: 70.1
 	- Component(s): format_number
 
-## Total Problems: 19
+## Total Problems: 14
 ## Issues under review: 4
