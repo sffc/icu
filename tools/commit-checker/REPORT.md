@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2021-09-22T16:30:15.481535
-- Latest Commit: https://github.com/unicode-org/icu/commit/e5502fe8622619df61fe812d2b8d9f2ca615fb7a
+- Now: 2021-09-29T02:49:54.317385
+- Latest Commit: https://github.com/unicode-org/icu/commit/2b76d335fb8c51a57048e4d3d40db12b67e114d0
 - Jira Query: `project=ICU AND fixVersion=70.1`
 - Rev Range: `release-69-1..upstream/main`
 - Authenticated: `Yes`
@@ -27,15 +27,7 @@ Environment:
 
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-- ICU-21620: `Add ICU4J CI to build on Java 7`
-	- _Closed Issues with No Commit_
-	- Assigned to Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21620
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 70.1
-	- Component(s): build_j
-
+*Success: No problems in this category!*
 ### Closed Issues with Illegal Resolution or Commit
 [🔝Top](#table-of-contents)
 
@@ -67,38 +59,15 @@ Tip: Consider closing the ticket if it is fixed.
 #### Open Issues by Component
 
  - **build_c**: [ICU-21680](#issue-icu-21680) [ICU-21623](#issue-icu-21623)
- - **build_j**: [ICU-21708](#issue-icu-21708) [ICU-21038](#issue-icu-21038)
+ - **build_j**: [ICU-21038](#issue-icu-21038) [ICU-21708](#issue-icu-21708)
  - **format_number**: [ICU-21685](#issue-icu-21685)
  - **locale_id**: [ICU-20870](#issue-icu-20870)
- - **others**: [ICU-21630](#issue-icu-21630) [ICU-21580](#issue-icu-21580) [ICU-21579](#issue-icu-21579) [ICU-21638](#issue-icu-21638) [ICU-21662](#issue-icu-21662) [ICU-21555](#issue-icu-21555)
- - **properties**: [ICU-11891](#issue-icu-11891) [ICU-21635](#issue-icu-21635)
- - **team_processes_tools**: [ICU-21568](#issue-icu-21568) [ICU-21581](#issue-icu-21581) [ICU-21727](#issue-icu-21727)
+ - **others**: [ICU-21630](#issue-icu-21630) [ICU-21555](#issue-icu-21555) [ICU-21638](#issue-icu-21638) [ICU-21580](#issue-icu-21580) [ICU-21579](#issue-icu-21579)
+ - **team_processes_tools**: [ICU-21568](#issue-icu-21568) [ICU-21727](#issue-icu-21727) [ICU-21581](#issue-icu-21581)
  - **test_fmwk_util**: [ICU-21756](#issue-icu-21756)
- - **time_calc**: [ICU-21530](#issue-icu-21530) [ICU-21429](#issue-icu-21429)
- - **units**: [ICU-21544](#issue-icu-21544) [ICU-21656](#issue-icu-21656) [ICU-21730](#issue-icu-21730)
+ - **time_calc**: [ICU-21767](#issue-icu-21767) [ICU-21530](#issue-icu-21530) [ICU-21429](#issue-icu-21429)
+ - **units**: [ICU-21730](#issue-icu-21730)
 
-
-#### Issue ICU-11891
-
-_Jira issue is open_
-- ICU-11891: `UnicodeSet fails to round trip on unsafeBackwards set`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-11891
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): properties
-
-##### Commits with Issue ICU-11891
-
-- f5cc0c4 `ICU-11891 UnicodeRegex change supplementary escapes to Java regex syntax`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2021-09-20T17:05:18-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f5cc0c43d6434049f672adc815fd188ce2911501
-
-- 3f0e003 `ICU-11891 make UnicodeSet.toPattern() well-formed & round-trip`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2021-09-17T13:49:13-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/3f0e003901c155f88a99e2fc660c12e769e2f8f1
 
 #### Issue ICU-20870
 
@@ -172,23 +141,6 @@ _Jira issue is open_
 	- Authored by yumaoka <y.umaoka@gmail.com>
 	- Committed at 2021-09-03T09:04:54-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/369357aaa7ff13553ac9943de31d2e69f9313de4
-
-#### Issue ICU-21544
-
-_Jira issue is open_
-- ICU-21544: `unit format in number formatter return U_INTERNAL_PROGRAM_ERROR with "year-and-" (except month) and  "month-and-"`
-	- Assigned to Younies Mahmoud
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21544
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): units
-
-##### Commits with Issue ICU-21544
-
-- f1f0b22 `ICU-21544 Throw argument error when the units are not convertible.`
-	- Authored by Younies <younies.mahmoud@gmail.com>
-	- Committed at 2021-09-22T19:55:58+02:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/f1f0b22a2afe6c80a9d2d21652a5de6aaac87554
 
 #### Issue ICU-21555
 
@@ -305,6 +257,36 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-21581
 
+- 2b76d33 `ICU-21581 BRS 70rc, update urename.h pass 2`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2021-09-28T16:48:50-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/2b76d335fb8c51a57048e4d3d40db12b67e114d0
+
+- 7857d74 `ICU-21581 Creates a new workflow to be activated upon merge into main or`
+	- Authored by gnrunge <nrunge@google.com>
+	- Committed at 2021-09-28T15:50:44-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/7857d7424f100a53e0275aae5e533f81bfa38cae
+
+- 4d92a97 `ICU-21581 BRS70RC Adding ICU4J serialization test data for ICU4J 70`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2021-09-28T01:16:35-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/4d92a977524107a32d2640a9b269931dc7b45ae6
+
+- 4e70788 `ICU-21581 BRS70RC Adding API signature file for ICU4J 70`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2021-09-28T01:16:17-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/4e70788350d6c201fdd639ae93231caf6386892b
+
+- 21169d5 `ICU-21581 BRS 70RC Clean up import statements`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2021-09-28T01:16:07-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/21169d55cdc54d8c50ff8502ab048fdbe94359a6
+
+- da5fc8e `ICU-21581 BRSRC 70.1 Version update and regenerate configure for v70.1`
+	- Authored by Erik Torres <ertorres@microsoft.com>
+	- Committed at 2021-09-23T09:54:12-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/da5fc8e730ff7004b23dae537c5f876b994bf1fa
+
 - b405c1c `ICU-21581 Fix calendar list in userguide`
 	- Authored by Rob Meyer <robmeyer@microsoft.com>
 	- Committed at 2021-09-22T12:39:33-05:00
@@ -414,28 +396,6 @@ _Jira issue is open_
 	- Committed at 2021-09-08T10:44:09-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/635a0371213f2a6d8a31f31cd5e1cb29ad681326
 
-#### Issue ICU-21635
-
-_Jira issue is open_
-- ICU-21635: `Unicode 14`
-	- Assigned to Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21635
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): properties
-
-##### Commits with Issue ICU-21635
-
-- 41aa715 `ICU-21635 Unicode 14 data files 20210820, line break LB30b.2`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2021-08-23T22:11:49+00:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/41aa7159ea2e79c0081c42b0d96d4aa352b03f41
-
-- d4c92eb `ICU-21635 Unicode 14 beta`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2021-06-21T22:26:15+00:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/d4c92ebcfcc62135498052e1629dfa2623807009
-
 #### Issue ICU-21638
 
 _Jira issue is open_
@@ -452,70 +412,6 @@ _Jira issue is open_
 	- Authored by Craig Cornelius <cwcornelius@gmail.com>
 	- Committed at 2021-07-26T14:11:32-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/4fff0085e5aeb3944843b018637399ea2a60addd
-
-#### Issue ICU-21656
-
-_Jira issue is open_
-- ICU-21656: `Formatting pressure value in psi and mmHg doesn't work`
-	- Assigned to Younies Mahmoud
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21656
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): units
-
-##### Commits with Issue ICU-21656
-
-- 9d26c91 `ICU-21656 fix wrong matching categories.`
-	- Authored by Younies <younies.mahmoud@gmail.com>
-	- Committed at 2021-09-21T21:06:14+02:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/9d26c917f225ce5d7abf3beb1741dce27a3d9554
-
-#### Issue ICU-21662
-
-_Jira issue is open_
-- ICU-21662: `Add UVector.adoptElement method to simplify memory management`
-	- Assigned to Andy Heninger
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21662
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21662
-
-- e5502fe `ICU-21662 Userguide on Adoption and UErrorCode`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-22T11:10:23-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e5502fe8622619df61fe812d2b8d9f2ca615fb7a
-
-- 35dff23 `ICU-21662 UVector cleanup in rbtz.cpp`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-21T16:29:51-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/35dff23fb54a3566d19bc864a3ca4b5f308145eb
-
-- 6f1d83c `ICU-21662 UVector cleanup in basictz.cpp`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-17T14:35:18-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/6f1d83cf6314cadeeca4cfc2f45c22fe6d19ee91
-
-- 46861a5 `ICU-21662 UVector Error Handling in Regex`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-14T19:24:23-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/46861a5c78367f7c720559243d6bf96146ee070f
-
-- 0ec329c `ICU-21662 Improve UVector error handling.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-08T17:24:52-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/0ec329c6e17539d7662942be09204a1d4190761e
-
-- 081cf77 `ICU-21662 Improve UVector error handling.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-09-02T19:15:36-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/081cf773302a4ba23faa9bfdbbf3e5707c7f8b0e
-
-- c26aebe `ICU-21662 Rename UVector::addElement().`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2021-07-28T15:36:50-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/c26aebe802f1a87483f70ad7557fa0ce52061eb9
 
 #### Issue ICU-21680
 
@@ -591,7 +487,7 @@ _Jira issue is open_
 - ICU-21730: `Units improvements / performance / cleanup`
 	- Assigned to Younies Mahmoud
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21730
-	- Status: Accepted
+	- Status: New
 	- Fix Version: 70.1
 	- Component(s): units
 
@@ -624,6 +520,23 @@ _Jira issue is open_
 	- Committed at 2021-09-21T12:16:57-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7bc2009f7f0bfcfc71eb4018046f6ceb8bb9f655
 
+#### Issue ICU-21767
+
+_Jira issue is open_
+- ICU-21767: `Time zone data patch including 2021b changes`
+	- Assigned to Yoshito Umaoka
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21767
+	- Status: Accepted
+	- Fix Version: 70.1
+	- Component(s): time_calc
+
+##### Commits with Issue ICU-21767
+
+- 7561cb2 `ICU-21767 Merging tz2021b changes.`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2021-09-28T18:12:00-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/7561cb28577cf49c199449c7196f55fc3c96b3aa
+
 ### Issue is under Review
 
 [🔝Top](#table-of-contents)
@@ -634,14 +547,6 @@ These issues are otherwise accounted for above, but are in review.
 	- Assigned to Shane Carr
 	- Reviewer: Frank Yung-Fong Tang
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21215
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
-- ICU-21590: `No skeleton syntax to set maximum integer width to 0`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Rich Gillam
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21590
 	- Status: Reviewing
 	- Fix Version: 70.1
 	- Component(s): format_number
@@ -669,22 +574,6 @@ These issues are otherwise accounted for above, but are in review.
 	- Status: Reviewing
 	- Fix Version: 70.1
 	- Component(s): format_number
-- ICU-21684: `Avoid calling memmove for each digit when formatting number ranges`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Rich Gillam
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21684
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
-- ICU-21693: `FormattedNumber::toDecimalNumber() fails for the number zero`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Rich Gillam
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21693
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
 
-## Total Problems: 24
-## Issues under review: 7
+## Total Problems: 19
+## Issues under review: 4
