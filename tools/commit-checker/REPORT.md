@@ -7,10 +7,10 @@ Commit Report
 =============
 
 Environment:
-- Now: 2021-09-29T13:06:32.084442
-- Latest Commit: https://github.com/unicode-org/icu/commit/6115e5896665a7d6ae12af99d36c0218b453da22
+- Now: 2021-10-20T13:49:02.833246
+- Latest Commit: https://github.com/unicode-org/icu/commit/a0baa69277517d61f862dd767c8b0d277154daa5
 - Jira Query: `project=ICU AND fixVersion=70.1`
-- Rev Range: `release-69-1..upstream/main`
+- Rev Range: `release-69-1..upstream/maint/maint-70`
 - Authenticated: `Yes`
 
 ## Table Of Contents
@@ -58,10 +58,10 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-21680](#issue-icu-21680) [ICU-21623](#issue-icu-21623) [ICU-21764](#issue-icu-21764)
+ - **build_c**: [ICU-21623](#issue-icu-21623) [ICU-21680](#issue-icu-21680)
  - **build_j**: [ICU-21708](#issue-icu-21708)
- - **others**: [ICU-21638](#issue-icu-21638) [ICU-21555](#issue-icu-21555) [ICU-21580](#issue-icu-21580) [ICU-21579](#issue-icu-21579)
- - **team_processes_tools**: [ICU-21581](#issue-icu-21581) [ICU-21568](#issue-icu-21568) [ICU-21727](#issue-icu-21727)
+ - **others**: [ICU-21579](#issue-icu-21579) [ICU-21580](#issue-icu-21580)
+ - **team_processes_tools**: [ICU-21776](#issue-icu-21776) [ICU-21581](#issue-icu-21581)
  - **test_fmwk_util**: [ICU-21756](#issue-icu-21756)
  - **time_calc**: [ICU-21767](#issue-icu-21767) [ICU-21429](#issue-icu-21429)
 
@@ -82,50 +82,6 @@ _Jira issue is open_
 	- Authored by Bernhard Messerklinger <bernhard.messerklinger@br-automation.com>
 	- Committed at 2021-09-17T15:26:06-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/43276e8c34b7073fae266d0ff821391c7607c47e
-
-#### Issue ICU-21555
-
-_Jira issue is open_
-- ICU-21555: `Follow up on bug: 500+ spelling errors in various source files, part 2`
-	- Assigned to Erik Torres Aguilar
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21555
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21555
-
-- 2b895a7 `ICU-21555 Fix typos in repo from letter d to i`
-	- Authored by Erik Torres <ertorres@microsoft.com>
-	- Committed at 2021-08-30T16:45:43-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/2b895a71e1b77b255e94eef9b621a546f015726a
-
-- 3f043c7 `ICU-21555 Fix typos from G to L`
-	- Authored by Erik Torres <ertorres@microsoft.com>
-	- Committed at 2021-06-07T16:09:09-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/3f043c7693e20c8cded76035918dad104e7256e3
-
-- cfefa03 `ICU-21555 fix typos for D, E and F found in the repo`
-	- Authored by Erik Torres <ertorres@microsoft.com>
-	- Committed at 2021-05-10T11:09:05-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/cfefa035397c017c06df465dc19eb5f4aad1ef17
-
-#### Issue ICU-21568
-
-_Jira issue is open_
-- ICU-21568: `Fixes for cldr-to-icu tools`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21568
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-21568
-
-- 2dce628 `ICU-21568 Pre-initialize CLDRConfig and SupplementalDataInfo`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2021-04-01T20:25:33-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/2dce62892b6b00df02195a35ca09ebd8e082e80f
 
 #### Issue ICU-21579
 
@@ -160,6 +116,11 @@ _Jira issue is open_
 	- Component(s): others
 
 ##### Commits with Issue ICU-21580
+
+- a0baa69 `ICU-21580 fix links to CLDR Language Plural Rules`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2021-10-20T11:45:46-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/a0baa69277517d61f862dd767c8b0d277154daa5
 
 - 289d970 `ICU-21580 Fix typos in icu4j/`
 	- Authored by luz paz <luzpaz@users.noreply.github.com>
@@ -197,6 +158,11 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-21581
+
+- 60c1857 `ICU-21581 ICU Change Reports for 70rc`
+	- Authored by Craig Cornelius <cwcornelius@gmail.com>
+	- Committed at 2021-09-29T16:17:15-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/60c1857f9692811fb677a16d3591a145ecf2c9a2
 
 - 6115e58 `ICU-21581 Update double-conversion`
 	- Authored by Shane F. Carr <shane@unicode.org>
@@ -330,23 +296,6 @@ _Jira issue is open_
 	- Committed at 2021-05-20T11:49:40-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/5518bb0c84ad8cc27d5a9b684ea322cb7dc979fe
 
-#### Issue ICU-21638
-
-_Jira issue is open_
-- ICU-21638: `Update ICU4J performance scripts to work again `
-	- Assigned to Craig Cornelius
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21638
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21638
-
-- 4fff008 `ICU-21638 re-enable some of the ICU4J performance tests`
-	- Authored by Craig Cornelius <cwcornelius@gmail.com>
-	- Committed at 2021-07-26T14:11:32-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/4fff0085e5aeb3944843b018637399ea2a60addd
-
 #### Issue ICU-21680
 
 _Jira issue is open_
@@ -381,23 +330,6 @@ _Jira issue is open_
 	- Committed at 2021-08-24T13:46:57-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/6046f7b9e7e9a5e3f1ce8cf06012747f9db2daaf
 
-#### Issue ICU-21727
-
-_Jira issue is open_
-- ICU-21727: `Update commitchecker to include reviewer`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21727
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-21727
-
-- 0d407fc `ICU-21727 Commit Checker: add Reviewer: header`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2021-09-03T11:46:32-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/0d407fc616bc3a6178c3acdc912aef38858ac3ba
-
 #### Issue ICU-21756
 
 _Jira issue is open_
@@ -414,23 +346,6 @@ _Jira issue is open_
 	- Authored by Steven R. Loomis <srl295@gmail.com>
 	- Committed at 2021-09-21T12:16:57-05:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7bc2009f7f0bfcfc71eb4018046f6ceb8bb9f655
-
-#### Issue ICU-21764
-
-_Jira issue is open_
-- ICU-21764: `icu4c-data-bin*.zip files have wrong name`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21764
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-21764
-
-- 4a8b160 `ICU-21764 icu-data-bin: fix filenames to nn_n`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2021-09-29T10:40:55-07:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/4a8b16056f157cebc0f42350e0f6b3b6360ae06c
 
 #### Issue ICU-21767
 
@@ -449,43 +364,46 @@ _Jira issue is open_
 	- Committed at 2021-09-28T18:12:00-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/7561cb28577cf49c199449c7196f55fc3c96b3aa
 
+#### Issue ICU-21776
+
+_Jira issue is open_
+- ICU-21776: `ICU 70 BRS`
+	- Assigned to Markus Scherer
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21776
+	- Status: Accepted
+	- Fix Version: 70.1
+	- Component(s): team_processes_tools
+
+##### Commits with Issue ICU-21776
+
+- 3a601a8 `ICU-21776 integrate CLDR release-40-beta3 to ICU maint/maint-70`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2021-10-14T14:48:15-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/3a601a80a39d347f9566cfa33522d4c453298ae9
+
+- ec894b7 `ICU-21776 Update versions for GA and regenerate Jar files`
+	- Authored by Erik Torres <ertorres@microsoft.com>
+	- Committed at 2021-10-06T17:40:24-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/ec894b728bfd26ed69a52a56425ffed041ccbfd4
+
+- 38337a5 `ICU-21776 integrate CLDR release-40-beta2 to ICU maint/maint-70`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2021-10-06T09:04:38-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/38337a53c07416d79a007bc457276284e55abeea
+
 ### Issue is under Review
 
 [🔝Top](#table-of-contents)
 
 These issues are otherwise accounted for above, but are in review.
-- ICU-21215: `Add additional methods to make LN[R]F friendlier`
+- ICU-21727: `Update commitchecker to include reviewer`
 	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21215
+	- Assigned to Steven R. Loomis
+	- Reviewer: Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21727
 	- Status: Reviewing
 	- Fix Version: 70.1
-	- Component(s): format_number
-- ICU-21654: `skeleton for precision::increment is strange`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21654
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
-- ICU-21668: `Rounding increment returns all zero string`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21668
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
-- ICU-21683: `UFormattedNumberRange keeps state from previous format calls`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21683
-	- Status: Reviewing
-	- Fix Version: 70.1
-	- Component(s): format_number
+	- Component(s): team_processes_tools
 
-## Total Problems: 14
-## Issues under review: 4
+## Total Problems: 10
+## Issues under review: 1
