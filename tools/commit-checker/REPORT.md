@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2021-10-20T13:49:02.833246
-- Latest Commit: https://github.com/unicode-org/icu/commit/a0baa69277517d61f862dd767c8b0d277154daa5
+- Now: 2021-10-27T10:35:29.976128
+- Latest Commit: https://github.com/unicode-org/icu/commit/8ac010d9d32bd888d2280cab574e21c5eb007e6c
 - Jira Query: `project=ICU AND fixVersion=70.1`
 - Rev Range: `release-69-1..upstream/maint/maint-70`
 - Authenticated: `Yes`
@@ -58,12 +58,11 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-21623](#issue-icu-21623) [ICU-21680](#issue-icu-21680)
+ - **build_c**: [ICU-21803](#issue-icu-21803) [ICU-21623](#issue-icu-21623) [ICU-21680](#issue-icu-21680)
  - **build_j**: [ICU-21708](#issue-icu-21708)
  - **others**: [ICU-21579](#issue-icu-21579) [ICU-21580](#issue-icu-21580)
- - **team_processes_tools**: [ICU-21776](#issue-icu-21776) [ICU-21581](#issue-icu-21581)
- - **test_fmwk_util**: [ICU-21756](#issue-icu-21756)
- - **time_calc**: [ICU-21767](#issue-icu-21767) [ICU-21429](#issue-icu-21429)
+ - **team_processes_tools**: [ICU-21581](#issue-icu-21581) [ICU-21776](#issue-icu-21776)
+ - **time_calc**: [ICU-21811](#issue-icu-21811) [ICU-21429](#issue-icu-21429) [ICU-21767](#issue-icu-21767)
 
 
 #### Issue ICU-21429
@@ -116,6 +115,11 @@ _Jira issue is open_
 	- Component(s): others
 
 ##### Commits with Issue ICU-21580
+
+- 75ac80b `ICU-21580 change site.icu-project.org to icu.unicode.org etc`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2021-10-21T15:54:42-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/75ac80bd6823e26dc9c5cb0c39d90b2ef18e6290
 
 - a0baa69 `ICU-21580 fix links to CLDR Language Plural Rules`
 	- Authored by Markus Scherer <markus.icu@gmail.com>
@@ -330,23 +334,6 @@ _Jira issue is open_
 	- Committed at 2021-08-24T13:46:57-04:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/6046f7b9e7e9a5e3f1ce8cf06012747f9db2daaf
 
-#### Issue ICU-21756
-
-_Jira issue is open_
-- ICU-21756: `port of UnicodeKnownIssues to icu4j`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21756
-	- Status: Accepted
-	- Fix Version: 70.1
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-21756
-
-- 7bc2009 `ICU-21756 icu4j: port UnicodeKnownIssues.java from CLDR`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2021-09-21T12:16:57-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/7bc2009f7f0bfcfc71eb4018046f6ceb8bb9f655
-
 #### Issue ICU-21767
 
 _Jira issue is open_
@@ -376,6 +363,16 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-21776
 
+- 8ac010d `ICU-21776 Update BRS API docs task instructions`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2021-10-26T17:20:17-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/8ac010d9d32bd888d2280cab574e21c5eb007e6c
+
+- 5c4bb5f `ICU-21776 Update double conversion`
+	- Authored by Shane Carr <shane@unicode.org>
+	- Committed at 2021-10-20T18:20:50-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/5c4bb5fa1bec0c7a8142e674c5d7aa8112877840
+
 - 3a601a8 `ICU-21776 integrate CLDR release-40-beta3 to ICU maint/maint-70`
 	- Authored by Peter Edberg <pedberg@unicode.org>
 	- Committed at 2021-10-14T14:48:15-07:00
@@ -391,6 +388,40 @@ _Jira issue is open_
 	- Committed at 2021-10-06T09:04:38-07:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/38337a53c07416d79a007bc457276284e55abeea
 
+#### Issue ICU-21803
+
+_Jira issue is open_
+- ICU-21803: `Fix Windows build break on MSYS2 with GCC 11`
+	- Assigned to Jeff Genovy
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21803
+	- Status: Accepted
+	- Fix Version: 70.1
+	- Component(s): build_c
+
+##### Commits with Issue ICU-21803
+
+- 58bee95 `ICU-21803 Fix Windows build break on MSYS2 with GCC 11`
+	- Authored by Jeff Genovy <29107334+jefgen@users.noreply.github.com>
+	- Committed at 2021-10-21T14:18:04-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/58bee95ab6e9b767c799898585eafcab5525629a
+
+#### Issue ICU-21811
+
+_Jira issue is open_
+- ICU-21811: `TZ 2021e updates`
+	- No assignee!
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21811
+	- Status: Accepted
+	- Fix Version: 70.1
+	- Component(s): time_calc
+
+##### Commits with Issue ICU-21811
+
+- 2921a81 `ICU-21811 TZ update 2021a (2021e)`
+	- Authored by Yoshito Umaoka <y.umaoka@gmail.com>
+	- Committed at 2021-10-25T13:24:25-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/2921a81ee4c67459ff455e31c599e7d7a09086ab
+
 ### Issue is under Review
 
 [🔝Top](#table-of-contents)
@@ -405,5 +436,5 @@ These issues are otherwise accounted for above, but are in review.
 	- Fix Version: 70.1
 	- Component(s): team_processes_tools
 
-## Total Problems: 10
+## Total Problems: 11
 ## Issues under review: 1
