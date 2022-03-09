@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Now: 2022-03-09T10:40:31.328264
+- Now: 2022-03-09T10:45:59.672379
 - Latest Commit: https://github.com/unicode-org/icu/commit/234cbe2c17034c68d6dd6df09fda79a052f0a238
 - Jira Query: `project=ICU AND fixVersion=71.1`
 - Rev Range: `release-70-1..upstream/main`
@@ -66,46 +66,7 @@ Tip: If you see your name here, make sure to label your commits correctly in the
 
 Tip: Check that these tickets have the correct fixVersion tag.
 
-#### Issue ICU-21613
-
-_issue was not found in `project=ICU AND fixVersion=71.1`_
-- ICU-21613: `FAIL: NaN meter-and-centimeter: Unsafe Path; got "9\u00A0223\u00A0372\u00A0036\u00A0854\u00A0775\u00A0807 m, NaN cm"; expected "0 m, NaN cm"`
-	- Assigned to Hugo van der Merwe
-	- Reviewer: Shane Carr
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21613
-	- Status: Reviewing
-	- Fix Version: future
-	- Component(s): units
-
-##### Commits with Issue ICU-21613
-
-- 54e4120 `ICU-21613 Fix undefined behaviour in ComplexUnitsConverter::applyRounder`
-	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
-	- Committed at 2021-11-30T11:26:37+01:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/54e4120738355e1fb0b03e93b00f04e258b16e17
-
-#### Issue ICU-21843
-
-_issue was not found in `project=ICU AND fixVersion=71.1`_
-- ICU-21843: `Developing an adequate performance methodology to easy measure ICU APIs performance`
-	- Assigned to Norbert Runge
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21843
-	- Status: Accepted
-	- Fix Version: future
-	- Component(s): others
-
-##### Commits with Issue ICU-21843
-
-- 80ee559 `ICU-21843 Add ICU4C performance tests to continuous integration`
-	- Authored by gnrunge <nrunge@google.com>
-	- Committed at 2022-03-07T12:53:44-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/80ee559205dd165c2d647610376d6f9a06822ae4
-
-- e951f4a `ICU-21843 Modifies performance tests and test framework in preparation of`
-	- Authored by gnrunge <nrunge@google.com>
-	- Committed at 2022-02-11T11:29:19-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/e951f4aec4600a3fbec9d7ff2252f2550a3856ec
-
+*Success: No problems in this category!*
 
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
@@ -117,9 +78,9 @@ Tip: Consider closing the ticket if it is fixed.
  - **collation**: [ICU-21894](#issue-icu-21894)
  - **conversion**: [ICU-21894](#issue-icu-21894)
  - **format_number**: [ICU-21322](#issue-icu-21322)
- - **others**: [ICU-21816](#issue-icu-21816) [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21815](#issue-icu-21815)
+ - **others**: [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21815](#issue-icu-21815) [ICU-21816](#issue-icu-21816)
  - **team_processes_tools**: [ICU-21824](#issue-icu-21824) [ICU-21900](#issue-icu-21900)
- - **textbounds**: [ICU-21878](#issue-icu-21878) [ICU-21699](#issue-icu-21699)
+ - **textbounds**: [ICU-21699](#issue-icu-21699) [ICU-21878](#issue-icu-21878)
  - **time_calc**: [ICU-21918](#issue-icu-21918)
  - **units**: [ICU-21379](#issue-icu-21379) [ICU-21862](#issue-icu-21862)
 
@@ -300,7 +261,7 @@ _Jira issue is open_
 	- Assigned to Norbert Runge
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21843
 	- Status: Accepted
-	- Fix Version: future
+	- Fix Version: 71.1
 	- Component(s): others
 
 ##### Commits with Issue ICU-21843
@@ -519,7 +480,7 @@ These issues are otherwise accounted for above, but are in review.
 	- Reviewer: Shane Carr
 	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21613
 	- Status: Reviewing
-	- Fix Version: future
+	- Fix Version: 71.1
 	- Component(s): units
 - ICU-21765: `Add UNUM_APPROXIMATELY_SIGN_FIELD to UNumberFormatFields`
 	- _Issue is under Review_
@@ -562,5 +523,5 @@ These issues are otherwise accounted for above, but are in review.
 	- Fix Version: 71.1
 	- Component(s): format_number
 
-## Total Problems: 17
+## Total Problems: 15
 ## Issues under review: 7
