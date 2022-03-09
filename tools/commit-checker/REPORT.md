@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Now: 2022-03-09T10:45:59.672379
+- Now: 2022-03-09T11:03:07.839371
 - Latest Commit: https://github.com/unicode-org/icu/commit/234cbe2c17034c68d6dd6df09fda79a052f0a238
 - Jira Query: `project=ICU AND fixVersion=71.1`
 - Rev Range: `release-70-1..upstream/main`
@@ -27,24 +27,7 @@ Environment:
 
 Tip: Tickets with type 'Task' or 'User Guide' or resolution 'Fixed by Other Ticket' are ignored.
 
-- ICU-21914: `Add private key to unicode/icu repository`
-	- _Closed Issues with No Commit_
-	- Assigned to Norbert Runge
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21914
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 71.1
-	- Component(s): team_processes_tools
-
-- ICU-21745: `Create empty branch in main repository to store performance test data`
-	- _Closed Issues with No Commit_
-	- Assigned to Elango Cheran
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21745
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 71.1
-	- Component(s): test_fmwk_util
-
+*Success: No problems in this category!*
 ### Closed Issues with Illegal Resolution or Commit
 [🔝Top](#table-of-contents)
 
@@ -78,7 +61,7 @@ Tip: Consider closing the ticket if it is fixed.
  - **collation**: [ICU-21894](#issue-icu-21894)
  - **conversion**: [ICU-21894](#issue-icu-21894)
  - **format_number**: [ICU-21322](#issue-icu-21322)
- - **others**: [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21815](#issue-icu-21815) [ICU-21816](#issue-icu-21816)
+ - **others**: [ICU-21815](#issue-icu-21815) [ICU-21843](#issue-icu-21843) [ICU-21816](#issue-icu-21816) [ICU-21814](#issue-icu-21814)
  - **team_processes_tools**: [ICU-21824](#issue-icu-21824) [ICU-21900](#issue-icu-21900)
  - **textbounds**: [ICU-21699](#issue-icu-21699) [ICU-21878](#issue-icu-21878)
  - **time_calc**: [ICU-21918](#issue-icu-21918)
@@ -523,5 +506,5 @@ These issues are otherwise accounted for above, but are in review.
 	- Fix Version: 71.1
 	- Component(s): format_number
 
-## Total Problems: 15
+## Total Problems: 13
 ## Issues under review: 7
