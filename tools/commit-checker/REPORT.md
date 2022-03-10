@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2022-03-09T11:03:07.839371
-- Latest Commit: https://github.com/unicode-org/icu/commit/234cbe2c17034c68d6dd6df09fda79a052f0a238
+- Now: 2022-03-09T19:21:27.904682
+- Latest Commit: https://github.com/unicode-org/icu/commit/8a5f045992eab8898eff5f6628650e75b8f13bc3
 - Jira Query: `project=ICU AND fixVersion=71.1`
 - Rev Range: `release-70-1..upstream/main`
 - Authenticated: `Yes`
@@ -58,14 +58,10 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **collation**: [ICU-21894](#issue-icu-21894)
- - **conversion**: [ICU-21894](#issue-icu-21894)
  - **format_number**: [ICU-21322](#issue-icu-21322)
- - **others**: [ICU-21815](#issue-icu-21815) [ICU-21843](#issue-icu-21843) [ICU-21816](#issue-icu-21816) [ICU-21814](#issue-icu-21814)
- - **team_processes_tools**: [ICU-21824](#issue-icu-21824) [ICU-21900](#issue-icu-21900)
- - **textbounds**: [ICU-21699](#issue-icu-21699) [ICU-21878](#issue-icu-21878)
- - **time_calc**: [ICU-21918](#issue-icu-21918)
- - **units**: [ICU-21379](#issue-icu-21379) [ICU-21862](#issue-icu-21862)
+ - **others**: [ICU-21816](#issue-icu-21816) [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21815](#issue-icu-21815)
+ - **team_processes_tools**: [ICU-21900](#issue-icu-21900) [ICU-21824](#issue-icu-21824)
+ - **units**: [ICU-21379](#issue-icu-21379)
 
 
 #### Issue ICU-21322
@@ -102,68 +98,6 @@ _Jira issue is open_
 	- Committed at 2022-03-02T23:15:17+01:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/c86a2bd7d79c9a221013d1d9b174898ef77e1f01
 
-#### Issue ICU-21699
-
-_Jira issue is open_
-- ICU-21699: `line breaking for Japanese unit base breaking`
-	- Assigned to Hiroyuki Komatsu
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21699
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-21699
-
-- 7d825cb `ICU-21699 Add some more particles`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-02-21T08:54:54-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/7d825cb20401f232bf1b15eafee53e1b35f750f1
-
-- a7b2d9d `ICU-21699 Add Japanese particle`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-02-10T18:50:41-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/a7b2d9dae17db64ed032f9f6171add1c3eda4663
-
-- 2a7c465 `ICU-21699 Add breakpoint between Japanese and Alphabet`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-02-09T21:12:49-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/2a7c4652849aea1ea3d69500770c57f88f846b29
-
-- c882c94 `ICU-21699 Revise rule file`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-02-09T09:53:00-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/c882c94d838578b5efe40e68019b6335fc7bd6cf
-
-- a67bb90 `ICU-21699 Refactor codeunit handling`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-01-26T15:41:34-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/a67bb901508d19abacb78d9ffea4c47f0b3c477b
-
-- 8528bef `ICU-21699 Phrase based breaking(Java)`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-01-21T13:11:59-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/8528bef5965d0ce11a888caa752ee13b50229887
-
-- c9fae4b `ICU-21699 Concatenate Katakana chars`
-	- Authored by allensu05 <52812914+allensu05@users.noreply.github.com>
-	- Committed at 2022-01-19T23:07:22-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/c9fae4bda44f4976772e207f054f00b18d61debd
-
-- 470e44c `ICU-21699 Separate lb and lw`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-01-19T22:46:18-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/470e44c55143ef8a4ddab7d593e4a77f5cff8f39
-
-- d0290c0 `ICU-21699 Phrase based breaking(C++)`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-01-13T20:22:05-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/d0290c03db0f507f3690e8bbef5e4caa9a817516
-
-- 06ef886 `ICU-21699 Fix CjkBreakEngine performance issue`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-01-11T16:46:32-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/06ef8867f35befee7340e35082fefc9d3561d230
-
 #### Issue ICU-21814
 
 _Jira issue is open_
@@ -197,6 +131,11 @@ _Jira issue is open_
 	- Component(s): others
 
 ##### Commits with Issue ICU-21815
+
+- e730bce `ICU-21815 Remove unused line`
+	- Authored by Michael Spector <mspector@fastmail.com>
+	- Committed at 2022-03-10T01:00:26+00:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/e730bce02f15fecc290fe042cdf6f74cc9a78a4c
 
 - fb31d9b `ICU-21815 Bump xercesImpl from 2.12.0 to 2.12.2 in /tools/release/java`
 	- Authored by dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
@@ -259,57 +198,6 @@ _Jira issue is open_
 	- Committed at 2022-02-11T11:29:19-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/e951f4aec4600a3fbec9d7ff2252f2550a3856ec
 
-#### Issue ICU-21862
-
-_Jira issue is open_
-- ICU-21862: `Determine desired behaviour for 1/0 in inverse conversions`
-	- Assigned to Hugo van der Merwe
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21862
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): units
-
-##### Commits with Issue ICU-21862
-
-- 44c7137 `ICU-21862 icu4c unit conversions: support inverting 0 and Infinity (for vehicle-fuel)`
-	- Authored by Hugo van der Merwe <17109322+hugovdm@users.noreply.github.com>
-	- Committed at 2022-01-09T04:04:06-06:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/44c7137ae55a630d591ab37e5ee1a97f0b991ff4
-
-#### Issue ICU-21878
-
-_Jira issue is open_
-- ICU-21878: `Sync CjkBreakEngine logic from icu4j to icu4c for word breaking`
-	- Assigned to Allen
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21878
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-21878
-
-- 08c3f99 `ICU-21878 Sync icu4j's CjkBreakEngine to icu4c's`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2021-12-30T14:47:37-08:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/08c3f99c0882ea84aebadd0fdb73f4d92fad859e
-
-#### Issue ICU-21894
-
-_Jira issue is open_
-- ICU-21894: `A modern version of ucol_safeClone and ucnv_safeClone API`
-	- Assigned to Victor Chang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21894
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): collation conversion
-
-##### Commits with Issue ICU-21894
-
-- 397cbb9 `ICU-21894 A modern version of ucol_safeClone and ucnv_safeClone API`
-	- Authored by Victor Chang <vichang@google.com>
-	- Committed at 2022-02-01T16:41:49+00:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/397cbb9530b613210ce8a486f8a94d058eec8c41
-
 #### Issue ICU-21900
 
 _Jira issue is open_
@@ -321,6 +209,16 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-21900
+
+- 8a5f045 `ICU-21900 Fix issue filtering in commit checker`
+	- Authored by Shane Carr <shane@unicode.org>
+	- Committed at 2022-03-09T19:20:02-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/8a5f045992eab8898eff5f6628650e75b8f13bc3
+
+- 77e0c9e `ICU-21900 Adjusts performance alert threshold to 150%, i.e. the alert only is`
+	- Authored by gnrunge <nrunge@google.com>
+	- Committed at 2022-03-09T11:10:43-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/77e0c9e371994b739e4049ab4dc476ab8b8c5719
 
 - 7f044ee `ICU-21900 ICU4J: Promote all '@draft ICU 69' to '@stable'`
 	- Authored by Craig Cornelius <cwcornelius@gmail.com>
@@ -427,36 +325,11 @@ _Jira issue is open_
 	- Committed at 2022-02-07T22:02:36-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/2f8749a026f3ddc8cf54d4622480b7c543bb7fc0
 
-#### Issue ICU-21918
-
-_Jira issue is open_
-- ICU-21918: `TestShortZoneIDs test failure after trying to update ICU version number to 71.0.1`
-	- Assigned to Yoshito Umaoka
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21918
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-21918
-
-- 143dd6a `ICU-21918 Updated expected useDaylightTime() value for MIT (Asia/Apia).`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2022-02-17T09:47:39-05:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/143dd6ad6f87ff96cf0274f1e111c36575e1ac94
-
 ### Issue is under Review
 
 [🔝Top](#table-of-contents)
 
 These issues are otherwise accounted for above, but are in review.
-- ICU-21592: `Match the CJ line breaker rules to the updates of CSS specs`
-	- _Issue is under Review_
-	- Assigned to Peter Edberg
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21592
-	- Status: Reviewing
-	- Fix Version: 71.1
-	- Component(s): textbounds
 - ICU-21613: `FAIL: NaN meter-and-centimeter: Unsafe Path; got "9\u00A0223\u00A0372\u00A0036\u00A0854\u00A0775\u00A0807 m, NaN cm"; expected "0 m, NaN cm"`
 	- _Issue is under Review_
 	- Assigned to Hugo van der Merwe
@@ -465,22 +338,14 @@ These issues are otherwise accounted for above, but are in review.
 	- Status: Reviewing
 	- Fix Version: 71.1
 	- Component(s): units
-- ICU-21765: `Add UNUM_APPROXIMATELY_SIGN_FIELD to UNumberFormatFields`
+- ICU-21862: `Determine desired behaviour for 1/0 in inverse conversions`
 	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21765
+	- Assigned to Hugo van der Merwe
+	- Reviewer: Shane Carr
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21862
 	- Status: Reviewing
 	- Fix Version: 71.1
-	- Component(s): format_number
-- ICU-21801: `uspoof_impl.cpp:948: bad compare`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21801
-	- Status: Reviewing
-	- Fix Version: 71.1
-	- Component(s): normalization
+	- Component(s): units
 - ICU-21863: `Fix divide-by-zero in ICU4J when formatting 0 fuel consumption (mpg <-> l/100km)`
 	- _Issue is under Review_
 	- Assigned to Hugo van der Merwe
@@ -489,22 +354,6 @@ These issues are otherwise accounted for above, but are in review.
 	- Status: Reviewing
 	- Fix Version: 71.1
 	- Component(s): units
-- ICU-21881: `TrailingZeroDisplay is ignored when RoundingMode is specified`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Markus Scherer
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21881
-	- Status: Reviewing
-	- Fix Version: 71.1
-	- Component(s): format_number
-- ICU-21908: `Support arbitrary-precision rounding increment in ICU4C`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21908
-	- Status: Reviewing
-	- Fix Version: 71.1
-	- Component(s): format_number
 
-## Total Problems: 13
-## Issues under review: 7
+## Total Problems: 8
+## Issues under review: 3
