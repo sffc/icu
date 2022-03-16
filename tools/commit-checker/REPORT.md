@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2022-03-09T19:21:27.904682
-- Latest Commit: https://github.com/unicode-org/icu/commit/8a5f045992eab8898eff5f6628650e75b8f13bc3
+- Now: 2022-03-16T09:43:52.561239
+- Latest Commit: https://github.com/unicode-org/icu/commit/89c5d03023d5e96945188bc365a3d15e53441c86
 - Jira Query: `project=ICU AND fixVersion=71.1`
 - Rev Range: `release-70-1..upstream/main`
 - Authenticated: `Yes`
@@ -58,10 +58,10 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **format_number**: [ICU-21322](#issue-icu-21322)
- - **others**: [ICU-21816](#issue-icu-21816) [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21815](#issue-icu-21815)
- - **team_processes_tools**: [ICU-21900](#issue-icu-21900) [ICU-21824](#issue-icu-21824)
- - **units**: [ICU-21379](#issue-icu-21379)
+ - **format_number**: [ICU-21840](#issue-icu-21840) [ICU-21322](#issue-icu-21322)
+ - **others**: [ICU-21814](#issue-icu-21814) [ICU-21843](#issue-icu-21843) [ICU-21816](#issue-icu-21816) [ICU-21815](#issue-icu-21815)
+ - **team_processes_tools**: [ICU-21900](#issue-icu-21900)
+ - **units**: [ICU-21840](#issue-icu-21840)
 
 
 #### Issue ICU-21322
@@ -80,23 +80,6 @@ _Jira issue is open_
 	- Authored by Elango Cheran <elango@unicode.org>
 	- Committed at 2022-03-08T15:56:50-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/f79f03dad5ffcd0e7ac9e1bcbd05fc38bff8e3a2
-
-#### Issue ICU-21379
-
-_Jira issue is open_
-- ICU-21379: `Part 1: Enhance mechanism for controlling display options and results`
-	- Assigned to Younies Mahmoud
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21379
-	- Status: Accepted
-	- Fix Version: 71.1
-	- Component(s): units
-
-##### Commits with Issue ICU-21379
-
-- c86a2bd `ICU-21379 Add getNounClass and enum NounClass`
-	- Authored by younies <younies@chromium.org>
-	- Committed at 2022-03-02T23:15:17+01:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/c86a2bd7d79c9a221013d1d9b174898ef77e1f01
 
 #### Issue ICU-21814
 
@@ -159,22 +142,22 @@ _Jira issue is open_
 	- Committed at 2022-03-02T09:25:52-08:00
 	- GitHub Link: https://github.com/unicode-org/icu/commit/87e31395dad46cc8e34db49f68adc7d2f2e95b3d
 
-#### Issue ICU-21824
+#### Issue ICU-21840
 
 _Jira issue is open_
-- ICU-21824: `add CONTRIBUTING.md, update license text`
-	- Assigned to Steven R. Loomis
-	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21824
+- ICU-21840: `Formatting Measures with Aliases fails`
+	- Assigned to Younies Mahmoud
+	- Jira Link: https://unicode-org.atlassian.net/browse/ICU-21840
 	- Status: Accepted
 	- Fix Version: 71.1
-	- Component(s): team_processes_tools
+	- Component(s): format_number units
 
-##### Commits with Issue ICU-21824
+##### Commits with Issue ICU-21840
 
-- 55b9f7c `ICU-21824 add a basic CONTRIBUTING.md`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2021-11-12T09:24:58-06:00
-	- GitHub Link: https://github.com/unicode-org/icu/commit/55b9f7cd517a086d71400cdbbc19106cd35956c4
+- f30956f `ICU-21840 Fix formatting Aliases`
+	- Authored by Younies <younies.mahmoud@gmail.com>
+	- Committed at 2022-03-15T23:27:43+01:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/f30956fc9c9fd9e83189ac1c8b372dea0832eb90
 
 #### Issue ICU-21843
 
@@ -209,6 +192,46 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-21900
+
+- 89c5d03 `ICU-21900 BRS71 ICU4J API signature file`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2022-03-16T12:36:40-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/89c5d03023d5e96945188bc365a3d15e53441c86
+
+- 8575c0d `ICU-21900 check non-stable API macros, move class boilerplate out of conditionals`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2022-03-16T09:03:05-07:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/8575c0dacef68253329608650b25412e6db7ca78
+
+- 741bbdd `ICU-21900 BRS71RC Update version number and regenerate configure`
+	- Authored by Daniel Ju <daju@microsoft.com>
+	- Committed at 2022-03-15T18:26:10-05:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/741bbddcf9279f41385862be8913ed13b9e342c0
+
+- 811351f `ICU-21900 BRS71 Updated serialization test data for 71.1`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2022-03-15T09:47:57-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/811351f67cca8291f0404d9ee30f0acf191b926b
+
+- 5b4559d `ICU-21900 BRS71 Cleanup import statements in ICU4J`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2022-03-15T09:47:25-04:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/5b4559df24b8b610998b9c3596534dbcf6744bc4
+
+- 19c1304 `ICU-21900 Update ICU4J Change report (BRS#20)`
+	- Authored by Craig Cornelius <cwcornelius@gmail.com>
+	- Committed at 2022-03-10T17:58:16-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/19c13048d24f0dc010d48249331913bf436fedb0
+
+- 7fe3301 `ICU-21900 ICU4C 71 change report`
+	- Authored by Craig Cornelius <cwcornelius@gmail.com>
+	- Committed at 2022-03-10T15:50:45-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/7fe330119e6b5503232cfd780869f5ff685ecdea
+
+- f374427 `ICU-21900 integrate CLDR release-41-beta1 to ICU main for 71rc`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2022-03-10T11:17:09-08:00
+	- GitHub Link: https://github.com/unicode-org/icu/commit/f374427f6018056a6643c6519bbfadf869755ae0
 
 - 8a5f045 `ICU-21900 Fix issue filtering in commit checker`
 	- Authored by Shane Carr <shane@unicode.org>
@@ -355,5 +378,5 @@ These issues are otherwise accounted for above, but are in review.
 	- Fix Version: 71.1
 	- Component(s): units
 
-## Total Problems: 8
+## Total Problems: 7
 ## Issues under review: 3
