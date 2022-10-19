@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2022-10-13T09:57:36.207439
-- Latest Commit: https://github.com/unicode-org/icu/commit/00a4cdbd5be8efabc7141ad7eec3b457b415fcef
+- Now: 2022-10-19T11:35:10.064581
+- Latest Commit: https://github.com/unicode-org/icu/commit/ff3514f257ea10afe7e710e9f946f68d256704b1
 - Jira Query: `project=ICU AND fixVersion=72.1`
 - Rev Range: `release-71-1..upstream/maint/maint-72`
 - Authenticated: `Yes`
@@ -17,7 +17,7 @@ Environment:
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 6
+Total problem(s): 4
 
 ## Table Of Contents
 Note: empty categories are omitted.
@@ -25,7 +25,7 @@ Note: empty categories are omitted.
 - _Closed Issues with Illegal Resolution or Commit_
 - _Commits without Jira Issue Tag_
 - _Commits with Jira Issue Not Found_
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 6
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 4
 - _Issue is under Review_
 - _Excluded Commits_
 
@@ -33,15 +33,14 @@ Note: empty categories are omitted.
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_6 item(s)_
+_4 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_j**: [ICU-22116](#issue-icu-22116)
- - **others**: [ICU-21960](#issue-icu-21960) [ICU-21959](#issue-icu-21959)
+ - **build_c**: [ICU-22177](#issue-icu-22177)
+ - **others**: [ICU-21959](#issue-icu-21959) [ICU-21960](#issue-icu-21960)
  - **team_processes_tools**: [ICU-21958](#issue-icu-21958)
- - **time_calc**: [ICU-22178](#issue-icu-22178) [ICU-22165](#issue-icu-22165)
 
 
 #### Issue ICU-21958
@@ -54,6 +53,10 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-21958
+
+- [ff3514f](https://github.com/unicode-org/icu/commit/ff3514f257ea10afe7e710e9f946f68d256704b1) [ICU-21958](https://unicode-org.atlassian.net/browse/ICU-21958) `integrate CLDR release-42-beta5 to ICU main for 72`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2022-10-13T16:23:11-07:00
 
 - [a620057](https://github.com/unicode-org/icu/commit/a620057d76c2a107f04f924d13678b5aa4bfb0d0) [ICU-21958](https://unicode-org.atlassian.net/browse/ICU-21958) `BRS72 Updated ISO currency data URLs`
 	- Authored by yumaoka <y.umaoka@gmail.com>
@@ -149,53 +152,19 @@ _Jira issue is open_
 	- Authored by Markus Scherer <markus.icu@gmail.com>
 	- Committed at 2022-05-07T15:21:08+00:00
 
-#### Issue ICU-22116
+#### Issue ICU-22177
 
 _Jira issue is open_
-- [ICU-22116](https://unicode-org.atlassian.net/browse/ICU-22116): `move ICU4J to Java 8`
-	- Assigned to Yoshito Umaoka
+- [ICU-22177](https://unicode-org.atlassian.net/browse/ICU-22177): `tools/genrb/parse.cpp include statement has uncalled-for angular bracket`
+	- Assigned to Norbert Runge
 	- Status: Accepted
 	- Fix Version: 72.1
-	- Component(s): build_j
+	- Component(s): build_c
 
-##### Commits with Issue ICU-22116
+##### Commits with Issue ICU-22177
 
-- [6e3a923](https://github.com/unicode-org/icu/commit/6e3a9230563b97cb925723a6d9e91888396f2035) [ICU-22116](https://unicode-org.atlassian.net/browse/ICU-22116) `Update CI job for ICU4J to use Java 8 instead of Java 7`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-09-06T09:09:22-07:00
-
-- [9acba58](https://github.com/unicode-org/icu/commit/9acba58c493123234b9c3ed4326d35d8f73cbcc1) [ICU-22116](https://unicode-org.atlassian.net/browse/ICU-22116) `Updating minimum Java runtime support to Java 8`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2022-09-01T13:02:27-04:00
-
-#### Issue ICU-22165
-
-_Jira issue is open_
-- [ICU-22165](https://unicode-org.atlassian.net/browse/ICU-22165): `TZ Database 2022d updates`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 72.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22165
-
-- [702e529](https://github.com/unicode-org/icu/commit/702e529d31acf4a2ae225147876be7ac99c11a74) [ICU-22165](https://unicode-org.atlassian.net/browse/ICU-22165) `Update ICU tzdata to 2022d`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2022-09-30T15:56:00-04:00
-
-#### Issue ICU-22178
-
-_Jira issue is open_
-- [ICU-22178](https://unicode-org.atlassian.net/browse/ICU-22178): `Update tz database to 2022e`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 72.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22178
-
-- [00a4cdb](https://github.com/unicode-org/icu/commit/00a4cdbd5be8efabc7141ad7eec3b457b415fcef) [ICU-22178](https://unicode-org.atlassian.net/browse/ICU-22178) `Update ICU tzdata to 2022e`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2022-10-12T21:07:34-04:00
+- [f949713](https://github.com/unicode-org/icu/commit/f949713ce8647a1b35031ed81e578b3a19cb05c6) [ICU-22177](https://unicode-org.atlassian.net/browse/ICU-22177) `Replace angular brackets in include with double quotes.`
+	- Authored by gnrunge <nrunge@google.com>
+	- Committed at 2022-10-13T13:51:05-07:00
 
 
