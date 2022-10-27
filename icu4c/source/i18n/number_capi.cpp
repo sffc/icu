@@ -35,6 +35,15 @@ struct UNumberFormatterData : public UMemory,
     LocalizedNumberFormatter fFormatter;
 };
 
+/**
+ * Implementation class for USimpleNumberFormatter. Wraps a SimpleNumberFormatter.
+ */
+struct USimpleNumberFormatterData : public UMemory,
+        // Magic number as ASCII == "SNF" (SimpleNumberFormatter)
+        public IcuCApiHelper<USimpleNumberFormatter, USimpleNumberFormatterData, 0x534E4600> {
+    SimpleNumberFormatter fFormatter;
+};
+
 struct UFormattedNumberImpl;
 
 // Magic number as ASCII == "FDN" (FormatteDNumber)
@@ -106,6 +115,18 @@ unumf_openForSkeletonAndLocaleWithError(const UChar* skeleton, int32_t skeletonL
     // Readonly-alias constructor (first argument is whether we are NUL-terminated)
     UnicodeString skeletonString(skeletonLen == -1, skeleton, skeletonLen);
     impl->fFormatter = NumberFormatter::forSkeleton(skeletonString, *perror, *ec).locale(locale);
+    return impl->exportForC();
+}
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocaleAndGroupingStrategy(const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
+    auto* impl = new USimpleNumberFormatterData();
+    if (impl == nullptr) {
+        *ec = U_MEMORY_ALLOCATION_ERROR;
+        return nullptr;
+    }
+    // Readonly-alias constructor (first argument is whether we are NUL-terminated)
+    impl->fFormatter = SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, groupingStrategy, *ec);
     return impl->exportForC();
 }
 

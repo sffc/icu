@@ -528,6 +528,16 @@ struct UNumberFormatter;
  */
 typedef struct UNumberFormatter UNumberFormatter;
 
+struct USimpleNumberFormatter;
+/**
+ * C-compatible version of icu::number::SimpleNumberFormatter.
+ *
+ * NOTE: This is a C-compatible API; C++ users should build against numberformatter.h instead.
+ *
+ * @draft ICU 73
+ */
+typedef struct USimpleNumberFormatter USimpleNumberFormatter;
+
 struct UFormattedNumber;
 /**
  * C-compatible version of icu::number::FormattedNumber.
@@ -582,6 +592,11 @@ unumf_openForSkeletonAndLocale(const UChar* skeleton, int32_t skeletonLen, const
 U_CAPI UNumberFormatter* U_EXPORT2
 unumf_openForSkeletonAndLocaleWithError(
        const UChar* skeleton, int32_t skeletonLen, const char* locale, UParseError* perror, UErrorCode* ec);
+
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocaleAndGroupingStrategy(
+       const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec);
 
 
 /**
@@ -658,6 +673,20 @@ unumf_formatDouble(const UNumberFormatter* uformatter, double value, UFormattedN
 U_CAPI void U_EXPORT2
 unumf_formatDecimal(const UNumberFormatter* uformatter, const char* value, int32_t valueLen,
                     UFormattedNumber* uresult, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_formatInt(const USimpleNumberFormatter* uformatter, int64_t value, UFormattedNumber* uresult,
+                UErrorCode* ec);
+
+// U_CAPI void U_EXPORT2
+// usnumf_formatDouble(const USimpleNumberFormatter* uformatter, double value, UFormattedNumber* uresult,
+//                    UErrorCode* ec);
+
+// U_CAPI void U_EXPORT2
+// usnumf_formatDecimal(const USimpleNumberFormatter* uformatter, const char* value, int32_t valueLen,
+//                     UFormattedNumber* uresult, UErrorCode* ec);
+
 
 /**
  * Returns a representation of a UFormattedNumber as a UFormattedValue,
@@ -798,6 +827,10 @@ unumf_resultToDecimalNumber(
  */
 U_CAPI void U_EXPORT2
 unumf_close(UNumberFormatter* uformatter);
+
+
+U_CAPI void U_EXPORT2
+usnumf_close(USimpleNumberFormatter* uformatter);
 
 
 /**

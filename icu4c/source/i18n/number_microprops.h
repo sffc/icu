@@ -182,6 +182,11 @@ struct MicroProps : public MicroPropsGenerator {
     bool exhausted = false;
 };
 
+struct SimpleMicroProps {
+    Grouper grouping;
+    ImmutablePatternModifier* modMiddle = nullptr;
+};
+
 } // namespace impl
 } // namespace number
 U_NAMESPACE_END
