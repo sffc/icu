@@ -14,6 +14,11 @@ using namespace icu;
 using namespace icu::number;
 using namespace icu::number::impl;
 
+
+SimpleNumberFormatter SimpleNumberFormatter::forLocale(const icu::Locale &locale, UErrorCode &status) {
+    return SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, UNUM_GROUPING_AUTO, status);
+}
+
 SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
     const icu::Locale &locale, UNumberGroupingStrategy groupingStrategy, UErrorCode &status) {
     SimpleNumberFormatter retval;
@@ -23,6 +28,7 @@ SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
         status = U_MEMORY_ALLOCATION_ERROR;
         return retval;
     }
+    retval.fMicros->symbols = retval.fSymbols.getAlias();
 
     // TODO: Select the correct nsName
     auto pattern = utils::getPatternForStyle(locale, "latn", CLDR_PATTERN_STYLE_DECIMAL, status);
@@ -73,6 +79,8 @@ FormattedNumber SimpleNumberFormatter::formatInt(int64_t value, UErrorCode &stat
 }
 
 void SimpleNumberFormatter::formatImpl(UFormattedNumberData *results, UErrorCode &status) const {
+    NumberFormatterImpl::writeNumber(*fMicros, results->quantity, results->getStringRef(), 0, status);
+    results->getStringRef().writeTerminator(status);
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */
