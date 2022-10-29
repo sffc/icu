@@ -67,6 +67,17 @@ class IntMeasures : public MaybeStackArray<int64_t, 2> {
     UErrorCode status = U_ZERO_ERROR;
 };
 
+struct SimpleMicroProps {
+    Grouper grouping;
+    const DecimalFormatSymbols* symbols = nullptr;
+    const ImmutablePatternModifier* modMiddle = nullptr;
+    bool useCurrency = false;
+    UNumberDecimalSeparatorDisplay decimal = UNUM_DECIMAL_SEPARATOR_AUTO;
+
+    // Currency symbol to be used as the decimal separator
+    UnicodeString currencyAsDecimal = ICU_Utility::makeBogusString();
+};
+
 /**
  * MicroProps is the first MicroPropsGenerator that should be should be called,
  * producing an initialized MicroProps instance that will be passed on and
@@ -177,14 +188,20 @@ struct MicroProps : public MicroPropsGenerator {
         }
     }
 
+    SimpleMicroProps toSimple() const {
+        SimpleMicroProps result;
+        result.grouping = this->grouping;
+        result.symbols = this->symbols;
+        result.modMiddle = nullptr;
+        result.useCurrency = this->useCurrency;
+        result.decimal = this->decimal;
+        result.currencyAsDecimal = this->currencyAsDecimal;
+        return result;
+    }
+
   private:
     // Internal fields:
     bool exhausted = false;
-};
-
-struct SimpleMicroProps {
-    Grouper grouping;
-    ImmutablePatternModifier* modMiddle = nullptr;
 };
 
 } // namespace impl
