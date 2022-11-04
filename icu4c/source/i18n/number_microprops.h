@@ -69,13 +69,15 @@ class IntMeasures : public MaybeStackArray<int64_t, 2> {
 
 struct SimpleMicroProps {
     Grouper grouping;
-    const DecimalFormatSymbols* symbols = nullptr;
-    const ImmutablePatternModifier* modMiddle = nullptr;
     bool useCurrency = false;
     UNumberDecimalSeparatorDisplay decimal = UNUM_DECIMAL_SEPARATOR_AUTO;
 
     // Currency symbol to be used as the decimal separator
     UnicodeString currencyAsDecimal = ICU_Utility::makeBogusString();
+
+    // Note: This struct has no direct ownership of the following pointers.
+    const DecimalFormatSymbols* symbols = nullptr;
+    const ImmutablePatternModifier* modMiddle = nullptr;
 };
 
 /**
@@ -84,19 +86,14 @@ struct SimpleMicroProps {
  * modified throughout the rest of the chain of MicroPropsGenerator instances.
  */
 struct MicroProps : public MicroPropsGenerator {
+    SimpleMicroProps simple;
 
     // NOTE: All of these fields are properly initialized in NumberFormatterImpl.
     RoundingImpl rounder;
-    Grouper grouping;
     Padder padding;
     IntegerWidth integerWidth;
     UNumberSignDisplay sign;
-    UNumberDecimalSeparatorDisplay decimal;
-    bool useCurrency;
     char nsName[9];
-
-    // Currency symbol to be used as the decimal separator
-    UnicodeString currencyAsDecimal = ICU_Utility::makeBogusString();
 
     // No ownership: must point at a string which will outlive MicroProps
     // instances, e.g. a string with static storage duration, or just a string
@@ -104,7 +101,6 @@ struct MicroProps : public MicroPropsGenerator {
     const char *gender;
 
     // Note: This struct has no direct ownership of the following pointers.
-    const DecimalFormatSymbols* symbols;
 
     // Pointers to Modifiers provided by the number formatting pipeline (when
     // the value is known):
@@ -186,17 +182,6 @@ struct MicroProps : public MicroPropsGenerator {
             U_ASSERT(!exhausted);
             micros = *this;
         }
-    }
-
-    SimpleMicroProps toSimple() const {
-        SimpleMicroProps result;
-        result.grouping = this->grouping;
-        result.symbols = this->symbols;
-        result.modMiddle = nullptr;
-        result.useCurrency = this->useCurrency;
-        result.decimal = this->decimal;
-        result.currencyAsDecimal = this->currencyAsDecimal;
-        return result;
     }
 
   private:
