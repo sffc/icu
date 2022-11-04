@@ -84,6 +84,28 @@ FormattedNumber SimpleNumberFormatter::formatInt(int64_t value, UErrorCode &stat
     }
 }
 
+FormattedNumber SimpleNumberFormatter::formatInt(int64_t value, SimpleNumberFormatterOptionsV1 options, UErrorCode &status) const {
+    if (U_FAILURE(status)) { return FormattedNumber(U_ILLEGAL_ARGUMENT_ERROR); }
+    auto results = new UFormattedNumberData();
+    if (results == nullptr) {
+        status = U_MEMORY_ALLOCATION_ERROR;
+        return FormattedNumber(status);
+    }
+    results->quantity.setToLong(value);
+
+    results->quantity.adjustMagnitude(options.scale);
+
+    formatImpl(results, status);
+
+    // Do not save the results object if we encountered a failure.
+    if (U_SUCCESS(status)) {
+        return FormattedNumber(results);
+    } else {
+        delete results;
+        return FormattedNumber(status);
+    }
+}
+
 void SimpleNumberFormatter::formatImpl(UFormattedNumberData *results, UErrorCode &status) const {
     const Modifier* modifier = (*fPatternModifier)[results->quantity.signum()];
     auto length = NumberFormatterImpl::writeNumber(*fMicros, results->quantity, results->getStringRef(), 0, status);

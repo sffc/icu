@@ -2697,6 +2697,15 @@ class U_I18N_API LocalizedNumberFormatter
 #pragma warning(pop)
 #endif
 
+// TODO: Make it C-compatible
+struct SimpleNumberFormatterOptionsV1 {
+    int32_t minimumFractionDigits = -1;
+    int32_t maximumFractionDigits = -1;
+    int32_t minimumIntegerDigits = -1;
+    int32_t maximumIntegerDigits = -1;
+    int32_t scale = 0;
+};
+
 class U_I18N_API SimpleNumberFormatter : public UMemory {
   public:
     static SimpleNumberFormatter forLocale(const icu::Locale &locale, UErrorCode &status);
@@ -2708,6 +2717,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
                                   UNumberGroupingStrategy groupingStrategy, UErrorCode &status);
 
     FormattedNumber formatInt(int64_t value, UErrorCode &status) const;
+
+    FormattedNumber formatInt(int64_t value, SimpleNumberFormatterOptionsV1 options, UErrorCode &status) const;
 
     /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.

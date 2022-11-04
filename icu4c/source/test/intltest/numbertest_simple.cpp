@@ -18,6 +18,7 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
     }
     TESTCASE_AUTO_BEGIN;
         TESTCASE_AUTO(testBasic);
+        TESTCASE_AUTO(testWithOptions);
     TESTCASE_AUTO_END;
 }
 
@@ -38,6 +39,31 @@ void SimpleNumberFormatterTest::testBasic() {
         u"testBasic",
         result,
         u"-1’000’007",
+        UFIELD_CATEGORY_NUMBER,
+        expectedFieldPositions,
+        UPRV_LENGTHOF(expectedFieldPositions));
+}
+
+void SimpleNumberFormatterTest::testWithOptions() {
+    IcuTestErrorCode status(*this, "testWithOptions");
+
+    SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
+    SimpleNumberFormatterOptionsV1 options;
+    options.scale = -2;
+    FormattedNumber result = snf.formatInt(-1000007, options, status);
+
+    static const UFieldPosition expectedFieldPositions[] = {
+        // field, begin index, end index
+        {UNUM_SIGN_FIELD, 0, 1},
+        {UNUM_GROUPING_SEPARATOR_FIELD, 3, 4},
+        {UNUM_INTEGER_FIELD, 1, 7},
+        {UNUM_DECIMAL_SEPARATOR_FIELD, 7, 8},
+        {UNUM_FRACTION_FIELD, 8, 10},
+    };
+    checkFormattedValue(
+        u"testWithOptions",
+        result,
+        u"-10’000.07",
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         UPRV_LENGTHOF(expectedFieldPositions));
