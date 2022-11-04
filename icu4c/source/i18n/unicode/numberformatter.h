@@ -168,6 +168,7 @@ class MutablePatternModifier;
 class ImmutablePatternModifier;
 struct DecimalFormatWarehouse;
 struct SimpleMicroProps;
+class AdoptingSignumModifierStore;
 
 /**
  * Used for NumberRangeFormatter and implemented in numrange_fluent.cpp.
@@ -2708,10 +2709,30 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 
     FormattedNumber formatInt(int64_t value, UErrorCode &status) const;
 
+    /**
+     * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.
+     * @draft ICU 73
+     */
+    ~SimpleNumberFormatter();
+
+    SimpleNumberFormatter() = default;
+
+    SimpleNumberFormatter(const SimpleNumberFormatter&) = delete;
+    SimpleNumberFormatter(SimpleNumberFormatter&&) U_NOEXCEPT = default;
+
+    SimpleNumberFormatter& operator=(const SimpleNumberFormatter&) = delete;
+    SimpleNumberFormatter& operator=(SimpleNumberFormatter&&) U_NOEXCEPT = default;
+
   private:
     UNumberGroupingStrategy fGroupingStrategy = UNUM_GROUPING_AUTO;
-    LocalPointer<DecimalFormatSymbols> fSymbols;
+    LocalPointer<DecimalFormatSymbols> fOwnedSymbols;
+
+    // NOT Owned:
+    const DecimalFormatSymbols* fSymbols = nullptr;
+
+    // Owned:
     impl::SimpleMicroProps* fMicros = nullptr;
+    impl::AdoptingSignumModifierStore* fPatternModifier = nullptr;
 
     void formatImpl(impl::UFormattedNumberData *results, UErrorCode &status) const;
 };

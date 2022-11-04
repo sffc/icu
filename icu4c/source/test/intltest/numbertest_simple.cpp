@@ -25,18 +25,19 @@ void SimpleNumberFormatterTest::testBasic() {
     IcuTestErrorCode status(*this, "testBasic");
 
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
-    FormattedNumber result = snf.formatInt(1000007, status);
+    FormattedNumber result = snf.formatInt(-1000007, status);
 
     static const UFieldPosition expectedFieldPositions[] = {
         // field, begin index, end index
-        {UNUM_GROUPING_SEPARATOR_FIELD, 1, 2},
-        {UNUM_GROUPING_SEPARATOR_FIELD, 5, 6},
-        {UNUM_INTEGER_FIELD, 0, 9},
+        {UNUM_SIGN_FIELD, 0, 1},
+        {UNUM_GROUPING_SEPARATOR_FIELD, 2, 3},
+        {UNUM_GROUPING_SEPARATOR_FIELD, 6, 7},
+        {UNUM_INTEGER_FIELD, 1, 10},
     };
     checkFormattedValue(
         u"testBasic",
         result,
-        u"1’000’007",
+        u"-1’000’007",
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         UPRV_LENGTHOF(expectedFieldPositions));

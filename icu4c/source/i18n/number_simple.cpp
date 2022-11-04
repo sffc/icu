@@ -15,6 +15,11 @@ using namespace icu::number;
 using namespace icu::number::impl;
 
 
+SimpleNumberFormatter::~SimpleNumberFormatter() {
+    delete fMicros;
+    delete fPatternModifier;
+}
+
 SimpleNumberFormatter SimpleNumberFormatter::forLocale(const icu::Locale &locale, UErrorCode &status) {
     return SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, UNUM_GROUPING_AUTO, status);
 }
@@ -22,13 +27,14 @@ SimpleNumberFormatter SimpleNumberFormatter::forLocale(const icu::Locale &locale
 SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
     const icu::Locale &locale, UNumberGroupingStrategy groupingStrategy, UErrorCode &status) {
     SimpleNumberFormatter retval;
-    retval.fSymbols = { new DecimalFormatSymbols(locale, status), status };
+    retval.fOwnedSymbols = { new DecimalFormatSymbols(locale, status), status };
+    retval.fSymbols = retval.fOwnedSymbols.getAlias();
     retval.fMicros = new SimpleMicroProps();
     if (retval.fMicros == nullptr) {
         status = U_MEMORY_ALLOCATION_ERROR;
         return retval;
     }
-    retval.fMicros->symbols = retval.fSymbols.getAlias();
+    retval.fMicros->symbols = retval.fSymbols;
 
     // TODO: Select the correct nsName
     auto pattern = utils::getPatternForStyle(locale, "latn", CLDR_PATTERN_STYLE_DECIMAL, status);
@@ -50,9 +56,9 @@ SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
     patternModifier.setPatternInfo(&patternInfo, kUndefinedField);
     // TODO: Select a variable UNumberSignDisplay
     patternModifier.setPatternAttributes(UNUM_SIGN_AUTO, false, false);
-    patternModifier.setSymbols(retval.fSymbols.getAlias(), {}, UNUM_UNIT_WIDTH_SHORT, nullptr, status);
+    patternModifier.setSymbols(retval.fSymbols, {}, UNUM_UNIT_WIDTH_SHORT, nullptr, status);
 
-    retval.fMicros->modMiddle = patternModifier.createImmutable(status);
+    retval.fPatternModifier = new AdoptingSignumModifierStore(patternModifier.createImmutableForPlural(StandardPlural::COUNT, status));
 
     retval.fGroupingStrategy = groupingStrategy;
     return retval;
@@ -79,7 +85,9 @@ FormattedNumber SimpleNumberFormatter::formatInt(int64_t value, UErrorCode &stat
 }
 
 void SimpleNumberFormatter::formatImpl(UFormattedNumberData *results, UErrorCode &status) const {
-    NumberFormatterImpl::writeNumber(*fMicros, results->quantity, results->getStringRef(), 0, status);
+    const Modifier* modifier = (*fPatternModifier)[results->quantity.signum()];
+    auto length = NumberFormatterImpl::writeNumber(*fMicros, results->quantity, results->getStringRef(), 0, status);
+    length += modifier->apply(results->getStringRef(), 0, length, status);
     results->getStringRef().writeTerminator(status);
 }
 

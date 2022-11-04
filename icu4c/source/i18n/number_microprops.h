@@ -77,7 +77,6 @@ struct SimpleMicroProps {
 
     // Note: This struct has no direct ownership of the following pointers.
     const DecimalFormatSymbols* symbols = nullptr;
-    const ImmutablePatternModifier* modMiddle = nullptr;
 };
 
 /**
