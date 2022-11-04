@@ -272,13 +272,36 @@ class U_I18N_API EmptyModifier : public Modifier, public UMemory {
     bool fStrong;
 };
 
+class U_I18N_API AdoptingSignumModifierStore : public UMemory {
+  public:
+    virtual ~AdoptingSignumModifierStore();
+
+    AdoptingSignumModifierStore() = default;
+
+    // No copying!
+    AdoptingSignumModifierStore(const AdoptingSignumModifierStore &other) = delete;
+
+    void adoptModifier(Signum signum, const Modifier* mod) {
+      U_ASSERT(mods[signum] == nullptr);
+      mods[signum] = mod;
+    }
+
+    inline const Modifier*& operator[](Signum signum) {
+      return mods[signum];
+    }
+    inline Modifier const* operator[](Signum signum) const {
+      return mods[signum];
+    }
+
+  private:
+    const Modifier* mods[SIGNUM_COUNT];
+};
+
 /**
  * This implementation of ModifierStore adopts Modifier pointers.
  */
 class U_I18N_API AdoptingModifierStore : public ModifierStore, public UMemory {
   public:
-    virtual ~AdoptingModifierStore();
-
     static constexpr StandardPlural::Form DEFAULT_STANDARD_PLURAL = StandardPlural::OTHER;
 
     AdoptingModifierStore() = default;
@@ -290,8 +313,8 @@ class U_I18N_API AdoptingModifierStore : public ModifierStore, public UMemory {
      * Sets the Modifier with the specified signum and plural form.
      */
     void adoptModifier(Signum signum, StandardPlural::Form plural, const Modifier *mod) {
-        U_ASSERT(mods[getModIndex(signum, plural)] == nullptr);
-        mods[getModIndex(signum, plural)] = mod;
+        U_ASSERT(mods[plural][signum] == nullptr);
+        mods[plural][signum] = mod;
     }
 
     /**
@@ -299,33 +322,27 @@ class U_I18N_API AdoptingModifierStore : public ModifierStore, public UMemory {
      * The modifier will apply to all plural forms.
      */
     void adoptModifierWithoutPlural(Signum signum, const Modifier *mod) {
-        U_ASSERT(mods[getModIndex(signum, DEFAULT_STANDARD_PLURAL)] == nullptr);
-        mods[getModIndex(signum, DEFAULT_STANDARD_PLURAL)] = mod;
+        U_ASSERT(mods[DEFAULT_STANDARD_PLURAL][signum] == nullptr);
+        mods[DEFAULT_STANDARD_PLURAL][signum] = mod;
     }
 
     /** Returns a reference to the modifier; no ownership change. */
     const Modifier *getModifier(Signum signum, StandardPlural::Form plural) const U_OVERRIDE {
-        const Modifier* modifier = mods[getModIndex(signum, plural)];
+        const Modifier* modifier = mods[plural][signum];
         if (modifier == nullptr && plural != DEFAULT_STANDARD_PLURAL) {
-            modifier = mods[getModIndex(signum, DEFAULT_STANDARD_PLURAL)];
+            modifier = mods[DEFAULT_STANDARD_PLURAL][signum];
         }
         return modifier;
     }
 
     /** Returns a reference to the modifier; no ownership change. */
     const Modifier *getModifierWithoutPlural(Signum signum) const {
-        return mods[getModIndex(signum, DEFAULT_STANDARD_PLURAL)];
+        return mods[DEFAULT_STANDARD_PLURAL][signum];
     }
 
   private:
     // NOTE: mods is zero-initialized (to nullptr)
-    const Modifier *mods[4 * StandardPlural::COUNT] = {};
-
-    inline static int32_t getModIndex(Signum signum, StandardPlural::Form plural) {
-        U_ASSERT(signum >= 0 && signum < SIGNUM_COUNT);
-        U_ASSERT(plural >= 0 && plural < StandardPlural::COUNT);
-        return static_cast<int32_t>(plural) * SIGNUM_COUNT + signum;
-    }
+    AdoptingSignumModifierStore mods[StandardPlural::COUNT] = {};
 };
 
 } // namespace impl

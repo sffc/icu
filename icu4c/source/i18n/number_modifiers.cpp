@@ -62,7 +62,7 @@ Modifier::Parameters::Parameters(
 
 ModifierStore::~ModifierStore() = default;
 
-AdoptingModifierStore::~AdoptingModifierStore()  {
+AdoptingSignumModifierStore::~AdoptingSignumModifierStore()  {
     for (const Modifier *mod : mods) {
         delete mod;
     }
