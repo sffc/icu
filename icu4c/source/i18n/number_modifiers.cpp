@@ -68,6 +68,15 @@ AdoptingSignumModifierStore::~AdoptingSignumModifierStore()  {
     }
 }
 
+AdoptingSignumModifierStore&
+AdoptingSignumModifierStore::operator=(AdoptingSignumModifierStore&& other) U_NOEXCEPT {
+    for (size_t i=0; i<SIGNUM_COUNT; i++) {
+        this->mods[i] = other.mods[i];
+        other.mods[i] = nullptr;
+    }
+    return *this;
+}
+
 
 int32_t ConstantAffixModifier::apply(FormattedStringBuilder &output, int leftIndex, int rightIndex,
                                      UErrorCode &status) const {

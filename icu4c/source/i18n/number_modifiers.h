@@ -272,6 +272,7 @@ class U_I18N_API EmptyModifier : public Modifier, public UMemory {
     bool fStrong;
 };
 
+/** An adopting Modifier store that varies by signum but not plural form. */
 class U_I18N_API AdoptingSignumModifierStore : public UMemory {
   public:
     virtual ~AdoptingSignumModifierStore();
@@ -280,7 +281,15 @@ class U_I18N_API AdoptingSignumModifierStore : public UMemory {
 
     // No copying!
     AdoptingSignumModifierStore(const AdoptingSignumModifierStore &other) = delete;
+    AdoptingSignumModifierStore& operator=(const AdoptingSignumModifierStore& other) = delete;
 
+    // Moving is OK
+    AdoptingSignumModifierStore(AdoptingSignumModifierStore &&other) U_NOEXCEPT {
+      *this = std::move(other);
+    }
+    AdoptingSignumModifierStore& operator=(AdoptingSignumModifierStore&& other) U_NOEXCEPT;
+
+    /** Take ownership of the Modifier and slot it in at the given Signum. */
     void adoptModifier(Signum signum, const Modifier* mod) {
       U_ASSERT(mods[signum] == nullptr);
       mods[signum] = mod;
@@ -294,7 +303,7 @@ class U_I18N_API AdoptingSignumModifierStore : public UMemory {
     }
 
   private:
-    const Modifier* mods[SIGNUM_COUNT];
+    const Modifier* mods[SIGNUM_COUNT] = {};
 };
 
 /**
@@ -309,21 +318,17 @@ class U_I18N_API AdoptingModifierStore : public ModifierStore, public UMemory {
     // No copying!
     AdoptingModifierStore(const AdoptingModifierStore &other) = delete;
 
-    /**
-     * Sets the Modifier with the specified signum and plural form.
-     */
-    void adoptModifier(Signum signum, StandardPlural::Form plural, const Modifier *mod) {
-        U_ASSERT(mods[plural][signum] == nullptr);
-        mods[plural][signum] = mod;
+    // Moving is OK
+    AdoptingModifierStore(AdoptingModifierStore &&other) = default;
+
+    /** Sets the modifiers for a specific plural form. */
+    void adoptSignumModifierStore(StandardPlural::Form plural, AdoptingSignumModifierStore other) {
+      mods[plural] = std::move(other);
     }
 
-    /**
-     * Sets the Modifier with the specified signum.
-     * The modifier will apply to all plural forms.
-     */
-    void adoptModifierWithoutPlural(Signum signum, const Modifier *mod) {
-        U_ASSERT(mods[DEFAULT_STANDARD_PLURAL][signum] == nullptr);
-        mods[DEFAULT_STANDARD_PLURAL][signum] = mod;
+    /** Sets the modifiers for the default plural form. */
+    void adoptSignumModifierStoreNoPlural(AdoptingSignumModifierStore other) {
+      mods[DEFAULT_STANDARD_PLURAL] = std::move(other);
     }
 
     /** Returns a reference to the modifier; no ownership change. */
