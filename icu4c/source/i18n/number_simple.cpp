@@ -64,21 +64,21 @@ void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingM
 }
 
 void SimpleNumber::padStart(int32_t position) {
-    if (fData.isNull()) {
+    if (fData.isNull() || position < 0) {
         return;
     }
     fData->quantity.setMinInteger(position);
 }
 
 void SimpleNumber::padEnd(int32_t position) {
-    if (fData.isNull()) {
+    if (fData.isNull()|| position > 0) {
         return;
     }
-    fData->quantity.setMinFraction(position);
+    fData->quantity.setMinFraction(-position);
 }
 
 void SimpleNumber::truncateStart(int32_t position) {
-    if (fData.isNull()) {
+    if (fData.isNull() || position < 0) {
         return;
     }
     fData->quantity.applyMaxInteger(position);
@@ -128,8 +128,7 @@ SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
 
     MutablePatternModifier patternModifier(false);
     patternModifier.setPatternInfo(&patternInfo, kUndefinedField);
-    // TODO: Select a variable UNumberSignDisplay
-    patternModifier.setPatternAttributes(UNUM_SIGN_AUTO, false, false);
+    patternModifier.setPatternAttributes(UNUM_SIGN_EXCEPT_ZERO, false, false);
     patternModifier.setSymbols(retval.fSymbols, {}, UNUM_UNIT_WIDTH_SHORT, nullptr, status);
 
     retval.fPatternModifier = new AdoptingSignumModifierStore(patternModifier.createImmutableForPlural(StandardPlural::COUNT, status));
@@ -143,7 +142,24 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
         return FormattedNumber(U_ILLEGAL_ARGUMENT_ERROR);
     }
 
-    formatImpl(value.fData.getAlias(), status);
+    Signum signum;
+    if (value.fSign == UNUM_SIMPLE_NUMBER_MINUS_SIGN) {
+        signum = SIGNUM_NEG;
+    } else if (value.fSign == UNUM_SIMPLE_NUMBER_PLUS_SIGN) {
+        signum = SIGNUM_POS;
+    } else {
+        signum = SIGNUM_POS_ZERO;
+    }
+
+    const Modifier* modifier = (*fPatternModifier)[signum];
+    auto length = NumberFormatterImpl::writeNumber(
+        *fMicros,
+        value.fData->quantity,
+        value.fData->getStringRef(),
+        0,
+        status);
+    length += modifier->apply(value.fData->getStringRef(), 0, length, status);
+    value.fData->getStringRef().writeTerminator(status);
 
     // Do not save the results object if we encountered a failure.
     if (U_SUCCESS(status)) {
@@ -154,10 +170,7 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
 }
 
 void SimpleNumberFormatter::formatImpl(UFormattedNumberData *results, UErrorCode &status) const {
-    const Modifier* modifier = (*fPatternModifier)[results->quantity.signum()];
-    auto length = NumberFormatterImpl::writeNumber(*fMicros, results->quantity, results->getStringRef(), 0, status);
-    length += modifier->apply(results->getStringRef(), 0, length, status);
-    results->getStringRef().writeTerminator(status);
+
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

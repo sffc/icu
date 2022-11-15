@@ -49,8 +49,13 @@ void SimpleNumberFormatterTest::testBasic() {
 void SimpleNumberFormatterTest::testWithOptions() {
     IcuTestErrorCode status(*this, "testWithOptions");
 
-    SimpleNumber num = SimpleNumber::forInteger(-1000007, status);
+    SimpleNumber num = SimpleNumber::forInteger(1250000, status);
     num.multiplyByPowerOfTen(-2);
+    num.roundTo(3, UNUM_ROUND_HALFUP);
+    num.padStart(5);
+    num.padEnd(-2);
+    num.truncateStart(4);
+    num.setSign(UNUM_SIMPLE_NUMBER_PLUS_SIGN);
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
     FormattedNumber result = snf.format(std::move(num), status);
 
@@ -65,7 +70,7 @@ void SimpleNumberFormatterTest::testWithOptions() {
     checkFormattedValue(
         u"testWithOptions",
         result,
-        u"-10’000.07",
+        u"+03’000.00",
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         UPRV_LENGTHOF(expectedFieldPositions));
