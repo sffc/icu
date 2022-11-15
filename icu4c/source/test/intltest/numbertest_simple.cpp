@@ -26,8 +26,9 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
 void SimpleNumberFormatterTest::testBasic() {
     IcuTestErrorCode status(*this, "testBasic");
 
+    SimpleNumber num = SimpleNumber::forInteger(-1000007, status);
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
-    FormattedNumber result = snf.formatInt(-1000007, status);
+    FormattedNumber result = snf.format(std::move(num), status);
 
     static const UFieldPosition expectedFieldPositions[] = {
         // field, begin index, end index
@@ -48,10 +49,10 @@ void SimpleNumberFormatterTest::testBasic() {
 void SimpleNumberFormatterTest::testWithOptions() {
     IcuTestErrorCode status(*this, "testWithOptions");
 
+    SimpleNumber num = SimpleNumber::forInteger(-1000007, status);
+    num.multiplyByPowerOfTen(-2);
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
-    SimpleNumberFormatterOptionsV1 options;
-    options.scale = -2;
-    FormattedNumber result = snf.formatInt(-1000007, options, status);
+    FormattedNumber result = snf.format(std::move(num), status);
 
     static const UFieldPosition expectedFieldPositions[] = {
         // field, begin index, end index

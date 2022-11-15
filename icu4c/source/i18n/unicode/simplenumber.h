@@ -31,6 +31,35 @@ struct SimpleNumberFormatterOptionsV1 {
     int32_t scale = 0;
 };
 
+
+class U_I18N_API SimpleNumber : public UMemory {
+  public:
+    /** Creates a SimpleNumber for an integer. */
+    static SimpleNumber forInteger(int64_t value, UErrorCode& status);
+
+    void multiplyByPowerOfTen(int32_t power);
+
+    void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode);
+
+    void padStart(int32_t position);
+
+    void padEnd(int32_t position);
+
+    void truncateStart(int32_t position);
+
+    void setSign(USimpleNumberSign sign);
+
+  private:
+    SimpleNumber() = default;
+    SimpleNumber(impl::UFormattedNumberData* quantity, UErrorCode& status);
+
+    LocalPointer<impl::UFormattedNumberData> fData;
+    USimpleNumberSign fSign = UNUM_SIMPLE_NUMBER_NO_SIGN;
+
+    friend class SimpleNumberFormatter;
+};
+
+
 class U_I18N_API SimpleNumberFormatter : public UMemory {
   public:
     static SimpleNumberFormatter forLocale(const icu::Locale &locale, UErrorCode &status);
@@ -41,9 +70,7 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
     forSymbolsAndGroupingStrategy(LocalPointer<DecimalFormatSymbols> symbols,
                                   UNumberGroupingStrategy groupingStrategy, UErrorCode &status);
 
-    FormattedNumber formatInt(int64_t value, UErrorCode &status) const;
-
-    FormattedNumber formatInt(int64_t value, SimpleNumberFormatterOptionsV1 options, UErrorCode &status) const;
+    FormattedNumber format(SimpleNumber value, UErrorCode &status) const;
 
     /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.

@@ -15,6 +15,13 @@
 #include "unicode/unumberformatter.h"
 
 
+typedef enum USimpleNumberSign {
+    UNUM_SIMPLE_NUMBER_PLUS_SIGN,
+    UNUM_SIMPLE_NUMBER_NO_SIGN,
+    UNUM_SIMPLE_NUMBER_MINUS_SIGN,
+} USimpleNumberSign;
+
+
 struct USimpleNumberFormatter;
 /**
  * C-compatible version of icu::number::SimpleNumberFormatter.
