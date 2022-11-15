@@ -24,9 +24,7 @@ typedef enum USimpleNumberSign {
 
 struct USimpleNumber;
 /**
- * C-compatible version of icu::number::SimpleNumberFormatter.
- *
- * NOTE: This is a C-compatible API; C++ users should build against numberformatter.h instead.
+ * C-compatible version of icu::number::SimpleNumber.
  *
  * @draft ICU 73
  */
@@ -36,8 +34,6 @@ typedef struct USimpleNumber USimpleNumber;
 struct USimpleNumberFormatter;
 /**
  * C-compatible version of icu::number::SimpleNumberFormatter.
- *
- * NOTE: This is a C-compatible API; C++ users should build against numberformatter.h instead.
  *
  * @draft ICU 73
  */
@@ -82,43 +78,20 @@ usnumf_openForLocaleAndGroupingStrategy(
 
 
 U_CAPI void U_EXPORT2
-usnumf_formatInt(const USimpleNumberFormatter* uformatter, int64_t value, UFormattedNumber* uresult,
-                UErrorCode* ec);
+usnumf_formatAndAdoptNumber(
+    const USimpleNumberFormatter* uformatter,
+    USimpleNumber* unumber,
+    int64_t value,
+    UFormattedNumber* uresult,
+    UErrorCode* ec);
 
-// U_CAPI void U_EXPORT2
-// usnumf_formatDouble(const USimpleNumberFormatter* uformatter, double value, UFormattedNumber* uresult,
-//                    UErrorCode* ec);
-
-// U_CAPI void U_EXPORT2
-// usnumf_formatDecimal(const USimpleNumberFormatter* uformatter, const char* value, int32_t valueLen,
-//                     UFormattedNumber* uresult, UErrorCode* ec);
-
-
-U_CAPI void U_EXPORT2
-usnumf_closeNumber(USimpleNumber* unumber);
 
 U_CAPI void U_EXPORT2
 usnumf_close(USimpleNumberFormatter* uformatter);
 
+
 #if U_SHOW_CPLUSPLUS_API
 U_NAMESPACE_BEGIN
-
-/**
- * \class LocalUSimpleNumberFormatter
- * "Smart pointer" class; closes a USimpleNumber via usnumf_close().
- * For most methods see the LocalPointerBase base class.
- *
- * Usage:
- * <pre>
- * LocalUSimpleNumberFormatter uformatter(usnumf_openNumberForInt(...));
- * // no need to explicitly call usnumf_close()
- * </pre>
- *
- * @see LocalPointerBase
- * @see LocalPointer
- * @stable ICU 62
- */
-U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnumf_closeNumber);
 
 /**
  * \class LocalUSimpleNumberFormatter
@@ -133,7 +106,7 @@ U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnumf_closeNumbe
  *
  * @see LocalPointerBase
  * @see LocalPointer
- * @stable ICU 62
+ * @draft ICU 73
  */
 U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumberFormatter, USimpleNumberFormatter, usnumf_close);
 
