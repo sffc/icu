@@ -99,42 +99,68 @@ SimpleNumberFormatter SimpleNumberFormatter::forLocale(const icu::Locale &locale
 }
 
 SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndGroupingStrategy(
-    const icu::Locale &locale, UNumberGroupingStrategy groupingStrategy, UErrorCode &status) {
+        const icu::Locale &locale,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status) {
     SimpleNumberFormatter retval;
     retval.fOwnedSymbols = { new DecimalFormatSymbols(locale, status), status };
-    retval.fSymbols = retval.fOwnedSymbols.getAlias();
-    retval.fMicros = new SimpleMicroProps();
-    if (retval.fMicros == nullptr) {
-        status = U_MEMORY_ALLOCATION_ERROR;
-        return retval;
+    retval.initialize(locale, retval.fOwnedSymbols.getAlias(), groupingStrategy, status);
+    return retval;
+}
+
+
+SimpleNumberFormatter SimpleNumberFormatter::forLocaleAndSymbolsAndGroupingStrategy(
+        const icu::Locale &locale,
+        const DecimalFormatSymbols *symbols,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status) {
+    SimpleNumberFormatter retval;
+    retval.initialize(locale, symbols, groupingStrategy, status);
+    return retval;
+}
+
+
+void SimpleNumberFormatter::initialize(
+        const icu::Locale &locale,
+        const DecimalFormatSymbols *symbols,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status) {
+    if (U_FAILURE(status)) {
+        return;
     }
-    retval.fMicros->symbols = retval.fSymbols;
+
+    fMicros = new SimpleMicroProps();
+    if (fMicros == nullptr) {
+        status = U_MEMORY_ALLOCATION_ERROR;
+        return;
+    }
+    fMicros->symbols = symbols;
 
     // TODO: Select the correct nsName
     auto pattern = utils::getPatternForStyle(locale, "latn", CLDR_PATTERN_STYLE_DECIMAL, status);
     if (U_FAILURE(status)) {
-        return retval;
+        return;
     }
 
     ParsedPatternInfo patternInfo;
     PatternParser::parseToPatternInfo(UnicodeString(pattern), patternInfo, status);
     if (U_FAILURE(status)) {
-        return retval;
+        return;
     }
 
     auto grouper = Grouper::forStrategy(groupingStrategy);
     grouper.setLocaleData(patternInfo, locale);
-    retval.fMicros->grouping = grouper;
+    fMicros->grouping = grouper;
 
     MutablePatternModifier patternModifier(false);
     patternModifier.setPatternInfo(&patternInfo, kUndefinedField);
     patternModifier.setPatternAttributes(UNUM_SIGN_EXCEPT_ZERO, false, false);
-    patternModifier.setSymbols(retval.fSymbols, {}, UNUM_UNIT_WIDTH_SHORT, nullptr, status);
+    patternModifier.setSymbols(fMicros->symbols, {}, UNUM_UNIT_WIDTH_SHORT, nullptr, status);
 
-    retval.fPatternModifier = new AdoptingSignumModifierStore(patternModifier.createImmutableForPlural(StandardPlural::COUNT, status));
+    fPatternModifier = new AdoptingSignumModifierStore(patternModifier.createImmutableForPlural(StandardPlural::COUNT, status));
 
-    retval.fGroupingStrategy = groupingStrategy;
-    return retval;
+    fGroupingStrategy = groupingStrategy;
+    return;
 }
 
 FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &status) const {
@@ -167,10 +193,6 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
     } else {
         return FormattedNumber(status);
     }
-}
-
-void SimpleNumberFormatter::formatImpl(UFormattedNumberData *results, UErrorCode &status) const {
-
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

@@ -62,13 +62,24 @@ class U_I18N_API SimpleNumber : public UMemory {
 
 class U_I18N_API SimpleNumberFormatter : public UMemory {
   public:
-    static SimpleNumberFormatter forLocale(const icu::Locale &locale, UErrorCode &status);
-    static SimpleNumberFormatter forLocaleAndGroupingStrategy(const icu::Locale &locale,
-                                                              UNumberGroupingStrategy groupingStrategy,
-                                                              UErrorCode &status);
-    static SimpleNumberFormatter
-    forSymbolsAndGroupingStrategy(LocalPointer<DecimalFormatSymbols> symbols,
-                                  UNumberGroupingStrategy groupingStrategy, UErrorCode &status);
+    static SimpleNumberFormatter forLocale(
+        const icu::Locale &locale,
+        UErrorCode &status);
+
+    static SimpleNumberFormatter forLocaleAndGroupingStrategy(
+        const icu::Locale &locale,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status);
+
+    /**
+     * NOTE: The DecimalFormatSymbols pointer must remain valid for the lifetime of the
+     * SimpleNumberFormatter!
+     */
+    static SimpleNumberFormatter forLocaleAndSymbolsAndGroupingStrategy(
+        const icu::Locale &locale,
+        const DecimalFormatSymbols *symbols,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status);
 
     FormattedNumber format(SimpleNumber value, UErrorCode &status) const;
 
@@ -87,17 +98,18 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
     SimpleNumberFormatter& operator=(SimpleNumberFormatter&&) U_NOEXCEPT = default;
 
   private:
+    void initialize(
+        const icu::Locale &locale,
+        const DecimalFormatSymbols *symbols,
+        UNumberGroupingStrategy groupingStrategy,
+        UErrorCode &status);
+
     UNumberGroupingStrategy fGroupingStrategy = UNUM_GROUPING_AUTO;
-    LocalPointer<DecimalFormatSymbols> fOwnedSymbols;
+    LocalPointer<DecimalFormatSymbols> fOwnedSymbols; // can be empty
 
-    // NOT Owned:
-    const DecimalFormatSymbols* fSymbols = nullptr;
-
-    // Owned:
+    // Owned Pointers:
     impl::SimpleMicroProps* fMicros = nullptr;
     impl::AdoptingSignumModifierStore* fPatternModifier = nullptr;
-
-    void formatImpl(impl::UFormattedNumberData *results, UErrorCode &status) const;
 };
 
 
