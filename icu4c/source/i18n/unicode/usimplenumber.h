@@ -22,6 +22,17 @@ typedef enum USimpleNumberSign {
 } USimpleNumberSign;
 
 
+struct USimpleNumber;
+/**
+ * C-compatible version of icu::number::SimpleNumberFormatter.
+ *
+ * NOTE: This is a C-compatible API; C++ users should build against numberformatter.h instead.
+ *
+ * @draft ICU 73
+ */
+typedef struct USimpleNumber USimpleNumber;
+
+
 struct USimpleNumberFormatter;
 /**
  * C-compatible version of icu::number::SimpleNumberFormatter.
@@ -31,6 +42,38 @@ struct USimpleNumberFormatter;
  * @draft ICU 73
  */
 typedef struct USimpleNumberFormatter USimpleNumberFormatter;
+
+
+U_CAPI USimpleNumber* U_EXPORT2
+usnumf_openNumberForInt(int64_t value, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_padStart(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_padEnd(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_truncateStart(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+
+
+U_CAPI void U_EXPORT2
+usnumf_setSign(USimpleNumber* unumber, USimpleNumberSign sign, UErrorCode* ec);
+
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocale(const char* locale, UErrorCode* ec);
 
 
 U_CAPI USimpleNumberFormatter* U_EXPORT2
@@ -52,10 +95,30 @@ usnumf_formatInt(const USimpleNumberFormatter* uformatter, int64_t value, UForma
 
 
 U_CAPI void U_EXPORT2
+usnumf_closeNumber(USimpleNumber* unumber);
+
+U_CAPI void U_EXPORT2
 usnumf_close(USimpleNumberFormatter* uformatter);
 
 #if U_SHOW_CPLUSPLUS_API
 U_NAMESPACE_BEGIN
+
+/**
+ * \class LocalUSimpleNumberFormatter
+ * "Smart pointer" class; closes a USimpleNumber via usnumf_close().
+ * For most methods see the LocalPointerBase base class.
+ *
+ * Usage:
+ * <pre>
+ * LocalUSimpleNumberFormatter uformatter(usnumf_openNumberForInt(...));
+ * // no need to explicitly call usnumf_close()
+ * </pre>
+ *
+ * @see LocalPointerBase
+ * @see LocalPointer
+ * @stable ICU 62
+ */
+U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnumf_closeNumber);
 
 /**
  * \class LocalUSimpleNumberFormatter
@@ -64,7 +127,7 @@ U_NAMESPACE_BEGIN
  *
  * Usage:
  * <pre>
- * LocalUSimpleNumberFormatter uformatter(unumf_openForSkeletonAndLocale(...));
+ * LocalUSimpleNumberFormatter uformatter(usnumf_openForLocale(...));
  * // no need to explicitly call usnumf_close()
  * </pre>
  *

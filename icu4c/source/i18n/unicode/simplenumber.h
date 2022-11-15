@@ -22,31 +22,44 @@ U_NAMESPACE_BEGIN
 namespace number {  // icu::number
 
 
-// TODO: Make it C-compatible
-struct SimpleNumberFormatterOptionsV1 {
-    int32_t minimumFractionDigits = -1;
-    int32_t maximumFractionDigits = -1;
-    int32_t minimumIntegerDigits = -1;
-    int32_t maximumIntegerDigits = -1;
-    int32_t scale = 0;
-};
-
-
+/**
+ * An input type for SimpleNumberFormatter.
+ */
 class U_I18N_API SimpleNumber : public UMemory {
   public:
-    /** Creates a SimpleNumber for an integer. */
+    /**
+     * Creates a SimpleNumber for an integer.
+     */
     static SimpleNumber forInteger(int64_t value, UErrorCode& status);
 
+    /**
+     * Changes the value of the SimpleNumber by a power of 10.
+     */
     void multiplyByPowerOfTen(int32_t power);
 
+    /**
+     * Rounds the value currently stored in the SimpleNumber to the given power of 10.
+     */
     void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode);
 
-    void padStart(int32_t position);
+    /**
+     * Pads the beginning of the number with zeros up to the given minimum number of integer digits.
+     */
+    void padStart(uint32_t minimumIntegerDigits);
 
-    void padEnd(int32_t position);
+    /**
+     * Pads the end of the number with zeros up to the given minimum number of fraction digits.
+     */
+    void padEnd(uint32_t minimumFractionDigits);
 
-    void truncateStart(int32_t position);
+    /**
+     * Truncates digits from the beginning of the number to the given maximum number of integer digits.
+     */
+    void truncateStart(uint32_t maximumIntegerDigits);
 
+    /**
+     * Sets the sign of the number: an explicit plus sign, explicit minus sign, or no sign.
+     */
     void setSign(USimpleNumberSign sign);
 
   private:
@@ -60,20 +73,34 @@ class U_I18N_API SimpleNumber : public UMemory {
 };
 
 
+/**
+ * A special NumberFormatter focused on smaller binary size and memory use.
+ * 
+ * SimpleNumberFormatter is capable of basic number formatting, including grouping separators,
+ * sign display, and rounding. It is not capable of currencies, compact notation, or units.
+ */
 class U_I18N_API SimpleNumberFormatter : public UMemory {
   public:
+    /**
+     * Creates a new SimpleNumberFormatter with all locale defaults.
+     */
     static SimpleNumberFormatter forLocale(
         const icu::Locale &locale,
         UErrorCode &status);
 
+    /**
+     * Creates a new SimpleNumberFormatter, overriding the grouping strategy.
+     */
     static SimpleNumberFormatter forLocaleAndGroupingStrategy(
         const icu::Locale &locale,
         UNumberGroupingStrategy groupingStrategy,
         UErrorCode &status);
 
     /**
-     * NOTE: The DecimalFormatSymbols pointer must remain valid for the lifetime of the
-     * SimpleNumberFormatter!
+     * Creates a new SimpleNumberFormatter, overriding the grouping strategy and symbols.
+     *
+     * IMPORTANT: For efficiency, this function borrows the symbols. The symbols MUST remain valid
+     * for the lifetime of the SimpleNumberFormatter.
      */
     static SimpleNumberFormatter forLocaleAndSymbolsAndGroupingStrategy(
         const icu::Locale &locale,
@@ -81,6 +108,9 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
         UNumberGroupingStrategy groupingStrategy,
         UErrorCode &status);
 
+    /**
+     * Formats a value using this SimpleNumberFormatter.
+     */
     FormattedNumber format(SimpleNumber value, UErrorCode &status) const;
 
     /**

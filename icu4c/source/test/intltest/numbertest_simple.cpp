@@ -53,7 +53,7 @@ void SimpleNumberFormatterTest::testWithOptions() {
     num.multiplyByPowerOfTen(-2);
     num.roundTo(3, UNUM_ROUND_HALFUP);
     num.padStart(5);
-    num.padEnd(-2);
+    num.padEnd(2);
     num.truncateStart(4);
     num.setSign(UNUM_SIMPLE_NUMBER_PLUS_SIGN);
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);

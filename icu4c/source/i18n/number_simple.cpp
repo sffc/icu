@@ -63,22 +63,22 @@ void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingM
     fData->quantity.roundToMagnitude(position, roundingMode, localStatus);
 }
 
-void SimpleNumber::padStart(int32_t position) {
-    if (fData.isNull() || position < 0) {
+void SimpleNumber::padStart(uint32_t position) {
+    if (fData.isNull()) {
         return;
     }
     fData->quantity.setMinInteger(position);
 }
 
-void SimpleNumber::padEnd(int32_t position) {
-    if (fData.isNull()|| position > 0) {
+void SimpleNumber::padEnd(uint32_t position) {
+    if (fData.isNull()) {
         return;
     }
-    fData->quantity.setMinFraction(-position);
+    fData->quantity.setMinFraction(position);
 }
 
-void SimpleNumber::truncateStart(int32_t position) {
-    if (fData.isNull() || position < 0) {
+void SimpleNumber::truncateStart(uint32_t position) {
+    if (fData.isNull()) {
         return;
     }
     fData->quantity.applyMaxInteger(position);

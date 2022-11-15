@@ -120,18 +120,6 @@ unumf_openForSkeletonAndLocaleWithError(const UChar* skeleton, int32_t skeletonL
     return impl->exportForC();
 }
 
-U_CAPI USimpleNumberFormatter* U_EXPORT2
-usnumf_openForLocaleAndGroupingStrategy(const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
-    auto* impl = new USimpleNumberFormatterData();
-    if (impl == nullptr) {
-        *ec = U_MEMORY_ALLOCATION_ERROR;
-        return nullptr;
-    }
-    // Readonly-alias constructor (first argument is whether we are NUL-terminated)
-    impl->fFormatter = SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, groupingStrategy, *ec);
-    return impl->exportForC();
-}
-
 U_CAPI void U_EXPORT2
 unumf_formatInt(const UNumberFormatter* uformatter, int64_t value, UFormattedNumber* uresult,
                 UErrorCode* ec) {
@@ -245,6 +233,19 @@ unumf_close(UNumberFormatter* f) {
     UErrorCode localStatus = U_ZERO_ERROR;
     const UNumberFormatterData* impl = UNumberFormatterData::validate(f, localStatus);
     delete impl;
+}
+
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocaleAndGroupingStrategy(const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
+    auto* impl = new USimpleNumberFormatterData();
+    if (impl == nullptr) {
+        *ec = U_MEMORY_ALLOCATION_ERROR;
+        return nullptr;
+    }
+    // Readonly-alias constructor (first argument is whether we are NUL-terminated)
+    impl->fFormatter = SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, groupingStrategy, *ec);
+    return impl->exportForC();
 }
 
 
