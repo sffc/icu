@@ -6,6 +6,7 @@
 #if !UCONFIG_NO_FORMATTING
 
 #include "unicode/numberformatter.h"
+#include "unicode/simplenumber.h"
 #include "number_formatimpl.h"
 #include "number_utils.h"
 #include "number_patternmodifier.h"

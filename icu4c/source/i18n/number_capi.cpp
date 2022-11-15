@@ -16,6 +16,8 @@
 #include "number_decnum.h"
 #include "unicode/numberformatter.h"
 #include "unicode/unumberformatter.h"
+#include "unicode/simplenumber.h"
+#include "unicode/usimplenumber.h"
 
 using namespace icu;
 using namespace icu::number;

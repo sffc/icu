@@ -7,6 +7,7 @@
 
 #include "numbertest.h"
 #include "unicode/numberformatter.h"
+#include "unicode/simplenumber.h"
 
 #include <cmath>
 #include <numparse_affixes.h>
