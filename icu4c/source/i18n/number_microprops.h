@@ -67,7 +67,7 @@ class IntMeasures : public MaybeStackArray<int64_t, 2> {
     UErrorCode status = U_ZERO_ERROR;
 };
 
-struct SimpleMicroProps {
+struct SimpleMicroProps : public UMemory {
     Grouper grouping;
     bool useCurrency = false;
     UNumberDecimalSeparatorDisplay decimal = UNUM_DECIMAL_SEPARATOR_AUTO;
