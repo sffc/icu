@@ -17,6 +17,9 @@
 // DISCUSS: I need this for FormattedNumber. Should I reverse the header deps?
 #include "unicode/numberformatter.h"
 
+// DISCUSS: UNumberFormatRoundingMode lives here
+#include "unicode/unum.h"
+
 U_NAMESPACE_BEGIN
 
 namespace number {  // icu::number
