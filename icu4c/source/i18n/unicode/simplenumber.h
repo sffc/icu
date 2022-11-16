@@ -10,15 +10,14 @@
 
 #if !UCONFIG_NO_FORMATTING
 
+#ifndef U_HIDE_DRAFT_API
+
 #include "unicode/dcfmtsym.h"
 #include "unicode/unumberformatter.h"
 #include "unicode/usimplenumber.h"
 
 // DISCUSS: I need this for FormattedNumber. Should I reverse the header deps?
 #include "unicode/numberformatter.h"
-
-// DISCUSS: UNumberFormatRoundingMode lives here
-#include "unicode/unum.h"
 
 U_NAMESPACE_BEGIN
 
@@ -27,60 +26,70 @@ namespace number {  // icu::number
 
 /**
  * An input type for SimpleNumberFormatter.
+ *
  * @draft ICU 73
  */
 class U_I18N_API SimpleNumber : public UMemory {
   public:
     /**
      * Creates a SimpleNumber for an integer.
+     *
      * @draft ICU 73
      */
     static SimpleNumber forInteger(int64_t value, UErrorCode& status);
 
     /**
      * Changes the value of the SimpleNumber by a power of 10.
+     *
      * @draft ICU 73
      */
     void multiplyByPowerOfTen(int32_t power);
 
     /**
      * Rounds the value currently stored in the SimpleNumber to the given power of 10.
+     *
      * @draft ICU 73
      */
     void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode);
 
     /**
      * Pads the beginning of the number with zeros up to the given minimum number of integer digits.
+     *
      * @draft ICU 73
      */
     void padStart(uint32_t minimumIntegerDigits);
 
     /**
      * Pads the end of the number with zeros up to the given minimum number of fraction digits.
+     *
      * @draft ICU 73
      */
     void padEnd(uint32_t minimumFractionDigits);
 
     /**
      * Truncates digits from the beginning of the number to the given maximum number of integer digits.
+     *
      * @draft ICU 73
      */
     void truncateStart(uint32_t maximumIntegerDigits);
 
     /**
      * Sets the sign of the number: an explicit plus sign, explicit minus sign, or no sign.
+     *
      * @draft ICU 73
      */
     void setSign(USimpleNumberSign sign);
 
     /**
      * Destruct this SimpleNumber, cleaning up any memory it might own.
+     *
      * @draft ICU 73
      */
     ~SimpleNumber();
 
     /**
      * SimpleNumber move constructor.
+     *
      * @draft ICU 73
      */
     SimpleNumber(SimpleNumber&& other) U_NOEXCEPT {
@@ -91,6 +100,7 @@ class U_I18N_API SimpleNumber : public UMemory {
 
     /**
      * SimpleNumber move assignment.
+     *
      * @draft ICU 73
      */
     SimpleNumber& operator=(SimpleNumber&& other) U_NOEXCEPT {
@@ -118,11 +128,15 @@ class U_I18N_API SimpleNumber : public UMemory {
  * 
  * SimpleNumberFormatter is capable of basic number formatting, including grouping separators,
  * sign display, and rounding. It is not capable of currencies, compact notation, or units.
+ *
+ * @draft ICU 73
  */
 class U_I18N_API SimpleNumberFormatter : public UMemory {
   public:
     /**
      * Creates a new SimpleNumberFormatter with all locale defaults.
+     *
+     * @draft ICU 73
      */
     static SimpleNumberFormatter forLocale(
         const icu::Locale &locale,
@@ -130,6 +144,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 
     /**
      * Creates a new SimpleNumberFormatter, overriding the grouping strategy.
+     *
+     * @draft ICU 73
      */
     static SimpleNumberFormatter forLocaleAndGroupingStrategy(
         const icu::Locale &locale,
@@ -141,6 +157,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
      *
      * IMPORTANT: For efficiency, this function borrows the symbols. The symbols MUST remain valid
      * for the lifetime of the SimpleNumberFormatter.
+     *
+     * @draft ICU 73
      */
     static SimpleNumberFormatter forLocaleAndSymbolsAndGroupingStrategy(
         const icu::Locale &locale,
@@ -150,19 +168,39 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 
     /**
      * Formats a value using this SimpleNumberFormatter.
+     *
+     * @draft ICU 73
      */
     FormattedNumber format(SimpleNumber value, UErrorCode &status) const;
 
     /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.
+     *
      * @draft ICU 73
      */
     ~SimpleNumberFormatter();
 
+    /**
+     * Creates a shell, initialized but non-functional SimpleNumberFormatter.
+     *
+     * @draft ICU 73
+     */
     SimpleNumberFormatter() = default;
 
-    // TODO: Make sure these move constructors are well tested
+    // FIXME: Make sure these move constructors are well tested
+
+    /**
+     * SimpleNumberFormatter: Move constructor.
+     *
+     * @draft ICU 73
+     */
     SimpleNumberFormatter(SimpleNumberFormatter&&) U_NOEXCEPT = default;
+
+    /**
+     * SimpleNumberFormatter: Move assignment.
+     *
+     * @draft ICU 73
+     */
     SimpleNumberFormatter& operator=(SimpleNumberFormatter&&) U_NOEXCEPT = default;
 
   private:
@@ -187,6 +225,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 
 }  // namespace number
 U_NAMESPACE_END
+
+#endif // U_HIDE_DRAFT_API
 
 #endif /* #if !UCONFIG_NO_FORMATTING */
 
