@@ -10,8 +10,6 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-#ifndef U_HIDE_DRAFT_API
-
 #include "unicode/dcfmtsym.h"
 #include "unicode/unumberformatter.h"
 #include "unicode/usimplenumber.h"
@@ -22,6 +20,8 @@
 U_NAMESPACE_BEGIN
 
 namespace number {  // icu::number
+
+#ifndef U_HIDE_DRAFT_API
 
 
 /**
@@ -240,10 +240,10 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 };
 
 
+#endif // U_HIDE_DRAFT_API
+
 }  // namespace number
 U_NAMESPACE_END
-
-#endif // U_HIDE_DRAFT_API
 
 #endif /* #if !UCONFIG_NO_FORMATTING */
 
