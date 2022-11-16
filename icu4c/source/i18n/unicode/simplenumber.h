@@ -24,49 +24,86 @@ namespace number {  // icu::number
 
 /**
  * An input type for SimpleNumberFormatter.
+ * @draft ICU 73
  */
 class U_I18N_API SimpleNumber : public UMemory {
   public:
     /**
      * Creates a SimpleNumber for an integer.
+     * @draft ICU 73
      */
     static SimpleNumber forInteger(int64_t value, UErrorCode& status);
 
     /**
      * Changes the value of the SimpleNumber by a power of 10.
+     * @draft ICU 73
      */
     void multiplyByPowerOfTen(int32_t power);
 
     /**
      * Rounds the value currently stored in the SimpleNumber to the given power of 10.
+     * @draft ICU 73
      */
     void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode);
 
     /**
      * Pads the beginning of the number with zeros up to the given minimum number of integer digits.
+     * @draft ICU 73
      */
     void padStart(uint32_t minimumIntegerDigits);
 
     /**
      * Pads the end of the number with zeros up to the given minimum number of fraction digits.
+     * @draft ICU 73
      */
     void padEnd(uint32_t minimumFractionDigits);
 
     /**
      * Truncates digits from the beginning of the number to the given maximum number of integer digits.
+     * @draft ICU 73
      */
     void truncateStart(uint32_t maximumIntegerDigits);
 
     /**
      * Sets the sign of the number: an explicit plus sign, explicit minus sign, or no sign.
+     * @draft ICU 73
      */
     void setSign(USimpleNumberSign sign);
 
+    /**
+     * Destruct this SimpleNumber, cleaning up any memory it might own.
+     * @draft ICU 73
+     */
+    ~SimpleNumber();
+
+    /**
+     * SimpleNumber move constructor.
+     * @draft ICU 73
+     */
+    SimpleNumber(SimpleNumber&& other) U_NOEXCEPT {
+      fData = other.fData;
+      fSign = other.fSign;
+      other.fData = nullptr;
+    }
+
+    /**
+     * SimpleNumber move assignment.
+     * @draft ICU 73
+     */
+    SimpleNumber& operator=(SimpleNumber&& other) U_NOEXCEPT {
+      fData = other.fData;
+      fSign = other.fSign;
+      other.fData = nullptr;
+      return *this;
+    }
+
   private:
     SimpleNumber() = default;
-    SimpleNumber(impl::UFormattedNumberData* quantity, UErrorCode& status);
+    SimpleNumber(impl::UFormattedNumberData* data, UErrorCode& status);
+    SimpleNumber(const SimpleNumber&) = delete;
+    SimpleNumber& operator=(const SimpleNumber&) = delete;
 
-    LocalPointer<impl::UFormattedNumberData> fData;
+    impl::UFormattedNumberData* fData = nullptr;
     USimpleNumberSign fSign = UNUM_SIMPLE_NUMBER_NO_SIGN;
 
     friend class SimpleNumberFormatter;
@@ -121,10 +158,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
 
     SimpleNumberFormatter() = default;
 
-    SimpleNumberFormatter(const SimpleNumberFormatter&) = delete;
+    // TODO: Make sure these move constructors are well tested
     SimpleNumberFormatter(SimpleNumberFormatter&&) U_NOEXCEPT = default;
-
-    SimpleNumberFormatter& operator=(const SimpleNumberFormatter&) = delete;
     SimpleNumberFormatter& operator=(SimpleNumberFormatter&&) U_NOEXCEPT = default;
 
   private:
@@ -133,6 +168,10 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
         const DecimalFormatSymbols *symbols,
         UNumberGroupingStrategy groupingStrategy,
         UErrorCode &status);
+
+    SimpleNumberFormatter(const SimpleNumberFormatter&) = delete;
+
+    SimpleNumberFormatter& operator=(const SimpleNumberFormatter&) = delete;
 
     UNumberGroupingStrategy fGroupingStrategy = UNUM_GROUPING_AUTO;
     LocalPointer<DecimalFormatSymbols> fOwnedSymbols; // can be empty

@@ -31,10 +31,8 @@ SimpleNumber::forInteger(int64_t value, UErrorCode& status) {
     return SimpleNumber(results, status);
 }
 
-SimpleNumber::SimpleNumber(UFormattedNumberData* quantity, UErrorCode& status)
-    : fData(quantity, status)
-{
-    if (U_FAILURE(status)) {
+SimpleNumber::SimpleNumber(UFormattedNumberData* data, UErrorCode&) : fData(data) {
+    if (fData == nullptr) {
         return;
     }
     if (fData->quantity.isNegative()) {
@@ -44,15 +42,19 @@ SimpleNumber::SimpleNumber(UFormattedNumberData* quantity, UErrorCode& status)
     }
 }
 
+SimpleNumber::~SimpleNumber() {
+    delete fData;
+}
+
 void SimpleNumber::multiplyByPowerOfTen(int32_t power) {
-    if (fData.isNull()) {
+    if (fData == nullptr) {
         return;
     }
     fData->quantity.adjustMagnitude(power);
 }
 
 void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingMode) {
-    if (fData.isNull()) {
+    if (fData == nullptr) {
         return;
     }
     if (roundingMode == UNUM_ROUND_UNNECESSARY) {
@@ -64,21 +66,21 @@ void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingM
 }
 
 void SimpleNumber::padStart(uint32_t position) {
-    if (fData.isNull()) {
+    if (fData == nullptr) {
         return;
     }
     fData->quantity.setMinInteger(position);
 }
 
 void SimpleNumber::padEnd(uint32_t position) {
-    if (fData.isNull()) {
+    if (fData == nullptr) {
         return;
     }
     fData->quantity.setMinFraction(position);
 }
 
 void SimpleNumber::truncateStart(uint32_t position) {
-    if (fData.isNull()) {
+    if (fData == nullptr) {
         return;
     }
     fData->quantity.applyMaxInteger(position);
@@ -164,7 +166,7 @@ void SimpleNumberFormatter::initialize(
 }
 
 FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &status) const {
-    if (U_FAILURE(status) || value.fData.isNull()) {
+    if (U_FAILURE(status) || value.fData == nullptr) {
         return FormattedNumber(U_ILLEGAL_ARGUMENT_ERROR);
     }
 
@@ -189,7 +191,9 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
 
     // Do not save the results object if we encountered a failure.
     if (U_SUCCESS(status)) {
-        return FormattedNumber(value.fData.orphan());
+        auto temp = value.fData;
+        value.fData = nullptr;
+        return FormattedNumber(temp);
     } else {
         return FormattedNumber(status);
     }
