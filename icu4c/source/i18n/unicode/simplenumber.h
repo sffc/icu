@@ -113,6 +113,15 @@ class U_I18N_API SimpleNumber : public UMemory {
     void setSign(USimpleNumberSign sign, UErrorCode& status);
 
     /**
+     * Creates a new, empty SimpleNumber that will be formatted as zero.
+     * 
+     * NOTE: No other functions can be called on this object; use forInteger instead.
+     *
+     * @draft ICU 73
+     */
+    SimpleNumber() = default;
+
+    /**
      * Destruct this SimpleNumber, cleaning up any memory it might own.
      *
      * @draft ICU 73
@@ -143,7 +152,6 @@ class U_I18N_API SimpleNumber : public UMemory {
     }
 
   private:
-    SimpleNumber() = default;
     SimpleNumber(impl::UFormattedNumberData* data, UErrorCode& status);
     SimpleNumber(const SimpleNumber&) = delete;
     SimpleNumber& operator=(const SimpleNumber&) = delete;

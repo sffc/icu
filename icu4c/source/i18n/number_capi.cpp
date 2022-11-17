@@ -38,6 +38,15 @@ struct UNumberFormatterData : public UMemory,
 };
 
 /**
+ * Implementation class for USimpleNumber. Wraps a SimpleNumberFormatter.
+ */
+struct USimpleNumberData : public UMemory,
+        // Magic number as ASCII == "SNM" (SimpleNuMber)
+        public IcuCApiHelper<USimpleNumber, USimpleNumberData, 0x534E4D00> {
+    SimpleNumber fNumber;
+};
+
+/**
  * Implementation class for USimpleNumberFormatter. Wraps a SimpleNumberFormatter.
  */
 struct USimpleNumberFormatterData : public UMemory,
@@ -236,16 +245,124 @@ unumf_close(UNumberFormatter* f) {
 }
 
 
+///// SIMPLE NUMBER FORMATTER /////
+
+U_CAPI USimpleNumber* U_EXPORT2
+usnum_openForInt(int64_t value, UErrorCode* ec) {
+    auto* impl = new USimpleNumberData();
+    if (impl == nullptr) {
+        *ec = U_MEMORY_ALLOCATION_ERROR;
+        return nullptr;
+    }
+    impl->fNumber = SimpleNumber::forInteger(value, *ec);
+    return impl->exportForC();
+}
+
+U_CAPI void U_EXPORT2
+usnum_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.multiplyByPowerOfTen(power, *ec);
+}
+
+U_CAPI void U_EXPORT2
+usnum_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.roundTo(position, roundingMode, *ec);
+}
+
+U_CAPI void U_EXPORT2
+usnum_setMinimumIntegerDigits(USimpleNumber* unumber, int32_t minimumIntegerDigits, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.setMinimumIntegerDigits(minimumIntegerDigits, *ec);
+}
+
+U_CAPI void U_EXPORT2
+usnum_setMinimumFractionDigits(USimpleNumber* unumber, int32_t minimumFractionDigits, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.setMinimumFractionDigits(minimumFractionDigits, *ec);
+}
+
+U_CAPI void U_EXPORT2
+usnum_truncateStart(USimpleNumber* unumber, int32_t maximumIntegerDigits, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.truncateStart(maximumIntegerDigits, *ec);
+}
+
+U_CAPI void U_EXPORT2
+usnum_setSign(USimpleNumber* unumber, USimpleNumberSign sign, UErrorCode* ec) {
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    number->fNumber.setSign(sign, *ec);
+}
+
 U_CAPI USimpleNumberFormatter* U_EXPORT2
-usnumf_openForLocaleAndGroupingStrategy(const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
+usnumf_openForLocale(const char* locale, UErrorCode* ec) {
     auto* impl = new USimpleNumberFormatterData();
     if (impl == nullptr) {
         *ec = U_MEMORY_ALLOCATION_ERROR;
         return nullptr;
     }
-    // Readonly-alias constructor (first argument is whether we are NUL-terminated)
+    impl->fFormatter = SimpleNumberFormatter::forLocale(locale, *ec);
+    return impl->exportForC();
+}
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocaleAndGroupingStrategy(
+       const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
+    auto* impl = new USimpleNumberFormatterData();
+    if (impl == nullptr) {
+        *ec = U_MEMORY_ALLOCATION_ERROR;
+        return nullptr;
+    }
     impl->fFormatter = SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, groupingStrategy, *ec);
     return impl->exportForC();
+}
+
+U_CAPI void U_EXPORT2
+usnumf_formatAndAdoptNumber(
+        const USimpleNumberFormatter* uformatter,
+        USimpleNumber* unumber,
+        UFormattedNumber* uresult,
+        UErrorCode* ec) {
+    auto* formatter = USimpleNumberFormatterData::validate(uformatter, *ec);
+    auto* number = USimpleNumberData::validate(unumber, *ec);
+    auto* result = UFormattedNumberApiHelper::validate(uresult, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    auto localResult = formatter->fFormatter.format(std::move(number->fNumber), *ec);
+    result->fImpl = std::move(localResult); 
+}
+
+U_CAPI void U_EXPORT2
+usnum_close(USimpleNumber* unumber) {
+    UErrorCode localStatus = U_ZERO_ERROR;
+    const USimpleNumberData* impl = USimpleNumberData::validate(unumber, localStatus);
+    delete impl;
+}
+
+U_CAPI void U_EXPORT2
+usnumf_close(USimpleNumberFormatter* uformatter) {
+    UErrorCode localStatus = U_ZERO_ERROR;
+    const USimpleNumberFormatterData* impl = USimpleNumberFormatterData::validate(uformatter, localStatus);
+    delete impl;
 }
 
 

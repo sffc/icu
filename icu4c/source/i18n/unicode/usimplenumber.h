@@ -159,7 +159,6 @@ U_CAPI void U_EXPORT2
 usnumf_formatAndAdoptNumber(
     const USimpleNumberFormatter* uformatter,
     USimpleNumber* unumber,
-    int64_t value,
     UFormattedNumber* uresult,
     UErrorCode* ec);
 
