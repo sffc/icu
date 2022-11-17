@@ -16,6 +16,8 @@
 #include "number_decnum.h"
 #include "unicode/numberformatter.h"
 #include "unicode/unumberformatter.h"
+#include "unicode/simplenumber.h"
+#include "unicode/usimplenumber.h"
 
 using namespace icu;
 using namespace icu::number;
@@ -33,6 +35,15 @@ struct UNumberFormatterData : public UMemory,
         // Magic number as ASCII == "NFR" (NumberFormatteR)
         public IcuCApiHelper<UNumberFormatter, UNumberFormatterData, 0x4E465200> {
     LocalizedNumberFormatter fFormatter;
+};
+
+/**
+ * Implementation class for USimpleNumberFormatter. Wraps a SimpleNumberFormatter.
+ */
+struct USimpleNumberFormatterData : public UMemory,
+        // Magic number as ASCII == "SNF" (SimpleNumberFormatter)
+        public IcuCApiHelper<USimpleNumberFormatter, USimpleNumberFormatterData, 0x534E4600> {
+    SimpleNumberFormatter fFormatter;
 };
 
 struct UFormattedNumberImpl;
@@ -222,6 +233,19 @@ unumf_close(UNumberFormatter* f) {
     UErrorCode localStatus = U_ZERO_ERROR;
     const UNumberFormatterData* impl = UNumberFormatterData::validate(f, localStatus);
     delete impl;
+}
+
+
+U_CAPI USimpleNumberFormatter* U_EXPORT2
+usnumf_openForLocaleAndGroupingStrategy(const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec) {
+    auto* impl = new USimpleNumberFormatterData();
+    if (impl == nullptr) {
+        *ec = U_MEMORY_ALLOCATION_ERROR;
+        return nullptr;
+    }
+    // Readonly-alias constructor (first argument is whether we are NUL-terminated)
+    impl->fFormatter = SimpleNumberFormatter::forLocaleAndGroupingStrategy(locale, groupingStrategy, *ec);
+    return impl->exportForC();
 }
 
 

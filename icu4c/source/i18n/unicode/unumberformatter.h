@@ -659,6 +659,7 @@ U_CAPI void U_EXPORT2
 unumf_formatDecimal(const UNumberFormatter* uformatter, const char* value, int32_t valueLen,
                     UFormattedNumber* uresult, UErrorCode* ec);
 
+
 /**
  * Returns a representation of a UFormattedNumber as a UFormattedValue,
  * which can be subsequently passed to any API requiring that type.
