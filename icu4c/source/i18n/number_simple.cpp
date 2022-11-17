@@ -72,7 +72,7 @@ void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingM
     fData->quantity.roundToMagnitude(position, roundingMode, status);
 }
 
-void SimpleNumber::padStart(uint32_t position, UErrorCode& status) {
+void SimpleNumber::setMinimumIntegerDigits(uint32_t position, UErrorCode& status) {
     if (U_FAILURE(status)) {
         return;
     }
@@ -83,7 +83,7 @@ void SimpleNumber::padStart(uint32_t position, UErrorCode& status) {
     fData->quantity.setMinInteger(position);
 }
 
-void SimpleNumber::padEnd(uint32_t position, UErrorCode& status) {
+void SimpleNumber::setMinimumFractionDigits(uint32_t position, UErrorCode& status) {
     if (U_FAILURE(status)) {
         return;
     }

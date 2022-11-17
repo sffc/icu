@@ -98,7 +98,7 @@ usnumf_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMo
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_padStart(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+usnumf_setMinimumIntegerDigits(USimpleNumber* unumber, int32_t minimumIntegerDigits, UErrorCode* ec);
 
 
 /**
@@ -107,7 +107,7 @@ usnumf_padStart(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_padEnd(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+usnumf_setMinimumFractionDigits(USimpleNumber* unumber, int32_t minimumFractionDigits, UErrorCode* ec);
 
 
 /**
@@ -116,7 +116,7 @@ usnumf_padEnd(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_truncateStart(USimpleNumber* unumber, int32_t position, UErrorCode* ec);
+usnumf_truncateStart(USimpleNumber* unumber, int32_t maximumIntegerDigits, UErrorCode* ec);
 
 
 /**

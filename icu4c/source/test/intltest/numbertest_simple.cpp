@@ -52,8 +52,8 @@ void SimpleNumberFormatterTest::testWithOptions() {
     SimpleNumber num = SimpleNumber::forInteger(1250000, status);
     num.multiplyByPowerOfTen(-2, status);
     num.roundTo(3, UNUM_ROUND_HALFUP, status);
-    num.padStart(5, status);
-    num.padEnd(2, status);
+    num.setMinimumIntegerDigits(5, status);
+    num.setMinimumFractionDigits(2, status);
     num.truncateStart(4, status);
     num.setSign(UNUM_SIMPLE_NUMBER_PLUS_SIGN, status);
     SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
