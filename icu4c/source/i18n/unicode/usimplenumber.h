@@ -89,7 +89,7 @@ usnum_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* ec
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnum_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode* ec);
+usnum_roundTo(USimpleNumber* unumber, int32_t power, UNumberFormatRoundingMode roundingMode, UErrorCode* ec);
 
 
 /**

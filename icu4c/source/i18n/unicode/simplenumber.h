@@ -74,7 +74,7 @@ class U_I18N_API SimpleNumber : public UMemory {
      *
      * @draft ICU 73
      */
-    void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode& status);
+    void roundTo(int32_t power, UNumberFormatRoundingMode roundingMode, UErrorCode& status);
 
     /**
      * Truncates digits from the beginning of the number to the given maximum number of integer digits.
