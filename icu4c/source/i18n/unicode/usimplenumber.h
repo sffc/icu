@@ -71,7 +71,7 @@ typedef struct USimpleNumberFormatter USimpleNumberFormatter;
  * @draft ICU 73
  */
 U_CAPI USimpleNumber* U_EXPORT2
-usnumf_openNumberForInt(int64_t value, UErrorCode* ec);
+usnum_openForInt(int64_t value, UErrorCode* ec);
 
 
 /**
@@ -80,7 +80,7 @@ usnumf_openNumberForInt(int64_t value, UErrorCode* ec);
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* ec);
+usnum_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* ec);
 
 
 /**
@@ -89,7 +89,7 @@ usnumf_multiplyByPowerOfTen(USimpleNumber* unumber, int32_t power, UErrorCode* e
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode* ec);
+usnum_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode* ec);
 
 
 /**
@@ -98,7 +98,7 @@ usnumf_roundTo(USimpleNumber* unumber, int32_t position, UNumberFormatRoundingMo
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_setMinimumIntegerDigits(USimpleNumber* unumber, int32_t minimumIntegerDigits, UErrorCode* ec);
+usnum_setMinimumIntegerDigits(USimpleNumber* unumber, int32_t minimumIntegerDigits, UErrorCode* ec);
 
 
 /**
@@ -107,7 +107,7 @@ usnumf_setMinimumIntegerDigits(USimpleNumber* unumber, int32_t minimumIntegerDig
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_setMinimumFractionDigits(USimpleNumber* unumber, int32_t minimumFractionDigits, UErrorCode* ec);
+usnum_setMinimumFractionDigits(USimpleNumber* unumber, int32_t minimumFractionDigits, UErrorCode* ec);
 
 
 /**
@@ -116,7 +116,7 @@ usnumf_setMinimumFractionDigits(USimpleNumber* unumber, int32_t minimumFractionD
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_truncateStart(USimpleNumber* unumber, int32_t maximumIntegerDigits, UErrorCode* ec);
+usnum_truncateStart(USimpleNumber* unumber, int32_t maximumIntegerDigits, UErrorCode* ec);
 
 
 /**
@@ -125,7 +125,7 @@ usnumf_truncateStart(USimpleNumber* unumber, int32_t maximumIntegerDigits, UErro
  * @draft ICU 73
  */
 U_CAPI void U_EXPORT2
-usnumf_setSign(USimpleNumber* unumber, USimpleNumberSign sign, UErrorCode* ec);
+usnum_setSign(USimpleNumber* unumber, USimpleNumberSign sign, UErrorCode* ec);
 
 
 /**
@@ -178,6 +178,17 @@ usnumf_formatAndAdoptNumber(
 
 
 /**
+ * Frees the memory held by a USimpleNumber.
+ *
+ * NOTE: Normally, a USimpleNumber should be adopted by usnumf_formatAndAdoptNumber.
+ *
+ * @draft ICU 73
+ */
+U_CAPI void U_EXPORT2
+usnum_close(USimpleNumber* uformatter);
+
+
+/**
  * Frees the memory held by a USimpleNumberFormatter.
  *
  * @draft ICU 73
@@ -188,6 +199,26 @@ usnumf_close(USimpleNumberFormatter* uformatter);
 
 #if U_SHOW_CPLUSPLUS_API
 U_NAMESPACE_BEGIN
+
+/**
+ * \class LocalUSimpleNumber
+ * "Smart pointer" class; closes a USimpleNumber via usnum_close().
+ * For most methods see the LocalPointerBase base class.
+ *
+ * NOTE: Normally, a USimpleNumber should be adopted by usnumf_formatAndAdoptNumber.
+ * If you use LocalUSimpleNumber, call `.orphan()` when passing to that function.
+ *
+ * Usage:
+ * <pre>
+ * LocalUSimpleNumber uformatter(usnumf_openForLocale(...));
+ * // no need to explicitly call usnum_close()
+ * </pre>
+ *
+ * @see LocalPointerBase
+ * @see LocalPointer
+ * @draft ICU 73
+ */
+U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnum_close);
 
 /**
  * \class LocalUSimpleNumberFormatter
