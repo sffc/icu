@@ -29,7 +29,9 @@ U_NAMESPACE_BEGIN
 #pragma warning(push)
 #pragma warning(disable : 4661)
 #endif
+/** Explicit template instantiation. */
 template class U_I18N_API LocalPointerBase<DecimalFormatSymbols>;
+/** Explicit template instantiation. */
 template class U_I18N_API LocalPointer<DecimalFormatSymbols>;
 #if defined(_MSC_VER)
 #pragma warning(pop)

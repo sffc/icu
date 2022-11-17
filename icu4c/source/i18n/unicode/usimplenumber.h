@@ -8,8 +8,6 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-#ifndef U_HIDE_DRAFT_API
-
 #include "unicode/parseerr.h"
 #include "unicode/ufieldpositer.h"
 #include "unicode/umisc.h"
@@ -18,6 +16,8 @@
 
 // DISCUSS: UNumberFormatRoundingMode lives here
 #include "unicode/unum.h"
+
+#ifndef U_HIDE_DRAFT_API
 
 
 /**
