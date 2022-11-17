@@ -148,19 +148,6 @@ usnumf_openForLocaleAndGroupingStrategy(
 
 
 /**
- * Creates a new USimpleNumberFormatter, overriding the grouping strategy and symbols.
- *
- * IMPORTANT: For efficiency, this function borrows the symbols. The symbols MUST remain valid
- * for the lifetime of the USimpleNumberFormatter.
- *
- * @draft ICU 73
- */
-U_CAPI USimpleNumberFormatter* U_EXPORT2
-usnumf_openForLocaleAndGroupingStrategy(
-       const char* locale, UNumberGroupingStrategy groupingStrategy, UErrorCode* ec);
-
-
-/**
  * Formats a number using this SimpleNumberFormatter.
  *
  * The USimpleNumber is adopted and should not be freed after calling this function,
