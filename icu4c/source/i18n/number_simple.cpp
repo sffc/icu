@@ -31,8 +31,12 @@ SimpleNumber::forInteger(int64_t value, UErrorCode& status) {
     return SimpleNumber(results, status);
 }
 
-SimpleNumber::SimpleNumber(UFormattedNumberData* data, UErrorCode&) : fData(data) {
+SimpleNumber::SimpleNumber(UFormattedNumberData* data, UErrorCode& status) : fData(data) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
         return;
     }
     if (fData->quantity.isNegative()) {
@@ -46,47 +50,69 @@ SimpleNumber::~SimpleNumber() {
     delete fData;
 }
 
-void SimpleNumber::multiplyByPowerOfTen(int32_t power) {
+void SimpleNumber::multiplyByPowerOfTen(int32_t power, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
         return;
     }
     fData->quantity.adjustMagnitude(power);
 }
 
-void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingMode) {
+void SimpleNumber::roundTo(int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
         return;
     }
-    if (roundingMode == UNUM_ROUND_UNNECESSARY) {
-        return;
-    }
-    // The only error that can occur is the one for UNUM_ROUND_UNNECESSARY, so we can ignore it
-    icu::ErrorCode localStatus;
-    fData->quantity.roundToMagnitude(position, roundingMode, localStatus);
+    fData->quantity.roundToMagnitude(position, roundingMode, status);
 }
 
-void SimpleNumber::padStart(uint32_t position) {
+void SimpleNumber::padStart(uint32_t position, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
         return;
     }
     fData->quantity.setMinInteger(position);
 }
 
-void SimpleNumber::padEnd(uint32_t position) {
+void SimpleNumber::padEnd(uint32_t position, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
         return;
     }
     fData->quantity.setMinFraction(position);
 }
 
-void SimpleNumber::truncateStart(uint32_t position) {
+void SimpleNumber::truncateStart(uint32_t position, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
     if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
         return;
     }
     fData->quantity.applyMaxInteger(position);
 }
 
-void SimpleNumber::setSign(USimpleNumberSign sign) {
+void SimpleNumber::setSign(USimpleNumberSign sign, UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
+    if (fData == nullptr) {
+        status = U_INVALID_STATE_ERROR;
+        return;
+    }
     fSign = sign;
 }
 

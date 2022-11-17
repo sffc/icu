@@ -63,42 +63,42 @@ class U_I18N_API SimpleNumber : public UMemory {
      *
      * @draft ICU 73
      */
-    void multiplyByPowerOfTen(int32_t power);
+    void multiplyByPowerOfTen(int32_t power, UErrorCode& status);
 
     /**
      * Rounds the value currently stored in the SimpleNumber to the given power of 10.
      *
      * @draft ICU 73
      */
-    void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode);
+    void roundTo(int32_t position, UNumberFormatRoundingMode roundingMode, UErrorCode& status);
 
     /**
      * Pads the beginning of the number with zeros up to the given minimum number of integer digits.
      *
      * @draft ICU 73
      */
-    void padStart(uint32_t minimumIntegerDigits);
+    void padStart(uint32_t minimumIntegerDigits, UErrorCode& status);
 
     /**
      * Pads the end of the number with zeros up to the given minimum number of fraction digits.
      *
      * @draft ICU 73
      */
-    void padEnd(uint32_t minimumFractionDigits);
+    void padEnd(uint32_t minimumFractionDigits, UErrorCode& status);
 
     /**
      * Truncates digits from the beginning of the number to the given maximum number of integer digits.
      *
      * @draft ICU 73
      */
-    void truncateStart(uint32_t maximumIntegerDigits);
+    void truncateStart(uint32_t maximumIntegerDigits, UErrorCode& status);
 
     /**
      * Sets the sign of the number: an explicit plus sign, explicit minus sign, or no sign.
      *
      * @draft ICU 73
      */
-    void setSign(USimpleNumberSign sign);
+    void setSign(USimpleNumberSign sign, UErrorCode& status);
 
     /**
      * Destruct this SimpleNumber, cleaning up any memory it might own.
