@@ -19,6 +19,24 @@
 
 U_NAMESPACE_BEGIN
 
+
+// Export an explicit template instantiation of the LocalPointer that is used as a
+// data member of SimpleNumberFormatter.
+// (When building DLLs for Windows this is required.)
+#if U_PF_WINDOWS <= U_PLATFORM && U_PLATFORM <= U_PF_CYGWIN
+#if defined(_MSC_VER)
+// Ignore warning 4661 as LocalPointerBase does not use operator== or operator!=
+#pragma warning(push)
+#pragma warning(disable : 4661)
+#endif
+template class U_I18N_API LocalPointerBase<DecimalFormatSymbols>;
+template class U_I18N_API LocalPointer<DecimalFormatSymbols>;
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+#endif
+
+
 namespace number {  // icu::number
 
 #ifndef U_HIDE_DRAFT_API
@@ -121,23 +139,6 @@ class U_I18N_API SimpleNumber : public UMemory {
 
     friend class SimpleNumberFormatter;
 };
-
-
-// Export an explicit template instantiation of the LocalPointer that is used as a
-// data member of SimpleNumberFormatter.
-// (When building DLLs for Windows this is required.)
-#if U_PF_WINDOWS <= U_PLATFORM && U_PLATFORM <= U_PF_CYGWIN
-#if defined(_MSC_VER)
-// Ignore warning 4661 as LocalPointerBase does not use operator== or operator!=
-#pragma warning(push)
-#pragma warning(disable : 4661)
-#endif
-template class U_I18N_API LocalPointerBase<DecimalFormatSymbols>;
-template class U_I18N_API LocalPointer<DecimalFormatSymbols>;
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
-#endif
 
 
 /**
