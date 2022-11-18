@@ -11,11 +11,7 @@
 #if !UCONFIG_NO_FORMATTING
 
 #include "unicode/dcfmtsym.h"
-#include "unicode/unumberformatter.h"
 #include "unicode/usimplenumberformatter.h"
-
-// DISCUSS: I need this for FormattedNumber. Should I reverse the header deps?
-#include "unicode/numberformatter.h"
 
 U_NAMESPACE_BEGIN
 

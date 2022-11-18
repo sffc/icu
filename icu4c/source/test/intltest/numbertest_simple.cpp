@@ -6,11 +6,9 @@
 #if !UCONFIG_NO_FORMATTING
 
 #include "numbertest.h"
-#include "unicode/numberformatter.h"
 #include "unicode/simplenumberformatter.h"
 
 #include <cmath>
-#include <numparse_affixes.h>
 
 
 void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const char*& name, char*) {
