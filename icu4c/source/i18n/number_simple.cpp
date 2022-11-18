@@ -46,8 +46,9 @@ SimpleNumber::SimpleNumber(UFormattedNumberData* data, UErrorCode& status) : fDa
     }
 }
 
-SimpleNumber::~SimpleNumber() {
+void SimpleNumber::cleanup() {
     delete fData;
+    fData = nullptr;
 }
 
 void SimpleNumber::multiplyByPowerOfTen(int32_t power, UErrorCode& status) {
@@ -117,9 +118,11 @@ void SimpleNumber::setSign(USimpleNumberSign sign, UErrorCode& status) {
 }
 
 
-SimpleNumberFormatter::~SimpleNumberFormatter() {
+void SimpleNumberFormatter::cleanup() {
     delete fMicros;
     delete fPatternModifier;
+    fMicros = nullptr;
+    fPatternModifier = nullptr;
 }
 
 SimpleNumberFormatter SimpleNumberFormatter::forLocale(const icu::Locale &locale, UErrorCode &status) {

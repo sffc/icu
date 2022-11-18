@@ -148,6 +148,14 @@ void SimpleNumberFormatterTest::testCopyMove() {
     assertEquals("Move formatter assignment",
         u"22",
         snf0.format(SimpleNumber::forInteger(22, status), status).toTempString(status));
+
+    snf0 = SimpleNumberFormatter::forLocale("de", status);
+    sn0 = SimpleNumber::forInteger(22, status);
+    sn0 = SimpleNumber::forInteger(11, status);
+
+    assertEquals("Move assignment with nonempty fields",
+        u"11",
+        snf0.format(std::move(sn0), status).toTempString(status));
 }
 
 void SimpleNumberFormatterTest::testCAPI() {

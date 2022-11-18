@@ -126,7 +126,9 @@ class U_I18N_API SimpleNumber : public UMemory {
      *
      * @draft ICU 73
      */
-    ~SimpleNumber();
+    ~SimpleNumber() {
+      cleanup();
+    }
 
     /**
      * SimpleNumber move constructor.
@@ -145,6 +147,7 @@ class U_I18N_API SimpleNumber : public UMemory {
      * @draft ICU 73
      */
     SimpleNumber& operator=(SimpleNumber&& other) U_NOEXCEPT {
+      cleanup();
       fData = other.fData;
       fSign = other.fSign;
       other.fData = nullptr;
@@ -155,6 +158,8 @@ class U_I18N_API SimpleNumber : public UMemory {
     SimpleNumber(impl::UFormattedNumberData* data, UErrorCode& status);
     SimpleNumber(const SimpleNumber&) = delete;
     SimpleNumber& operator=(const SimpleNumber&) = delete;
+
+    void cleanup();
 
     impl::UFormattedNumberData* fData = nullptr;
     USimpleNumberSign fSign = UNUM_SIMPLE_NUMBER_NO_SIGN;
@@ -231,7 +236,9 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
      *
      * @draft ICU 73
      */
-    ~SimpleNumberFormatter();
+    ~SimpleNumberFormatter() {
+      cleanup();
+    }
 
     /**
      * Creates a shell, initialized but non-functional SimpleNumberFormatter.
@@ -262,6 +269,7 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
      * @draft ICU 73
      */
     SimpleNumberFormatter& operator=(SimpleNumberFormatter&& other) U_NOEXCEPT {
+      cleanup();
       fGroupingStrategy = other.fGroupingStrategy;
       fOwnedSymbols = std::move(other.fOwnedSymbols);
       fMicros = other.fMicros;
@@ -277,6 +285,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
         const DecimalFormatSymbols *symbols,
         UNumberGroupingStrategy groupingStrategy,
         UErrorCode &status);
+
+    void cleanup();
 
     SimpleNumberFormatter(const SimpleNumberFormatter&) = delete;
 
