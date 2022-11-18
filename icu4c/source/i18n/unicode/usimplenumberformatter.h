@@ -8,11 +8,8 @@
 
 #if !UCONFIG_NO_FORMATTING
 
-#include "unicode/parseerr.h"
-#include "unicode/ufieldpositer.h"
-#include "unicode/umisc.h"
-#include "unicode/uformattedvalue.h"
-#include "unicode/unumberformatter.h"
+#include "unicode/uformattednumber.h"
+#include "unicode/unumberoptions.h"
 
 #ifndef U_HIDE_DRAFT_API
 
