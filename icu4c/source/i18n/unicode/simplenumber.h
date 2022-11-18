@@ -113,9 +113,9 @@ class U_I18N_API SimpleNumber : public UMemory {
     void setSign(USimpleNumberSign sign, UErrorCode& status);
 
     /**
-     * Creates a new, empty SimpleNumber that will be formatted as zero.
+     * Creates a new, empty SimpleNumber that does not contain a value.
      * 
-     * NOTE: No other functions can be called on this object; use forInteger instead.
+     * NOTE: This number will fail to format; use forInteger to create a SimpleNumber with a value.
      *
      * @draft ICU 73
      */

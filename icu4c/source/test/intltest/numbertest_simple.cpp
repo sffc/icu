@@ -21,6 +21,7 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
         TESTCASE_AUTO(testBasic);
         TESTCASE_AUTO(testWithOptions);
         TESTCASE_AUTO(testSign);
+        TESTCASE_AUTO(testCopyMove);
     TESTCASE_AUTO_END;
 }
 
@@ -102,6 +103,28 @@ void SimpleNumberFormatterTest::testSign() {
         auto result = snf.format(std::move(num), status);
         assertEquals("", cas.expected, result.toTempString(status));
     }
+}
+
+void SimpleNumberFormatterTest::testCopyMove() {
+    IcuTestErrorCode status(*this, "testCopyMove");
+
+    SimpleNumberFormatter snf0 = SimpleNumberFormatter::forLocale("und", status);
+
+    SimpleNumber sn0 = SimpleNumber::forInteger(55, status);
+    SimpleNumber sn1 = std::move(sn0);
+    SimpleNumber sn2;
+
+    snf0.format(std::move(sn0), status);
+    status.expectErrorAndReset(U_ILLEGAL_ARGUMENT_ERROR, "Use of moved number");
+
+    assertEquals("Move constructor", u"55", snf0.format(std::move(sn1), status).toTempString(status));
+
+    snf0.format(std::move(sn2), status);
+    status.expectErrorAndReset(U_ILLEGAL_ARGUMENT_ERROR, "Default constructed number");
+
+    sn0 = SimpleNumber::forInteger(44, status);
+
+    assertEquals("Move assignment", u"44", snf0.format(std::move(sn0), status).toTempString(status));
 }
 
 

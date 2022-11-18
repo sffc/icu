@@ -192,8 +192,12 @@ void SimpleNumberFormatter::initialize(
 }
 
 FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &status) const {
-    if (U_FAILURE(status) || value.fData == nullptr) {
-        return FormattedNumber(U_ILLEGAL_ARGUMENT_ERROR);
+    if (U_FAILURE(status)) {
+        return FormattedNumber(status);
+    }
+    if (value.fData == nullptr) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+        return FormattedNumber(status);
     }
 
     Signum signum;
