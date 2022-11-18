@@ -369,6 +369,7 @@ class SimpleNumberFormatterTest : public IntlTestWithFieldPosition {
   public:
     void testBasic();
     void testWithOptions();
+    void testSign();
 
     void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par = 0) override;
 };

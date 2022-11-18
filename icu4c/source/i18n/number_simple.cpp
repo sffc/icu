@@ -42,7 +42,7 @@ SimpleNumber::SimpleNumber(UFormattedNumberData* data, UErrorCode& status) : fDa
     if (fData->quantity.isNegative()) {
         fSign = UNUM_SIMPLE_NUMBER_MINUS_SIGN;
     } else {
-        fSign = UNUM_SIMPLE_NUMBER_PLUS_SIGN;
+        fSign = UNUM_SIMPLE_NUMBER_NO_SIGN;
     }
 }
 

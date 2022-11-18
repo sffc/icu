@@ -20,6 +20,7 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
     TESTCASE_AUTO_BEGIN;
         TESTCASE_AUTO(testBasic);
         TESTCASE_AUTO(testWithOptions);
+        TESTCASE_AUTO(testSign);
     TESTCASE_AUTO_END;
 }
 
@@ -50,30 +51,57 @@ void SimpleNumberFormatterTest::testWithOptions() {
     IcuTestErrorCode status(*this, "testWithOptions");
 
     SimpleNumber num = SimpleNumber::forInteger(1250000, status);
+    num.setMinimumIntegerDigits(6, status);
+    num.setMinimumFractionDigits(2, status);
     num.multiplyByPowerOfTen(-2, status);
     num.roundTo(3, UNUM_ROUND_HALFUP, status);
-    num.setMinimumIntegerDigits(5, status);
-    num.setMinimumFractionDigits(2, status);
     num.truncateStart(4, status);
-    num.setSign(UNUM_SIMPLE_NUMBER_PLUS_SIGN, status);
-    SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("de-CH", status);
+    SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("bn", status);
     FormattedNumber result = snf.format(std::move(num), status);
 
     static const UFieldPosition expectedFieldPositions[] = {
         // field, begin index, end index
-        {UNUM_SIGN_FIELD, 0, 1},
-        {UNUM_GROUPING_SEPARATOR_FIELD, 3, 4},
-        {UNUM_INTEGER_FIELD, 1, 7},
-        {UNUM_DECIMAL_SEPARATOR_FIELD, 7, 8},
-        {UNUM_FRACTION_FIELD, 8, 10},
+        {UNUM_GROUPING_SEPARATOR_FIELD, 1, 2},
+        {UNUM_GROUPING_SEPARATOR_FIELD, 4, 5},
+        {UNUM_INTEGER_FIELD, 0, 8},
+        {UNUM_DECIMAL_SEPARATOR_FIELD, 8, 9},
+        {UNUM_FRACTION_FIELD, 9, 11},
     };
     checkFormattedValue(
         u"testWithOptions",
         result,
-        u"+03’000.00",
+        u"০,০৩,০০০.০০",
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         UPRV_LENGTHOF(expectedFieldPositions));
+}
+
+void SimpleNumberFormatterTest::testSign() {
+    IcuTestErrorCode status(*this, "testSign");
+
+    SimpleNumberFormatter snf = SimpleNumberFormatter::forLocale("und", status);
+
+    struct TestCase {
+        int64_t input;
+        USimpleNumberSign sign;
+        const char16_t* expected;
+    } cases[] = {
+        { 1, UNUM_SIMPLE_NUMBER_NO_SIGN, u"1" },
+        { 1, UNUM_SIMPLE_NUMBER_PLUS_SIGN, u"+1" },
+        { 1, UNUM_SIMPLE_NUMBER_MINUS_SIGN, u"-1" },
+        { 0, UNUM_SIMPLE_NUMBER_NO_SIGN, u"0" },
+        { 0, UNUM_SIMPLE_NUMBER_PLUS_SIGN, u"+0" },
+        { 0, UNUM_SIMPLE_NUMBER_MINUS_SIGN, u"-0" },
+        { -1, UNUM_SIMPLE_NUMBER_NO_SIGN, u"1" },
+        { -1, UNUM_SIMPLE_NUMBER_PLUS_SIGN, u"+1" },
+        { -1, UNUM_SIMPLE_NUMBER_MINUS_SIGN, u"-1" },
+    };
+    for (auto& cas : cases) {
+        SimpleNumber num = SimpleNumber::forInteger(cas.input, status);
+        num.setSign(cas.sign, status);
+        auto result = snf.format(std::move(num), status);
+        assertEquals("", cas.expected, result.toTempString(status));
+    }
 }
 
 
