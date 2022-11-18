@@ -229,7 +229,13 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
       return format(SimpleNumber::forInteger(value, status), status);
     }
 
+#ifndef U_HIDE_INTERNAL_API
+    /**
+     * Run the formatter with the internal types.
+     * @internal
+     */
     void formatImpl(impl::UFormattedNumberData* data, USimpleNumberSign sign, UErrorCode& status) const;
+#endif // U_HIDE_INTERNAL_API
 
     /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.
