@@ -20,6 +20,7 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
     TESTCASE_AUTO_BEGIN;
         TESTCASE_AUTO(testBasic);
         TESTCASE_AUTO(testWithOptions);
+        TESTCASE_AUTO(testSymbols);
         TESTCASE_AUTO(testSign);
         TESTCASE_AUTO(testCopyMove);
         TESTCASE_AUTO(testCAPI);
@@ -75,6 +76,23 @@ void SimpleNumberFormatterTest::testWithOptions() {
         UFIELD_CATEGORY_NUMBER,
         expectedFieldPositions,
         UPRV_LENGTHOF(expectedFieldPositions));
+}
+
+void SimpleNumberFormatterTest::testSymbols() {
+    IcuTestErrorCode status(*this, "testSymbols");
+
+    LocalPointer<DecimalFormatSymbols> symbols(new DecimalFormatSymbols("bn", status), status);
+    SimpleNumberFormatter snf = SimpleNumberFormatter::forLocaleAndSymbolsAndGroupingStrategy(
+        "en-US",
+        symbols.getAlias(),
+        UNUM_GROUPING_ON_ALIGNED,
+        status
+    );
+    auto result = snf.formatInteger(987654321, status);
+
+    assertEquals("bn symbols with en-US pattern",
+        u"৯৮৭,৬৫৪,৩২১",
+        result.toTempString(status));
 }
 
 void SimpleNumberFormatterTest::testSign() {

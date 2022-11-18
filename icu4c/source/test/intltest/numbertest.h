@@ -369,6 +369,7 @@ class SimpleNumberFormatterTest : public IntlTestWithFieldPosition {
   public:
     void testBasic();
     void testWithOptions();
+    void testSymbols();
     void testSign();
     void testCopyMove();
     void testCAPI();
