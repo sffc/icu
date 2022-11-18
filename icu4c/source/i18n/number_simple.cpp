@@ -199,6 +199,10 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
         status = U_ILLEGAL_ARGUMENT_ERROR;
         return FormattedNumber(status);
     }
+    if (fPatternModifier == nullptr || fMicros == nullptr) {
+        status = U_INVALID_STATE_ERROR;
+        return FormattedNumber(status);
+    }
 
     Signum signum;
     if (value.fSign == UNUM_SIMPLE_NUMBER_MINUS_SIGN) {

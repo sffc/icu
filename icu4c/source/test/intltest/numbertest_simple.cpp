@@ -112,19 +112,42 @@ void SimpleNumberFormatterTest::testCopyMove() {
 
     SimpleNumber sn0 = SimpleNumber::forInteger(55, status);
     SimpleNumber sn1 = std::move(sn0);
-    SimpleNumber sn2;
 
     snf0.format(std::move(sn0), status);
     status.expectErrorAndReset(U_ILLEGAL_ARGUMENT_ERROR, "Use of moved number");
 
-    assertEquals("Move constructor", u"55", snf0.format(std::move(sn1), status).toTempString(status));
+    assertEquals("Move number constructor",
+        u"55",
+        snf0.format(std::move(sn1), status).toTempString(status));
 
+    SimpleNumber sn2;
     snf0.format(std::move(sn2), status);
     status.expectErrorAndReset(U_ILLEGAL_ARGUMENT_ERROR, "Default constructed number");
 
     sn0 = SimpleNumber::forInteger(44, status);
 
-    assertEquals("Move assignment", u"44", snf0.format(std::move(sn0), status).toTempString(status));
+    assertEquals("Move number assignment",
+        u"44",
+        snf0.format(std::move(sn0), status).toTempString(status));
+
+    SimpleNumberFormatter snf1 = std::move(snf0);
+
+    snf0.format(SimpleNumber::forInteger(22, status), status);
+    status.expectErrorAndReset(U_INVALID_STATE_ERROR, "Use of moved formatter");
+
+    assertEquals("Move formatter constructor",
+        u"33",
+        snf1.format(SimpleNumber::forInteger(33, status), status).toTempString(status));
+
+    SimpleNumberFormatter snf2;
+    snf2.format(SimpleNumber::forInteger(22, status), status);
+    status.expectErrorAndReset(U_INVALID_STATE_ERROR, "Default constructed formatter");
+
+    snf0 = std::move(snf1);
+
+    assertEquals("Move formatter assignment",
+        u"22",
+        snf0.format(SimpleNumber::forInteger(22, status), status).toTempString(status));
 }
 
 

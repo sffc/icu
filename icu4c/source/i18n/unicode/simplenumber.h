@@ -234,14 +234,29 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
      *
      * @draft ICU 73
      */
-    SimpleNumberFormatter(SimpleNumberFormatter&&) U_NOEXCEPT = default;
+    SimpleNumberFormatter(SimpleNumberFormatter&& other) U_NOEXCEPT {
+      fGroupingStrategy = other.fGroupingStrategy;
+      fOwnedSymbols = std::move(other.fOwnedSymbols);
+      fMicros = other.fMicros;
+      fPatternModifier = other.fPatternModifier;
+      other.fMicros = nullptr;
+      other.fPatternModifier = nullptr;
+    }
 
     /**
      * SimpleNumberFormatter: Move assignment.
      *
      * @draft ICU 73
      */
-    SimpleNumberFormatter& operator=(SimpleNumberFormatter&&) U_NOEXCEPT = default;
+    SimpleNumberFormatter& operator=(SimpleNumberFormatter&& other) U_NOEXCEPT {
+      fGroupingStrategy = other.fGroupingStrategy;
+      fOwnedSymbols = std::move(other.fOwnedSymbols);
+      fMicros = other.fMicros;
+      fPatternModifier = other.fPatternModifier;
+      other.fMicros = nullptr;
+      other.fPatternModifier = nullptr;
+      return *this;
+    }
 
   private:
     void initialize(
