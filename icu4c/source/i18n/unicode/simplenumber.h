@@ -214,6 +214,17 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
     FormattedNumber format(SimpleNumber value, UErrorCode &status) const;
 
     /**
+     * Formats an integer using this SimpleNumberFormatter.
+     *
+     * For more control over the formatting, use SimpleNumber.
+     *
+     * @draft ICU 73
+     */
+    FormattedNumber formatInteger(int64_t value, UErrorCode &status) const {
+      return format(SimpleNumber::forInteger(value, status), status);
+    }
+
+    /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.
      *
      * @draft ICU 73

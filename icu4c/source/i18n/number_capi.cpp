@@ -352,6 +352,21 @@ usnumf_formatAndAdoptNumber(
 }
 
 U_CAPI void U_EXPORT2
+usnumf_formatInteger(
+        const USimpleNumberFormatter* uformatter,
+        int64_t value,
+        UFormattedNumber* uresult,
+        UErrorCode* ec) {
+    auto* formatter = USimpleNumberFormatterData::validate(uformatter, *ec);
+    auto* result = UFormattedNumberApiHelper::validate(uresult, *ec);
+    if (U_FAILURE(*ec)) {
+        return;
+    }
+    auto localResult = formatter->fFormatter.formatInteger(value, *ec);
+    result->fImpl = std::move(localResult); 
+}
+
+U_CAPI void U_EXPORT2
 usnum_close(USimpleNumber* unumber) {
     UErrorCode localStatus = U_ZERO_ERROR;
     const USimpleNumberData* impl = USimpleNumberData::validate(unumber, localStatus);

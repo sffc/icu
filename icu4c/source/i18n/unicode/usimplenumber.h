@@ -164,6 +164,21 @@ usnumf_formatAndAdoptNumber(
 
 
 /**
+ * Formats an integer using this SimpleNumberFormatter.
+ *
+ * For more control over the formatting, use USimpleNumber.
+ *
+ * @draft ICU 73
+ */
+U_CAPI void U_EXPORT2
+usnumf_formatInteger(
+    const USimpleNumberFormatter* uformatter,
+    int64_t value,
+    UFormattedNumber* uresult,
+    UErrorCode* ec);
+
+
+/**
  * Frees the memory held by a USimpleNumber.
  *
  * NOTE: Normally, a USimpleNumber should be adopted by usnumf_formatAndAdoptNumber.
