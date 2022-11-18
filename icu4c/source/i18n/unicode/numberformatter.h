@@ -2832,7 +2832,7 @@ class U_I18N_API FormattedNumber : public UMemory, public FormattedValue {
 
   private:
     // Can't use LocalPointer because UFormattedNumberData is forward-declared
-    const impl::UFormattedNumberData *fData;
+    impl::UFormattedNumberData *fData;
 
     // Error code for the terminal methods
     UErrorCode fErrorCode;

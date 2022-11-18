@@ -66,6 +66,8 @@ struct UFormattedNumberImpl : public UFormattedValueImpl, public UFormattedNumbe
 
     FormattedNumber fImpl;
     UFormattedNumberData fData;
+
+    void setTo(FormattedNumber value);
 };
 
 UFormattedNumberImpl::UFormattedNumberImpl()
@@ -76,6 +78,10 @@ UFormattedNumberImpl::UFormattedNumberImpl()
 UFormattedNumberImpl::~UFormattedNumberImpl() {
     // Disown the data from fImpl so it doesn't get deleted twice
     fImpl.fData = nullptr;
+}
+
+void UFormattedNumberImpl::setTo(FormattedNumber value) {
+    fData = std::move(*value.fData);
 }
 
 }
@@ -348,7 +354,7 @@ usnumf_formatAndAdoptNumber(
         return;
     }
     auto localResult = formatter->fFormatter.format(std::move(number->fNumber), *ec);
-    result->fImpl = std::move(localResult); 
+    result->setTo(std::move(localResult)); 
 }
 
 U_CAPI void U_EXPORT2
@@ -363,7 +369,7 @@ usnumf_formatInteger(
         return;
     }
     auto localResult = formatter->fFormatter.formatInteger(value, *ec);
-    result->fImpl = std::move(localResult); 
+    result->setTo(std::move(localResult)); 
 }
 
 U_CAPI void U_EXPORT2

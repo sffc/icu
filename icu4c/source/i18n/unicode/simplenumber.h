@@ -224,6 +224,8 @@ class U_I18N_API SimpleNumberFormatter : public UMemory {
       return format(SimpleNumber::forInteger(value, status), status);
     }
 
+    void formatImpl(impl::UFormattedNumberData* data, USimpleNumberSign sign, UErrorCode& status) const;
+
     /**
      * Destruct this SimpleNumberFormatter, cleaning up any memory it might own.
      *

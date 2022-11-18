@@ -192,36 +192,7 @@ void SimpleNumberFormatter::initialize(
 }
 
 FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &status) const {
-    if (U_FAILURE(status)) {
-        return FormattedNumber(status);
-    }
-    if (value.fData == nullptr) {
-        status = U_ILLEGAL_ARGUMENT_ERROR;
-        return FormattedNumber(status);
-    }
-    if (fPatternModifier == nullptr || fMicros == nullptr) {
-        status = U_INVALID_STATE_ERROR;
-        return FormattedNumber(status);
-    }
-
-    Signum signum;
-    if (value.fSign == UNUM_SIMPLE_NUMBER_MINUS_SIGN) {
-        signum = SIGNUM_NEG;
-    } else if (value.fSign == UNUM_SIMPLE_NUMBER_PLUS_SIGN) {
-        signum = SIGNUM_POS;
-    } else {
-        signum = SIGNUM_POS_ZERO;
-    }
-
-    const Modifier* modifier = (*fPatternModifier)[signum];
-    auto length = NumberFormatterImpl::writeNumber(
-        *fMicros,
-        value.fData->quantity,
-        value.fData->getStringRef(),
-        0,
-        status);
-    length += modifier->apply(value.fData->getStringRef(), 0, length, status);
-    value.fData->getStringRef().writeTerminator(status);
+    formatImpl(value.fData, value.fSign, status);
 
     // Do not save the results object if we encountered a failure.
     if (U_SUCCESS(status)) {
@@ -231,6 +202,39 @@ FormattedNumber SimpleNumberFormatter::format(SimpleNumber value, UErrorCode &st
     } else {
         return FormattedNumber(status);
     }
+}
+
+void SimpleNumberFormatter::formatImpl(UFormattedNumberData* data, USimpleNumberSign sign, UErrorCode &status) const {
+    if (U_FAILURE(status)) {
+        return;
+    }
+    if (data == nullptr) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+        return;
+    }
+    if (fPatternModifier == nullptr || fMicros == nullptr) {
+        status = U_INVALID_STATE_ERROR;
+        return;
+    }
+
+    Signum signum;
+    if (sign == UNUM_SIMPLE_NUMBER_MINUS_SIGN) {
+        signum = SIGNUM_NEG;
+    } else if (sign == UNUM_SIMPLE_NUMBER_PLUS_SIGN) {
+        signum = SIGNUM_POS;
+    } else {
+        signum = SIGNUM_POS_ZERO;
+    }
+
+    const Modifier* modifier = (*fPatternModifier)[signum];
+    auto length = NumberFormatterImpl::writeNumber(
+        *fMicros,
+        data->quantity,
+        data->getStringRef(),
+        0,
+        status);
+    length += modifier->apply(data->getStringRef(), 0, length, status);
+    data->getStringRef().writeTerminator(status);
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

@@ -153,6 +153,9 @@ public:
 
     virtual ~FormattedValueStringBuilderImpl();
 
+    FormattedValueStringBuilderImpl(FormattedValueStringBuilderImpl&&) U_NOEXCEPT = default;
+    FormattedValueStringBuilderImpl& operator=(FormattedValueStringBuilderImpl&&) U_NOEXCEPT = default;
+
     // Implementation of FormattedValue (const):
 
     UnicodeString toString(UErrorCode& status) const U_OVERRIDE;

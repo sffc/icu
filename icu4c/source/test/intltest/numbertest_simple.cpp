@@ -22,6 +22,7 @@ void SimpleNumberFormatterTest::runIndexedTest(int32_t index, UBool exec, const 
         TESTCASE_AUTO(testWithOptions);
         TESTCASE_AUTO(testSign);
         TESTCASE_AUTO(testCopyMove);
+        TESTCASE_AUTO(testCAPI);
     TESTCASE_AUTO_END;
 }
 
@@ -147,6 +148,17 @@ void SimpleNumberFormatterTest::testCopyMove() {
     assertEquals("Move formatter assignment",
         u"22",
         snf0.format(SimpleNumber::forInteger(22, status), status).toTempString(status));
+}
+
+void SimpleNumberFormatterTest::testCAPI() {
+    IcuTestErrorCode status(*this, "testCAPI");
+
+    LocalUSimpleNumberFormatterPointer uformatter(usnumf_openForLocale("de-CH", status));
+    LocalUFormattedNumberPointer uresult(unumf_openResult(status));
+    usnumf_formatInteger(uformatter.getAlias(), 55, uresult.getAlias(), status);
+    assertEquals("",
+        u"55",
+        ufmtval_getString(unumf_resultAsValue(uresult.getAlias(), status), nullptr, status));
 }
 
 

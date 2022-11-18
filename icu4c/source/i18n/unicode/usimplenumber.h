@@ -202,16 +202,16 @@ usnumf_close(USimpleNumberFormatter* uformatter);
 U_NAMESPACE_BEGIN
 
 /**
- * \class LocalUSimpleNumber
+ * \class LocalUSimpleNumberPointer
  * "Smart pointer" class; closes a USimpleNumber via usnum_close().
  * For most methods see the LocalPointerBase base class.
  *
  * NOTE: Normally, a USimpleNumber should be adopted by usnumf_formatAndAdoptNumber.
- * If you use LocalUSimpleNumber, call `.orphan()` when passing to that function.
+ * If you use LocalUSimpleNumberPointer, call `.orphan()` when passing to that function.
  *
  * Usage:
  * <pre>
- * LocalUSimpleNumber uformatter(usnumf_openForLocale(...));
+ * LocalUSimpleNumberPointer uformatter(usnumf_openForInteger(...));
  * // no need to explicitly call usnum_close()
  * </pre>
  *
@@ -219,16 +219,16 @@ U_NAMESPACE_BEGIN
  * @see LocalPointer
  * @draft ICU 73
  */
-U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnum_close);
+U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumberPointer, USimpleNumber, usnum_close);
 
 /**
- * \class LocalUSimpleNumberFormatter
+ * \class LocalUSimpleNumberFormatterPointer
  * "Smart pointer" class; closes a USimpleNumberFormatter via usnumf_close().
  * For most methods see the LocalPointerBase base class.
  *
  * Usage:
  * <pre>
- * LocalUSimpleNumberFormatter uformatter(usnumf_openForLocale(...));
+ * LocalUSimpleNumberFormatterPointer uformatter(usnumf_openForLocale(...));
  * // no need to explicitly call usnumf_close()
  * </pre>
  *
@@ -236,7 +236,7 @@ U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumber, USimpleNumber, usnum_close);
  * @see LocalPointer
  * @draft ICU 73
  */
-U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumberFormatter, USimpleNumberFormatter, usnumf_close);
+U_DEFINE_LOCAL_OPEN_POINTER(LocalUSimpleNumberFormatterPointer, USimpleNumberFormatter, usnumf_close);
 
 U_NAMESPACE_END
 #endif // U_SHOW_CPLUSPLUS_API
