@@ -167,8 +167,11 @@ void SimpleNumberFormatter::initialize(
     }
     fMicros->symbols = symbols;
 
-    // TODO: Select the correct nsName
-    auto pattern = utils::getPatternForStyle(locale, "latn", CLDR_PATTERN_STYLE_DECIMAL, status);
+    auto pattern = utils::getPatternForStyle(
+        locale,
+        symbols->getNumberingSystemName(),
+        CLDR_PATTERN_STYLE_DECIMAL,
+        status);
     if (U_FAILURE(status)) {
         return;
     }
