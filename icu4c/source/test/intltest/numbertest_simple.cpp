@@ -159,6 +159,23 @@ void SimpleNumberFormatterTest::testCAPI() {
     assertEquals("",
         u"55",
         ufmtval_getString(unumf_resultAsValue(uresult.getAlias(), status), nullptr, status));
+
+    LocalUSimpleNumberPointer unumber(usnum_openForInt(44, status));
+    usnumf_formatAndAdoptNumber(uformatter.getAlias(), unumber.orphan(), uresult.getAlias(), status);
+    assertEquals("",
+        u"44",
+        ufmtval_getString(unumf_resultAsValue(uresult.getAlias(), status), nullptr, status));
+
+    unumber.adoptInstead(usnum_openForInt(2335, status));
+    usnum_multiplyByPowerOfTen(unumber.getAlias(), -2, status);
+    usnum_roundTo(unumber.getAlias(), -1, UNUM_ROUND_HALFEVEN, status);
+    usnum_truncateStart(unumber.getAlias(), 1, status);
+    usnum_setMinimumFractionDigits(unumber.getAlias(), 3, status);
+    usnum_setMinimumIntegerDigits(unumber.getAlias(), 3, status);
+    usnumf_formatAndAdoptNumber(uformatter.getAlias(), unumber.orphan(), uresult.getAlias(), status);
+    assertEquals("",
+        u"003.400",
+        ufmtval_getString(unumf_resultAsValue(uresult.getAlias(), status), nullptr, status));
 }
 
 

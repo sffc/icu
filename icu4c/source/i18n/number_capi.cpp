@@ -351,10 +351,12 @@ usnumf_formatAndAdoptNumber(
     auto* number = USimpleNumberData::validate(unumber, *ec);
     auto* result = UFormattedNumberApiHelper::validate(uresult, *ec);
     if (U_FAILURE(*ec)) {
+        delete number;
         return;
     }
     auto localResult = formatter->fFormatter.format(std::move(number->fNumber), *ec);
     result->setTo(std::move(localResult)); 
+    delete number;
 }
 
 U_CAPI void U_EXPORT2
