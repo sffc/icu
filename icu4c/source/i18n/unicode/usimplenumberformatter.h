@@ -14,9 +14,6 @@
 #include "unicode/uformattedvalue.h"
 #include "unicode/unumberformatter.h"
 
-// DISCUSS: UNumberFormatRoundingMode lives here
-#include "unicode/unum.h"
-
 #ifndef U_HIDE_DRAFT_API
 
 

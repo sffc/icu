@@ -27,6 +27,7 @@
 #include "unicode/unum.h"
 #include "unicode/unumberformatter.h"
 #include "unicode/uobject.h"
+#include "unicode/unumberoptions.h"
 
 /**
  * \file
