@@ -7,7 +7,7 @@ Commit Report
 =============
 
 Environment:
-- Now: 2023-03-21T11:39:23.818737
+- Now: 2023-03-21T14:48:34.471880
 - Latest Commit: https://github.com/unicode-org/icu/commit/fa5a6c15191dea895837ccfb2d658d315e23e6e4
 - Jira Query: `project=ICU AND fixVersion=73.1`
 - Rev Range: `release-72-1..upstream/main`
@@ -17,85 +17,34 @@ Environment:
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 19
+Total problem(s): 12
 
 ## Table Of Contents
 Note: empty categories are omitted.
 - _Closed Issues with No Commit_
 - _Closed Issues with Illegal Resolution or Commit_
 - _Commits without Jira Issue Tag_
-- [Commits with Jira Issue Not Found](#commits-with-jira-issue-not-found) 1
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 18
-- [Issue is under Review](#issue-is-under-review) 3
+- _Commits with Jira Issue Not Found_
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 12
+- [Issue is under Review](#issue-is-under-review) 2
 - _Excluded Commits_
 
 ## Problem Categories
-### Commits with Jira Issue Not Found
-[🔝Top](#table-of-contents)
-
-_1 item(s)_
-Tip: Check that these tickets have the correct fixVersion tag.
-
-#### Issue ICU-12811
-
-_issue was not found in `project=ICU AND fixVersion=73.1`_
-- [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811): `Improve ICU4J build/release for maven repository`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: future
-	- Component(s): build_j
-
-##### Commits with Issue ICU-12811
-
-- [b399c67](https://github.com/unicode-org/icu/commit/b399c67d5af748662275e1fa1d26d123caad3ed0) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix cldrUtils (add ElapsedTime and UnicodeMap*)`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2023-03-14T12:39:13-07:00
-
-- [0152221](https://github.com/unicode-org/icu/commit/015222105a614dbf09e187a06cbc5d97839fe287) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Refactor test-framework to not depend on core`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2023-02-21T14:16:19-08:00
-
-- [a7f4531](https://github.com/unicode-org/icu/commit/a7f4531bfaf4e7ca93fea518b5c1734cd6ffdc1a) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix localespi tests when run by Maven on Java 8`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-17T13:17:29-08:00
-
-- [d4ac09e](https://github.com/unicode-org/icu/commit/d4ac09edbdc25feb06b3a011cbbb150b243d91f2) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Replace local-maven-repo with data jar contents`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-17T11:09:29-08:00
-
-- [e7530bd](https://github.com/unicode-org/icu/commit/e7530bd9ff2e7317710a1611f6d6de264143bf6a) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix CI cache retain workflow's cron schedule string`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-13T14:57:51-08:00
-
-- [2007e13](https://github.com/unicode-org/icu/commit/2007e135f1e78711247b2f0ab440dec54307cfe9) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Add CI workflow to retain caches that are flaky/costly to init`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-13T12:36:48-08:00
-
-- [f6353ae](https://github.com/unicode-org/icu/commit/f6353aeedcfa4b5907f1037a9d924660ff8f4d87) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Make CI jobs for Maven run serially to avoid CI cache race condition`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-12-17T12:59:35-05:00
-
-- [45e98d4](https://github.com/unicode-org/icu/commit/45e98d4f67e6d88c29d70fb8f5322d549066f76d) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Build ICU4J using Maven`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-12-15T00:48:31+00:00
-
-
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_18 item(s)_
+_12 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-22190](#issue-icu-22190) [ICU-22301](#issue-icu-22301)
+ - **build_c**: [ICU-22301](#issue-icu-22301) [ICU-22190](#issue-icu-22190)
  - **build_j**: [ICU-12811](#issue-icu-12811)
  - **data_loading_rb_svc**: [ICU-22224](#issue-icu-22224)
- - **format_number**: [ICU-22222](#issue-icu-22222)
- - **others**: [ICU-22193](#issue-icu-22193) [ICU-22191](#issue-icu-22191) [ICU-21833](#issue-icu-21833) [ICU-22265](#issue-icu-22265) [ICU-22194](#issue-icu-22194)
+ - **others**: [ICU-22194](#issue-icu-22194)
  - **properties**: [ICU-22270](#issue-icu-22270)
- - **team_processes_tools**: [ICU-22220](#issue-icu-22220) [ICU-21755](#issue-icu-21755)
- - **textbounds**: [ICU-21180](#issue-icu-21180) [ICU-22100](#issue-icu-22100)
+ - **team_processes_tools**: [ICU-21755](#issue-icu-21755) [ICU-22220](#issue-icu-22220)
+ - **textbounds**: [ICU-22100](#issue-icu-22100)
  - **time_calc**: [ICU-22217](#issue-icu-22217) [ICU-22226](#issue-icu-22226) [ICU-22196](#issue-icu-22196)
 
 
@@ -105,7 +54,7 @@ _Jira issue is open_
 - [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811): `Improve ICU4J build/release for maven repository`
 	- Assigned to Yoshito Umaoka
 	- Status: Accepted
-	- Fix Version: future
+	- Fix Version: 73.1
 	- Component(s): build_j
 
 ##### Commits with Issue ICU-12811
@@ -141,25 +90,6 @@ _Jira issue is open_
 - [45e98d4](https://github.com/unicode-org/icu/commit/45e98d4f67e6d88c29d70fb8f5322d549066f76d) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Build ICU4J using Maven`
 	- Authored by Elango Cheran <elango@unicode.org>
 	- Committed at 2022-12-15T00:48:31+00:00
-
-#### Issue ICU-21180
-
-_Jira issue is open_
-- [ICU-21180](https://unicode-org.atlassian.net/browse/ICU-21180): `Out of Memory Error Handling in RBBI`
-	- Assigned to Andy Heninger
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-21180
-
-- [67a7e2c](https://github.com/unicode-org/icu/commit/67a7e2caf063b5e591dbe738d3329607c8a2ba85) [ICU-21180](https://unicode-org.atlassian.net/browse/ICU-21180) `RuleBasedBreakIterator, refactor init.`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2022-11-02T16:25:41-07:00
-
-- [866254e](https://github.com/unicode-org/icu/commit/866254ef12750bda67b86cc685d07e7906765aac) [ICU-21180](https://unicode-org.atlassian.net/browse/ICU-21180) `BreakIterator, change all NULL to nulptr`
-	- Authored by Andy Heninger <andy.heninger@gmail.com>
-	- Committed at 2022-10-26T18:55:48-07:00
 
 #### Issue ICU-21755
 
@@ -183,53 +113,6 @@ _Jira issue is open_
 - [8ca2e06](https://github.com/unicode-org/icu/commit/8ca2e06b72d8f5466c0a727433f04692c777c3a4) [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755) `commit checker: add support for COMMIT_METADATA.md file`
 	- Authored by Steven R. Loomis <srl295@gmail.com>
 	- Committed at 2022-10-13T12:05:17-05:00
-
-#### Issue ICU-21833
-
-_Jira issue is open_
-- [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833): `C++: use standard nullptr, char16_t, override, final`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21833
-
-- [b6dcc95](https://github.com/unicode-org/icu/commit/b6dcc95d3c7c370ed993f7e2b7972adc48364293) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `remove redundant void parameter lists`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-03-02T09:31:57-08:00
-
-- [2864379](https://github.com/unicode-org/icu/commit/28643799377ecf654564f6f31854b02788cebe33) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `replace U_NOEXCEPT with C++11 standard noexcept`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-03-01T15:24:34-08:00
-
-- [d8e80fe](https://github.com/unicode-org/icu/commit/d8e80fea88fe5b48d305444e19c07ddaee4952eb) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `remove pre-C++11 code; U_SIZEOF_UCHAR=2`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-03-01T15:23:34-08:00
-
-- [ea2cb85](https://github.com/unicode-org/icu/commit/ea2cb8549efa2d60d17ca59517606626cc1626e8) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace U_FINAL with final everywhere.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-22T22:39:41+01:00
-
-- [a3cbe80](https://github.com/unicode-org/icu/commit/a3cbe809091807b406cf526635cb866270a20da2) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace U_OVERRIDE with override everywhere.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-22T18:28:07+01:00
-
-- [9fd2742](https://github.com/unicode-org/icu/commit/9fd2742dfa5d78f3a5d14c603c85ed3dcf88a197) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace UChar with char16_t in C++ code.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-06T21:53:20+01:00
-
-- [2de88f9](https://github.com/unicode-org/icu/commit/2de88f9d9c07f7e693449f94858d96053222acea) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace UChar with char16_t in all C++ code.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-06T19:27:44+01:00
-
-- [5560ee8](https://github.com/unicode-org/icu/commit/5560ee8870b41c94c0f89e363f31f57c1014de99) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace nullptr with 0 when assigning to UChar.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-03T22:04:36+01:00
-
-- [2e0d30c](https://github.com/unicode-org/icu/commit/2e0d30cfcf43490d0d3a0026139256a7328a0183) [ICU-21833](https://unicode-org.atlassian.net/browse/ICU-21833) `Replace NULL with nullptr in all C++ code.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-02-03T20:20:38+01:00
 
 #### Issue ICU-22100
 
@@ -284,56 +167,6 @@ _Jira issue is open_
 - [511b411](https://github.com/unicode-org/icu/commit/511b4111f2f1d97a70d08c6a885c333a8542a729) [ICU-22190](https://unicode-org.atlassian.net/browse/ICU-22190) `Add public PGP Key`
 	- Authored by rp9-next <103115900+rp9-next@users.noreply.github.com>
 	- Committed at 2022-10-20T23:29:13+02:00
-
-#### Issue ICU-22191
-
-_Jira issue is open_
-- [ICU-22191](https://unicode-org.atlassian.net/browse/ICU-22191): `Wrong header in writesrc.cpp causes build failure on MacOS with gcc`
-	- Assigned to Sergio Had
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): others
-
-##### Commits with Issue ICU-22191
-
-- [b00562e](https://github.com/unicode-org/icu/commit/b00562e989af75bd68d326f1d5fc06ae1fae1036) [ICU-22191](https://unicode-org.atlassian.net/browse/ICU-22191) `writesrc.cpp: enable PRI formatting constants on all compilers`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2022-11-09T04:38:00+00:00
-
-- [2b77e39](https://github.com/unicode-org/icu/commit/2b77e39fbbe08468aaa9102843b172a200019a9c) [ICU-22191](https://unicode-org.atlassian.net/browse/ICU-22191) `writesrc.cpp: fix cinttypes header and place after C headers`
-	- Authored by Sergey Fedorov <vital.had@gmail.com>
-	- Committed at 2022-10-28T08:41:22-07:00
-
-#### Issue ICU-22193
-
-_Jira issue is open_
-- [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193): `ICU 73 code warnings/version updates`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): others
-
-##### Commits with Issue ICU-22193
-
-- [44480c4](https://github.com/unicode-org/icu/commit/44480c4ba430eef36056a66867e5abad892c5e96) [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193) `Bump junit from 4.12 to 4.13.1 in /icu4j/maven-build`
-	- Authored by dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
-	- Committed at 2022-12-19T10:48:04-08:00
-
-- [82115c0](https://github.com/unicode-org/icu/commit/82115c060f14dc68601ccd66bcb2fa6e6918d926) [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193) `Make clang-release-build-and-test work with ubuntu-latest.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2022-12-19T10:56:01+09:00
-
-- [2a6f06c](https://github.com/unicode-org/icu/commit/2a6f06cb4c80474fe751401adbdf84c4c54414d0) [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193) `Make run-with-stubdata work with ubuntu-latest.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2022-12-16T10:06:32+09:00
-
-- [57c9313](https://github.com/unicode-org/icu/commit/57c9313eb7da760f27922fec7ce40f515232e7e7) [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193) `Use Ubuntu 20.04 for jobs failing in migration to 22.04`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-12-14T20:04:45+00:00
-
-- [0cbf969](https://github.com/unicode-org/icu/commit/0cbf969cf75539b3423554595c8756e7923c2653) [ICU-22193](https://unicode-org.atlassian.net/browse/ICU-22193) `fix some CI test failures`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2022-12-13T11:18:44-08:00
 
 #### Issue ICU-22194
 
@@ -507,21 +340,6 @@ _Jira issue is open_
 	- Authored by Peter Edberg <pedberg@unicode.org>
 	- Committed at 2022-12-04T21:14:41-08:00
 
-#### Issue ICU-22222
-
-_Jira issue is open_
-- [ICU-22222](https://unicode-org.atlassian.net/browse/ICU-22222): `Add explicit template instantiation declaration to header`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): format_number
-
-##### Commits with Issue ICU-22222
-
-- [0c6d7fc](https://github.com/unicode-org/icu/commit/0c6d7fc98d0bf6967d2eb952cc686771c2cac78b) [ICU-22222](https://unicode-org.atlassian.net/browse/ICU-22222) `Add explicit instantiation declarations`
-	- Authored by Thomas Köppe <tkoeppe@google.com>
-	- Committed at 2023-01-07T00:03:38+00:00
-
 #### Issue ICU-22224
 
 _Jira issue is open_
@@ -551,21 +369,6 @@ _Jira issue is open_
 - [76df897](https://github.com/unicode-org/icu/commit/76df897b77fd938abc29c9121dde794300a171e6) [ICU-22226](https://unicode-org.atlassian.net/browse/ICU-22226) `Fix Calendar.getFirstDayOfWeek to honor -u-fw`
 	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
 	- Committed at 2023-01-31T00:26:30-08:00
-
-#### Issue ICU-22265
-
-_Jira issue is open_
-- [ICU-22265](https://unicode-org.atlassian.net/browse/ICU-22265): `Update ICU4J PersonName code to match updates in CLDR 43 (e.g. changes for space handling)`
-	- Assigned to Rich Gillam
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): others
-
-##### Commits with Issue ICU-22265
-
-- [e5854c8](https://github.com/unicode-org/icu/commit/e5854c84a11036d2dcc8591156d7b7adf9e77c1e) [ICU-22265](https://unicode-org.atlassian.net/browse/ICU-22265) `Update PersonNameFormatter and its associated classes so that the behavior matches that of the`
-	- Authored by Rich Gillam <richard_gillam@apple.com>
-	- Committed at 2023-03-08T13:56:17-08:00
 
 #### Issue ICU-22270
 
@@ -613,15 +416,8 @@ _Jira issue is open_
 ### Issue is under Review
 [🔝Top](#table-of-contents)
 
-_3 item(s)_
+_2 item(s)_
 These issues are otherwise accounted for above, but are in review.
-- [ICU-10297](https://unicode-org.atlassian.net/browse/ICU-10297): `uldn_localeDisplayName DIALECT_NAMES for zh_Hant fall back to zh? No longer, just add test`
-	- _Issue is under Review_
-	- Assigned to Peter Edberg
-	- Reviewer: Rich Gillam
-	- Status: Reviewing
-	- Fix Version: 73.1
-	- Component(s): api_for_locale_data
 - [ICU-22186](https://unicode-org.atlassian.net/browse/ICU-22186): `Add unit tests for Croatia currency change from HRK to EUR`
 	- _Issue is under Review_
 	- Assigned to Peter Edberg
