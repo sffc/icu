@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2023-03-21T14:48:34.471880
-- Latest Commit: https://github.com/unicode-org/icu/commit/fa5a6c15191dea895837ccfb2d658d315e23e6e4
+- Now: 2023-03-23T09:12:33.376333
+- Latest Commit: https://github.com/unicode-org/icu/commit/cb65f7573978edecd8a598ab4137327ed7000844
 - Jira Query: `project=ICU AND fixVersion=73.1`
 - Rev Range: `release-72-1..upstream/main`
 - Authenticated: `Yes`
@@ -17,7 +17,7 @@ Environment:
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 12
+Total problem(s): 5
 
 ## Table Of Contents
 Note: empty categories are omitted.
@@ -25,71 +25,24 @@ Note: empty categories are omitted.
 - _Closed Issues with Illegal Resolution or Commit_
 - _Commits without Jira Issue Tag_
 - _Commits with Jira Issue Not Found_
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 12
-- [Issue is under Review](#issue-is-under-review) 2
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 5
+- [Issue is under Review](#issue-is-under-review) 1
 - _Excluded Commits_
 
 ## Problem Categories
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_12 item(s)_
+_5 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-22301](#issue-icu-22301) [ICU-22190](#issue-icu-22190)
- - **build_j**: [ICU-12811](#issue-icu-12811)
+ - **build_c**: [ICU-22190](#issue-icu-22190)
  - **data_loading_rb_svc**: [ICU-22224](#issue-icu-22224)
  - **others**: [ICU-22194](#issue-icu-22194)
- - **properties**: [ICU-22270](#issue-icu-22270)
- - **team_processes_tools**: [ICU-21755](#issue-icu-21755) [ICU-22220](#issue-icu-22220)
- - **textbounds**: [ICU-22100](#issue-icu-22100)
- - **time_calc**: [ICU-22217](#issue-icu-22217) [ICU-22226](#issue-icu-22226) [ICU-22196](#issue-icu-22196)
+ - **team_processes_tools**: [ICU-22220](#issue-icu-22220) [ICU-21755](#issue-icu-21755)
 
-
-#### Issue ICU-12811
-
-_Jira issue is open_
-- [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811): `Improve ICU4J build/release for maven repository`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): build_j
-
-##### Commits with Issue ICU-12811
-
-- [b399c67](https://github.com/unicode-org/icu/commit/b399c67d5af748662275e1fa1d26d123caad3ed0) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix cldrUtils (add ElapsedTime and UnicodeMap*)`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2023-03-14T12:39:13-07:00
-
-- [0152221](https://github.com/unicode-org/icu/commit/015222105a614dbf09e187a06cbc5d97839fe287) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Refactor test-framework to not depend on core`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2023-02-21T14:16:19-08:00
-
-- [a7f4531](https://github.com/unicode-org/icu/commit/a7f4531bfaf4e7ca93fea518b5c1734cd6ffdc1a) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix localespi tests when run by Maven on Java 8`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-17T13:17:29-08:00
-
-- [d4ac09e](https://github.com/unicode-org/icu/commit/d4ac09edbdc25feb06b3a011cbbb150b243d91f2) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Replace local-maven-repo with data jar contents`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-17T11:09:29-08:00
-
-- [e7530bd](https://github.com/unicode-org/icu/commit/e7530bd9ff2e7317710a1611f6d6de264143bf6a) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Fix CI cache retain workflow's cron schedule string`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-13T14:57:51-08:00
-
-- [2007e13](https://github.com/unicode-org/icu/commit/2007e135f1e78711247b2f0ab440dec54307cfe9) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Add CI workflow to retain caches that are flaky/costly to init`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-01-13T12:36:48-08:00
-
-- [f6353ae](https://github.com/unicode-org/icu/commit/f6353aeedcfa4b5907f1037a9d924660ff8f4d87) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Make CI jobs for Maven run serially to avoid CI cache race condition`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-12-17T12:59:35-05:00
-
-- [45e98d4](https://github.com/unicode-org/icu/commit/45e98d4f67e6d88c29d70fb8f5322d549066f76d) [ICU-12811](https://unicode-org.atlassian.net/browse/ICU-12811) `Build ICU4J using Maven`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2022-12-15T00:48:31+00:00
 
 #### Issue ICU-21755
 
@@ -113,37 +66,6 @@ _Jira issue is open_
 - [8ca2e06](https://github.com/unicode-org/icu/commit/8ca2e06b72d8f5466c0a727433f04692c777c3a4) [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755) `commit checker: add support for COMMIT_METADATA.md file`
 	- Authored by Steven R. Loomis <srl295@gmail.com>
 	- Committed at 2022-10-13T12:05:17-05:00
-
-#### Issue ICU-22100
-
-_Jira issue is open_
-- [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100): `Introduce BudouX into ICU for Japanese phrase breaking`
-	- Assigned to AllenSu
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-22100
-
-- [3f05361](https://github.com/unicode-org/icu/commit/3f05361b4192d6d337c3dacc63a91f53c966da3e) [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100) `Modify ML model to improve Japanese phrase breaking performance`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2023-02-03T13:07:53-08:00
-
-- [0b3b83a](https://github.com/unicode-org/icu/commit/0b3b83a80966f638fae1704a6a6042596af2a757) [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100) `Improve Japanese phrase breaking performance`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2023-01-31T00:29:41-08:00
-
-- [80fb309](https://github.com/unicode-org/icu/commit/80fb309c8a5f865767ef72f85ea1bf70c29e2b39) [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100) `Remove unicode blocks from Japanese ML phrase breaking`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2023-01-09T17:38:51-08:00
-
-- [90caafb](https://github.com/unicode-org/icu/commit/90caafbcd437e04147106d8e35a29b189977f0b7) [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100) `Incorporate BudouX into ICU (Java)`
-	- Authored by allenwtsu <allenwtsu@google.com>
-	- Committed at 2022-12-20T14:27:04-08:00
-
-- [b6b7b04](https://github.com/unicode-org/icu/commit/b6b7b045e9cef2c942efd267bb89c5a545017f0c) [ICU-22100](https://unicode-org.atlassian.net/browse/ICU-22100) `Incorporate BudouX into ICU (C++)`
-	- Authored by Shuhei Iitsuka <tushuhei@google.com>
-	- Committed at 2022-12-02T10:11:06-08:00
 
 #### Issue ICU-22190
 
@@ -207,36 +129,6 @@ _Jira issue is open_
 	- Authored by Elango Cheran <elango@unicode.org>
 	- Committed at 2022-10-28T14:37:49-07:00
 
-#### Issue ICU-22196
-
-_Jira issue is open_
-- [ICU-22196](https://unicode-org.atlassian.net/browse/ICU-22196): `TZ Database 2022f updates`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22196
-
-- [2d19377](https://github.com/unicode-org/icu/commit/2d19377a8d5eb459acce1911919f8a76d37d1405) [ICU-22196](https://unicode-org.atlassian.net/browse/ICU-22196) `TZ Database 2022f updates`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2022-11-01T20:21:18-04:00
-
-#### Issue ICU-22217
-
-_Jira issue is open_
-- [ICU-22217](https://unicode-org.atlassian.net/browse/ICU-22217): `TZ Database 2022g updates`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22217
-
-- [cecd19e](https://github.com/unicode-org/icu/commit/cecd19e9ba46db107b02a9de62b2ae34e199360b) [ICU-22217](https://unicode-org.atlassian.net/browse/ICU-22217) `TZ Database 2022g updates`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2022-11-30T22:08:08-05:00
-
 #### Issue ICU-22220
 
 _Jira issue is open_
@@ -247,6 +139,26 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-22220
+
+- [cb65f75](https://github.com/unicode-org/icu/commit/cb65f7573978edecd8a598ab4137327ed7000844) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc ICU4J Serialization test data for ICU 73.1`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-03-23T08:45:38-07:00
+
+- [4a30076](https://github.com/unicode-org/icu/commit/4a30076686bfc7e8f08dc9e9081ecc0dacb4752d) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc ICU4J API signature data file`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-03-23T08:45:26-07:00
+
+- [6ddf63e](https://github.com/unicode-org/icu/commit/6ddf63ed926c7d934ffa01a1c841cec300207aae) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73 Fix API doc tagging problems`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2023-03-22T19:41:42-04:00
+
+- [68f5ef8](https://github.com/unicode-org/icu/commit/68f5ef835bd69221bf1c23ba65228d0cae7e5647) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73RC Regenerate configure files and fix broken links in comments`
+	- Authored by Rahul Pandey <rp9.next@gmail.com>
+	- Committed at 2023-03-22T12:26:41+05:18
+
+- [49e8b99](https://github.com/unicode-org/icu/commit/49e8b992962c048a31bc542d915a9daa6f4b3dc5) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73 Clean up Java import statements`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2023-03-21T15:35:52-04:00
 
 - [e612a4f](https://github.com/unicode-org/icu/commit/e612a4f2ab3773cc120f32ebe71c62362b9c78b7) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc update urename.h pass 2`
 	- Authored by Peter Edberg <pedberg@unicode.org>
@@ -355,80 +267,16 @@ _Jira issue is open_
 	- Authored by Frank Yung-Fong Tang <ftang@google.com>
 	- Committed at 2023-02-27T17:31:49-08:00
 
-#### Issue ICU-22226
-
-_Jira issue is open_
-- [ICU-22226](https://unicode-org.atlassian.net/browse/ICU-22226): `Calendar.getFirstDayOfWeek ignores the -u-fw setting in locale`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22226
-
-- [76df897](https://github.com/unicode-org/icu/commit/76df897b77fd938abc29c9121dde794300a171e6) [ICU-22226](https://unicode-org.atlassian.net/browse/ICU-22226) `Fix Calendar.getFirstDayOfWeek to honor -u-fw`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2023-01-31T00:26:30-08:00
-
-#### Issue ICU-22270
-
-_Jira issue is open_
-- [ICU-22270](https://unicode-org.atlassian.net/browse/ICU-22270): `Support property and property value names / aliases in icuexportdata`
-	- Assigned to Manish मनीष Goregaokar
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): properties
-
-##### Commits with Issue ICU-22270
-
-- [be64286](https://github.com/unicode-org/icu/commit/be6428690dc9b2e0e4a622691eb4c1101647cd2d) [ICU-22270](https://unicode-org.atlassian.net/browse/ICU-22270) `expose uproperty values in icuexportdata`
-	- Authored by Manish Goregaokar <manishsmail@gmail.com>
-	- Committed at 2023-03-06T20:13:55-05:00
-
-- [d3c94cc](https://github.com/unicode-org/icu/commit/d3c94cc062ef83e05b6b1dc1dd699c543efff39a) [ICU-22270](https://unicode-org.atlassian.net/browse/ICU-22270) `Use hex for mask properties`
-	- Authored by Manish Goregaokar <manishsmail@gmail.com>
-	- Committed at 2023-02-24T14:06:31-08:00
-
-- [0f4e084](https://github.com/unicode-org/icu/commit/0f4e084208f8486aef6200be91e59a24848ea552) [ICU-22270](https://unicode-org.atlassian.net/browse/ICU-22270) `Add support for General_Category_Mask in icuexport`
-	- Authored by Manish Goregaokar <manishsmail@gmail.com>
-	- Committed at 2023-02-24T11:42:13-08:00
-
-- [9f10855](https://github.com/unicode-org/icu/commit/9f108554af3eea7739dd07598c8e681926dc9755) [ICU-22270](https://unicode-org.atlassian.net/browse/ICU-22270) `icuexportdata: Add property and property value names/aliases`
-	- Authored by Manish Goregaokar <manishsmail@gmail.com>
-	- Committed at 2023-02-09T15:44:48-08:00
-
-#### Issue ICU-22301
-
-_Jira issue is open_
-- [ICU-22301](https://unicode-org.atlassian.net/browse/ICU-22301): `BRS Automation: Running windows samples during release`
-	- Assigned to Rahul Pandey
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22301
-
-- [3076874](https://github.com/unicode-org/icu/commit/3076874c3231047f55c561e1dd797137e764efea) [ICU-22301](https://unicode-org.atlassian.net/browse/ICU-22301) `Add azure CI tests to be run post merge`
-	- Authored by Rahul Pandey <pandeyrah@microsoft.com>
-	- Committed at 2023-03-17T08:57:01-07:00
-
 
 ### Issue is under Review
 [🔝Top](#table-of-contents)
 
-_2 item(s)_
+_1 item(s)_
 These issues are otherwise accounted for above, but are in review.
 - [ICU-22186](https://unicode-org.atlassian.net/browse/ICU-22186): `Add unit tests for Croatia currency change from HRK to EUR`
 	- _Issue is under Review_
 	- Assigned to Peter Edberg
 	- Reviewer: Gary L. Wade
-	- Status: Reviewing
-	- Fix Version: 73.1
-	- Component(s): format_number
-- [ICU-22283](https://unicode-org.atlassian.net/browse/ICU-22283): `type issue with setRoundingMode api`
-	- _Issue is under Review_
-	- Assigned to Shane Carr
-	- Reviewer: Frank Yung-Fong Tang
 	- Status: Reviewing
 	- Fix Version: 73.1
 	- Component(s): format_number
