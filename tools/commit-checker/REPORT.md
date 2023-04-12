@@ -7,17 +7,17 @@ Commit Report
 =============
 
 Environment:
-- Now: 2023-03-23T09:12:33.376333
-- Latest Commit: https://github.com/unicode-org/icu/commit/cb65f7573978edecd8a598ab4137327ed7000844
+- Now: 2023-04-12T15:22:23.657162
+- Latest Commit: https://github.com/unicode-org/icu/commit/5861e1fd52f1d7673eee38bc3c965aa18b336062
 - Jira Query: `project=ICU AND fixVersion=73.1`
-- Rev Range: `release-72-1..upstream/main`
+- Rev Range: `release-72-1..upstream/maint/maint-73`
 - Authenticated: `Yes`
 
 -----
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 5
+Total problem(s): 4
 
 ## Table Of Contents
 Note: empty categories are omitted.
@@ -25,7 +25,7 @@ Note: empty categories are omitted.
 - _Closed Issues with Illegal Resolution or Commit_
 - _Commits without Jira Issue Tag_
 - _Commits with Jira Issue Not Found_
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 5
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 4
 - [Issue is under Review](#issue-is-under-review) 1
 - _Excluded Commits_
 
@@ -33,39 +33,16 @@ Note: empty categories are omitted.
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_5 item(s)_
+_4 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
  - **build_c**: [ICU-22190](#issue-icu-22190)
- - **data_loading_rb_svc**: [ICU-22224](#issue-icu-22224)
  - **others**: [ICU-22194](#issue-icu-22194)
- - **team_processes_tools**: [ICU-22220](#issue-icu-22220) [ICU-21755](#issue-icu-21755)
+ - **team_processes_tools**: [ICU-22221](#issue-icu-22221)
+ - **time_calc**: [ICU-22334](#issue-icu-22334)
 
-
-#### Issue ICU-21755
-
-_Jira issue is open_
-- [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755): `Commit Checker: add "bad commits" list?`
-	- Assigned to Steven R. Loomis
-	- Status: Accepted
-	- Fix Version: 73.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-21755
-
-- [954d999](https://github.com/unicode-org/icu/commit/954d999126e5960cb32e80ce642870735949760f) [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755) `commit checker: skip No Time To Do This`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2022-10-13T12:05:17-05:00
-
-- [3650236](https://github.com/unicode-org/icu/commit/3650236abbc5b811bcf49e7d0d39196d06f11e3f) [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755) `commit checker: section rewrite, summary count`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2022-10-13T12:05:17-05:00
-
-- [8ca2e06](https://github.com/unicode-org/icu/commit/8ca2e06b72d8f5466c0a727433f04692c777c3a4) [ICU-21755](https://unicode-org.atlassian.net/browse/ICU-21755) `commit checker: add support for COMMIT_METADATA.md file`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2022-10-13T12:05:17-05:00
 
 #### Issue ICU-22190
 
@@ -129,143 +106,51 @@ _Jira issue is open_
 	- Authored by Elango Cheran <elango@unicode.org>
 	- Committed at 2022-10-28T14:37:49-07:00
 
-#### Issue ICU-22220
+#### Issue ICU-22221
 
 _Jira issue is open_
-- [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220): `ICU 73rc BRS`
+- [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221): `ICU 73 BRS`
 	- Assigned to Markus Scherer
 	- Status: Accepted
 	- Fix Version: 73.1
 	- Component(s): team_processes_tools
 
-##### Commits with Issue ICU-22220
+##### Commits with Issue ICU-22221
 
-- [cb65f75](https://github.com/unicode-org/icu/commit/cb65f7573978edecd8a598ab4137327ed7000844) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc ICU4J Serialization test data for ICU 73.1`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-03-23T08:45:38-07:00
+- [5861e1f](https://github.com/unicode-org/icu/commit/5861e1fd52f1d7673eee38bc3c965aa18b336062) [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221) `update cldr-icu instructions, and ICU tag for integration`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2023-04-11T11:38:40-07:00
 
-- [4a30076](https://github.com/unicode-org/icu/commit/4a30076686bfc7e8f08dc9e9081ecc0dacb4752d) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc ICU4J API signature data file`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-03-23T08:45:26-07:00
-
-- [6ddf63e](https://github.com/unicode-org/icu/commit/6ddf63ed926c7d934ffa01a1c841cec300207aae) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73 Fix API doc tagging problems`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2023-03-22T19:41:42-04:00
-
-- [68f5ef8](https://github.com/unicode-org/icu/commit/68f5ef835bd69221bf1c23ba65228d0cae7e5647) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73RC Regenerate configure files and fix broken links in comments`
+- [69e1d70](https://github.com/unicode-org/icu/commit/69e1d707f872ef861930ddc7d186b3eea9ac2918) [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221) `BRS73GA: Update version number to 73.1`
 	- Authored by Rahul Pandey <rp9.next@gmail.com>
-	- Committed at 2023-03-22T12:26:41+05:18
+	- Committed at 2023-04-11T15:34:18+05:18
 
-- [49e8b99](https://github.com/unicode-org/icu/commit/49e8b992962c048a31bc542d915a9daa6f4b3dc5) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73 Clean up Java import statements`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2023-03-21T15:35:52-04:00
-
-- [e612a4f](https://github.com/unicode-org/icu/commit/e612a4f2ab3773cc120f32ebe71c62362b9c78b7) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc update urename.h pass 2`
+- [80f94a6](https://github.com/unicode-org/icu/commit/80f94a636efc4dabb8e83a80ae7ec7ab6c8456e7) [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221) `CLDR release-43-beta5 to ICU maint/maint-73`
 	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-03-20T13:32:31-07:00
+	- Committed at 2023-04-07T11:15:47-07:00
 
-- [a518312](https://github.com/unicode-org/icu/commit/a518312ce2b6bf9e96451b73d6e890cf07409872) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `Add usimplenumberformatter and SimpleNumberFormatter to docmain.h`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2023-03-17T21:03:29-07:00
-
-- [21581f4](https://github.com/unicode-org/icu/commit/21581f4ec59b52338065866960dc2b155a428700) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `ICU 73 API Changes 4J & 4C`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2023-03-17T11:56:41-07:00
-
-- [7a67099](https://github.com/unicode-org/icu/commit/7a670998b0cbb217c30fae74b69c0b001cb6071e) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73RC Update version number and regenerate configure v73.1`
-	- Authored by Rahul Pandey <103115900+rp9-next@users.noreply.github.com>
-	- Committed at 2023-03-17T09:36:06+05:18
-
-- [3b03051](https://github.com/unicode-org/icu/commit/3b030512ff836522d0a294b6206dcf8b50eab725) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `Update ICU4J samples instructions`
-	- Authored by Craig Cornelius <ccornelius@google.com>
-	- Committed at 2023-03-16T08:39:14-07:00
-
-- [3db74e8](https://github.com/unicode-org/icu/commit/3db74e8ae7375bb48361ea625bb0f82c465d35d3) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `CLDR release-43-beta2 to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-03-15T20:52:34-07:00
-
-- [2c20fa4](https://github.com/unicode-org/icu/commit/2c20fa45fb379a7ac5cdfb498f10294494f23d94) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `CLDR release-43-beta0 to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-03-14T09:53:14-07:00
-
-- [9e16711](https://github.com/unicode-org/icu/commit/9e16711b54d055cad10f7dc59f19d124ca6618be) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73 Updating the Unicode data files and software license`
-	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
-	- Committed at 2023-03-06T22:31:39-05:00
-
-- [2b71440](https://github.com/unicode-org/icu/commit/2b714406eb5f163620a76b0f298b74b00c6be458) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `Add a step to instructions and fix an obsolete path.`
-	- Authored by Craig Cornelius <ccornelius@google.com>
-	- Committed at 2023-03-06T19:29:02+00:00
-
-- [3748ef8](https://github.com/unicode-org/icu/commit/3748ef8f8adca873fbd2081f0d0435020807ce46) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `adjust #ifndef U_HIDE_DRAFT_API for virtual methods, fix conditionalized enums`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-03-06T11:01:50-08:00
-
-- [bca85d4](https://github.com/unicode-org/icu/commit/bca85d4641978596cbefb0269ebd7f9834345d67) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `Update ICU4J API status`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2023-03-04T02:18:24+00:00
-
-- [5c07ee7](https://github.com/unicode-org/icu/commit/5c07ee700b0e5a122e70d948a05edc6a0f1360fe) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `ICU4C APIChangeReport for ICU73`
-	- Authored by Craig Cornelius <ccornelius@google.com>
-	- Committed at 2023-03-04T02:17:48+00:00
-
-- [461ec39](https://github.com/unicode-org/icu/commit/461ec392a5b0779434d8e8e4751216af547ee08e) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `ICU4J API change report`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2023-03-03T19:47:31+00:00
-
-- [18f6a3a](https://github.com/unicode-org/icu/commit/18f6a3a6e242dce81486382420c9e3400c231660) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `CLDR release-43-alpha2 to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-02-27T11:09:02-08:00
-
-- [d86b1ce](https://github.com/unicode-org/icu/commit/d86b1cebe192004759b6c875b0f831b97ccdae34) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `update root collation from CLDR 43`
+- [f4687fc](https://github.com/unicode-org/icu/commit/f4687fc25abb660b5c497536a7042c33d4c010c5) [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221) `update root collation again from CLDR 43`
 	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-02-22T17:13:13-08:00
+	- Committed at 2023-04-06T08:20:03-07:00
 
-- [f924741](https://github.com/unicode-org/icu/commit/f924741bf2d7a2810a47ec44dd24e66f4979f03e) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS 73rc update urename.h pass 1`
+- [2c584ab](https://github.com/unicode-org/icu/commit/2c584abf7e4143731f90fa317481e2fb0890ffa5) [ICU-22221](https://unicode-org.atlassian.net/browse/ICU-22221) `rebase CLDR 43-beta4 import onto latest maint/maint-73 (new zoneinfo64)`
 	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-02-22T10:30:25-08:00
+	- Committed at 2023-03-30T15:43:22-07:00
 
-- [d469e62](https://github.com/unicode-org/icu/commit/d469e628f391d1d464e980eb257c595fdb5a2a3a) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `CLDR release-43-alpha1 to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-02-21T11:39:48-08:00
-
-- [bd065d4](https://github.com/unicode-org/icu/commit/bd065d4704bb212dfe3414c9d1ef105fb2a4df75) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `Automate BRS tasks`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-02-15T21:18:58-05:00
-
-- [288c4c7](https://github.com/unicode-org/icu/commit/288c4c7555915ce7b1fb675d94ddd495058fc039) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `ICU 73 API promotions (promoting ICU 71 and earlier)`
-	- Authored by Rich Gillam <richard_gillam@apple.com>
-	- Committed at 2023-02-09T16:44:56-08:00
-
-- [87fc840](https://github.com/unicode-org/icu/commit/87fc840bf7750cee0884a133e2efb976c9714f30) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `CLDR release-43-alpha0 (with SurveyTool data) to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-02-06T14:46:14-08:00
-
-- [ad82a66](https://github.com/unicode-org/icu/commit/ad82a6693acdab6adde7499853bb9bb5befc6fc3) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `integrate root exemplarCities chnages for CLDR release-43-m0 to ICU main`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-01-12T08:57:35-08:00
-
-- [8d411e9](https://github.com/unicode-org/icu/commit/8d411e9b6aba9d15577341663ca2a70dd806e5a7) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `integrate CLDR release-43-m0 to ICU main for 73, update maven-build files`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2023-01-10T11:32:24-08:00
-
-- [7e083e3](https://github.com/unicode-org/icu/commit/7e083e34fbdfc12e4d12adaa593a8da21a8ef2c5) [ICU-22220](https://unicode-org.atlassian.net/browse/ICU-22220) `BRS73RC Update version number to 73.0.1`
-	- Authored by Peter Edberg <pedberg@unicode.org>
-	- Committed at 2022-12-04T21:14:41-08:00
-
-#### Issue ICU-22224
+#### Issue ICU-22334
 
 _Jira issue is open_
-- [ICU-22224](https://unicode-org.atlassian.net/browse/ICU-22224): `UBSAN breakage inside pointerTOCLookupFn`
-	- Assigned to Frank Yung-Fong Tang
+- [ICU-22334](https://unicode-org.atlassian.net/browse/ICU-22334): `Update timezone data to 2023b`
+	- Assigned to Yoshito Umaoka
 	- Status: Accepted
 	- Fix Version: 73.1
-	- Component(s): data_loading_rb_svc
+	- Component(s): time_calc
 
-##### Commits with Issue ICU-22224
+##### Commits with Issue ICU-22334
 
-- [80414a2](https://github.com/unicode-org/icu/commit/80414a247b652f0e1215adef2799da689f162533) [ICU-22224](https://unicode-org.atlassian.net/browse/ICU-22224) `Enable UBSAN and fix breakage`
-	- Authored by Frank Yung-Fong Tang <ftang@google.com>
-	- Committed at 2023-02-27T17:31:49-08:00
+- [a6e9f51](https://github.com/unicode-org/icu/commit/a6e9f518590f97dd77ab51e794c7ba9955c679a0) [ICU-22334](https://unicode-org.atlassian.net/browse/ICU-22334) `Update ICU tzdata to 2023b for ICU 73.1 release`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2023-03-24T16:23:50-04:00
 
 
 ### Issue is under Review
@@ -273,11 +158,12 @@ _Jira issue is open_
 
 _1 item(s)_
 These issues are otherwise accounted for above, but are in review.
-- [ICU-22186](https://unicode-org.atlassian.net/browse/ICU-22186): `Add unit tests for Croatia currency change from HRK to EUR`
+- [ICU-22340](https://unicode-org.atlassian.net/browse/ICU-22340): `unum_setTextAttribute(UNUM_DEFAULT_RULESET, ...) sometimes returns U_UNSUPPORTED_ERROR`
 	- _Issue is under Review_
-	- Assigned to Peter Edberg
-	- Reviewer: Gary L. Wade
+	- Assigned to Rich Gillam
+	- Reviewer: Shane Carr
 	- Status: Reviewing
 	- Fix Version: 73.1
+	- Fix Version: 74.1
 	- Component(s): format_number
 
