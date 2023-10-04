@@ -1,5 +1,4 @@
 ## Collected 0 commit(s) to exclude
-:warning: No issues matched the query.
 <!--
 Copyright (C) 2021 and later: Unicode, Inc. and others.
 License & terms of use: http://www.unicode.org/copyright.html
@@ -8,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2023-09-21T16:57:27.919448
-- Latest Commit: https://github.com/unicode-org/icu/commit/77bc51e03e6de0a92ef063da85903ddadce97043
+- Now: 2023-10-04T13:48:09.191743
+- Latest Commit: https://github.com/unicode-org/icu/commit/1651e63b338a947b5979a219c5ecaa1e38e5fea5
 - Jira Query: `project=ICU AND fixVersion=74.1`
 - Rev Range: `release-73-1..upstream/main`
 - Authenticated: `Yes`
@@ -62,13 +61,12 @@ Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-22349](#issue-icu-22349) [ICU-22297](#issue-icu-22297)
+ - **build_c**: [ICU-22297](#issue-icu-22297) [ICU-22349](#issue-icu-22349)
  - **build_j**: [ICU-22324](#issue-icu-22324) [ICU-22477](#issue-icu-22477)
- - **format_date**: [ICU-22407](#issue-icu-22407)
- - **normalization**: [ICU-22332](#issue-icu-22332)
- - **others**: [ICU-22322](#issue-icu-22322) [ICU-21697](#issue-icu-21697) [ICU-21964](#issue-icu-21964) [ICU-22323](#issue-icu-22323)
+ - **format_date**: [ICU-22516](#issue-icu-22516) [ICU-22407](#issue-icu-22407)
+ - **others**: [ICU-22323](#issue-icu-22323) [ICU-21697](#issue-icu-21697) [ICU-22322](#issue-icu-22322) [ICU-21964](#issue-icu-21964)
  - **properties**: [ICU-22404](#issue-icu-22404)
- - **team_processes_tools**: [ICU-22341](#issue-icu-22341) [ICU-22389](#issue-icu-22389) [ICU-22325](#issue-icu-22325) [ICU-22309](#issue-icu-22309) [ICU-22423](#issue-icu-22423)
+ - **team_processes_tools**: [ICU-22423](#issue-icu-22423) [ICU-22309](#issue-icu-22309) [ICU-22389](#issue-icu-22389) [ICU-22341](#issue-icu-22341) [ICU-22325](#issue-icu-22325)
  - **test_fmwk_util**: [ICU-22354](#issue-icu-22354) [ICU-22479](#issue-icu-22479)
  - **time_calc**: [ICU-22452](#issue-icu-22452)
 
@@ -167,6 +165,10 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-22323
 
+- [f24e0a0](https://github.com/unicode-org/icu/commit/f24e0a0ff36ae214415898917f17290bd4211c38) [ICU-22323](https://unicode-org.atlassian.net/browse/ICU-22323) `Describe date field symbol `ee` as `02`, not `2``
+	- Authored by Antonio Bueno <atnbueno@gmail.com>
+	- Committed at 2023-10-02T12:29:59-07:00
+
 - [7ae7b15](https://github.com/unicode-org/icu/commit/7ae7b156983474a52d99bb5c579106a99d02efb1) [ICU-22323](https://unicode-org.atlassian.net/browse/ICU-22323) `update comment: it is now only two word lists, not three`
 	- Authored by Silas S. Brown <ssb22@cam.ac.uk>
 	- Committed at 2023-09-07T21:34:25-04:00
@@ -193,6 +195,38 @@ _Jira issue is open_
 	- Component(s): build_j
 
 ##### Commits with Issue ICU-22324
+
+- [e09adbf](https://github.com/unicode-org/icu/commit/e09adbf05a136cc2e59159300d74e0ec81401e41) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization: removed license links (error on Windows)`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2023-10-03T12:47:48-07:00
+
+- [e6f7ef7](https://github.com/unicode-org/icu/commit/e6f7ef7ef41882ae87d4608b3c5e27fefb5d2a8f) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, remove maven proof of concept and ant script`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2023-10-03T10:58:25-07:00
+
+- [76b9e08](https://github.com/unicode-org/icu/commit/76b9e089be35dbcbd374111ad9eadccd0d8907bb) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, publish the root pom to Maven`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2023-09-28T17:32:30-07:00
+
+- [aa377d7](https://github.com/unicode-org/icu/commit/aa377d7366231b244a0b6288be5378bef8280dbe) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, script to generate serial test data`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2023-09-27T16:11:39-07:00
+
+- [7a03734](https://github.com/unicode-org/icu/commit/7a0373411ea44e682565f91c6dfd1aa00135b6c0) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, building the CLDR utilities`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2023-09-27T11:01:06-07:00
+
+- [87fe057](https://github.com/unicode-org/icu/commit/87fe057838515e660be4cbdf5b735d5ecdd4c4e1) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, add -SNAPSHOT back to the maven version`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2023-09-27T06:46:31-07:00
+
+- [8c4af50](https://github.com/unicode-org/icu/commit/8c4af504a0b36a21d098bc2dc3880c39c549c3db) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, minimize the places that need a version`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2023-09-22T13:08:25-07:00
+
+- [501fe1b](https://github.com/unicode-org/icu/commit/501fe1b74a6027709cb72e6b58fba189db541fd6) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization, preparing for maven central deployment`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2023-09-21T18:21:06-07:00
 
 - [f14b24a](https://github.com/unicode-org/icu/commit/f14b24a845f7ff36519bdee5f64181f7ee389091) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Allow single Maven cache creation and multiple read-only usage`
 	- Authored by Elango Cheran <elango@unicode.org>
@@ -244,6 +278,54 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-22325
+
+- [1651e63](https://github.com/unicode-org/icu/commit/1651e63b338a947b5979a219c5ecaa1e38e5fea5) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS74 ICU4J API signature file`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2023-10-04T12:11:07-04:00
+
+- [3cc4e1a](https://github.com/unicode-org/icu/commit/3cc4e1aac692f3c23c4e06c62c2a9c7102e4dafb) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS74 Updating ICU4J serialization test data`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2023-10-03T15:20:03-04:00
+
+- [e1af930](https://github.com/unicode-org/icu/commit/e1af930c6ad54100767c21a883f88f529336c4ad) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS 74rc move cldr testdata to consistent place, adjust test & tools to match`
+	- Authored by Peter Edberg <pedberg@unicode.org>
+	- Committed at 2023-10-03T10:24:27-07:00
+
+- [dff59b6](https://github.com/unicode-org/icu/commit/dff59b61f9e0fc240add56e5ededc446ea7cb8b9) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `ICU4C update APIChangeReport 73 -> 74`
+	- Authored by Craig <ccornelius@google.com>
+	- Committed at 2023-10-03T07:21:20-07:00
+
+- [e73d973](https://github.com/unicode-org/icu/commit/e73d9736c9cd9fb3a7ab45b3a51a98dec3d6b5bc) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `Update docs.md to change `ant` commands to new scripts`
+	- Authored by Craig Cornelius <ccornelius@google.com>
+	- Committed at 2023-10-02T16:04:02-07:00
+
+- [3446660](https://github.com/unicode-org/icu/commit/3446660d27d71490999872271e60d06854747d60) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS74 Clean up import statements`
+	- Authored by Yoshito Umaoka <yumaoka@users.noreply.github.com>
+	- Committed at 2023-10-02T17:22:26-04:00
+
+- [38643e1](https://github.com/unicode-org/icu/commit/38643e14e50a1f0679ea7de8e863b8b7f64d0354) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR 44 beta1 integration to ICU part two, source files generated or copied from CLDR`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2023-09-29T20:29:49-07:00
+
+- [5fa75fb](https://github.com/unicode-org/icu/commit/5fa75fb9cc2ddb3b69865ebcb6789471701477b1) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR 44 beta1 integration to ICU part one, binary and binary source files`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2023-09-29T20:29:49-07:00
+
+- [acfe1c2](https://github.com/unicode-org/icu/commit/acfe1c299b010026b98f315eb3960f19086590c1) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `Update double-conversion to v3.3.0`
+	- Authored by Shane F. Carr <shane@unicode.org>
+	- Committed at 2023-09-28T14:31:16+02:00
+
+- [bfbf578](https://github.com/unicode-org/icu/commit/bfbf578f1c83fbda60d68ef2739f381ad6c61866) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `docmain ICU 74 new C services`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2023-09-27T17:55:37-07:00
+
+- [99026f0](https://github.com/unicode-org/icu/commit/99026f01cc79bdd25f2ed7e5dabd44ce6026e427) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS74RC: Update version number to 74.1`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-09-26T08:21:21-07:00
+
+- [c354427](https://github.com/unicode-org/icu/commit/c3544278cbecdc561d926cb0bd6b3a3cfa28a61d) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS#13: urename.h`
+	- Authored by Craig <ccornelius@google.com>
+	- Committed at 2023-09-21T16:45:25-07:00
 
 - [263db44](https://github.com/unicode-org/icu/commit/263db44a3ae848a7364d3fefc6af0b6b0827ba9f) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS#19 ICU4J 74 Status and Change Report`
 	- Authored by Craig <ccornelius@google.com>
@@ -312,21 +394,6 @@ _Jira issue is open_
 - [d205e03](https://github.com/unicode-org/icu/commit/d205e03352d0b2339d6b99d35e143e0843029cfa) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR release-43-1-beta1 to ICU main`
 	- Authored by Peter Edberg <pedberg@unicode.org>
 	- Committed at 2023-05-10T18:08:25-07:00
-
-#### Issue ICU-22332
-
-_Jira issue is open_
-- [ICU-22332](https://unicode-org.atlassian.net/browse/ICU-22332): `Add support for bidirectional confusable detection`
-	- Assigned to Robin Leroy
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): normalization
-
-##### Commits with Issue ICU-22332
-
-- [f79fe93](https://github.com/unicode-org/icu/commit/f79fe9347a2db853b1114ab3846ced39c86cc09d) [ICU-22332](https://unicode-org.atlassian.net/browse/ICU-22332) `bidiSkeleton and LTR- and RTL-confusabilities`
-	- Authored by Robin Leroy <egg.robin.leroy@gmail.com>
-	- Committed at 2023-08-23T15:56:02+02:00
 
 #### Issue ICU-22341
 
@@ -527,6 +594,10 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-22479
 
+- [cdcea0c](https://github.com/unicode-org/icu/commit/cdcea0c3787dcb47fbc6741221145712ffeb07ac) [ICU-22479](https://unicode-org.atlassian.net/browse/ICU-22479) `Enahnce the fuzzer for ListFormatter`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2023-09-21T21:21:21-07:00
+
 - [77bc51e](https://github.com/unicode-org/icu/commit/77bc51e03e6de0a92ef063da85903ddadce97043) [ICU-22479](https://unicode-org.atlassian.net/browse/ICU-22479) `Add fuzzer for RelativeTimeFormatFuzzer`
 	- Authored by Frank Tang <ftang@chromium.org>
 	- Committed at 2023-09-21T14:50:35-07:00
@@ -554,5 +625,20 @@ _Jira issue is open_
 - [869713b](https://github.com/unicode-org/icu/commit/869713b65fd11bf8bf3c758a4dd75bdaa8d717ca) [ICU-22479](https://unicode-org.atlassian.net/browse/ICU-22479) `Improve collator_compare_fuzzer`
 	- Authored by Frank Tang <ftang@chromium.org>
 	- Committed at 2023-09-01T17:57:30-07:00
+
+#### Issue ICU-22516
+
+_Jira issue is open_
+- [ICU-22516](https://unicode-org.atlassian.net/browse/ICU-22516): `icu:relative_date_time_formatter_fuzzer: Segv on unknown address in icu_74::UnicodeString::copyFrom`
+	- Assigned to Frank Yung-Fong Tang
+	- Status: Accepted
+	- Fix Version: 74.1
+	- Component(s): format_date
+
+##### Commits with Issue ICU-22516
+
+- [c1475f4](https://github.com/unicode-org/icu/commit/c1475f4bbdf230bd2ed277ad97d667869291e58b) [ICU-22516](https://unicode-org.atlassian.net/browse/ICU-22516) `Return error while the style is invalid`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2023-09-25T15:43:49-07:00
 
 
