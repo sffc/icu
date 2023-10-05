@@ -7,137 +7,43 @@ Commit Report
 =============
 
 Environment:
-- Now: 2023-10-04T13:48:09.191743
-- Latest Commit: https://github.com/unicode-org/icu/commit/1651e63b338a947b5979a219c5ecaa1e38e5fea5
+- Now: 2023-10-05T15:27:10.510033
+- Latest Commit: https://github.com/unicode-org/icu/commit/2e9d1288dd2f627227ff7a34c64905d3c92eb643
 - Jira Query: `project=ICU AND fixVersion=74.1`
-- Rev Range: `release-73-1..upstream/main`
+- Rev Range: `release-73-1..upstream/maint/maint-74`
 - Authenticated: `Yes`
 
 -----
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 20
+Total problem(s): 7
 
 ## Table Of Contents
 Note: empty categories are omitted.
 - _Closed Issues with No Commit_
 - _Closed Issues with Commit Policy Problems_
 - _Commits without Jira Issue Tag_
-- [Commits with Jira Issue Not Found](#commits-with-jira-issue-not-found) 1
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 19
+- _Commits with Jira Issue Not Found_
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 7
 - _Issue is under Review_
 - _Excluded Commits_
 
 ## Problem Categories
-### Commits with Jira Issue Not Found
-[🔝Top](#table-of-contents)
-
-_1 item(s)_
-Tip: Check that these tickets have the correct fixVersion tag.
-
-#### Issue ICU-22190
-
-_issue was not found in `project=ICU AND fixVersion=74.1`_
-- [ICU-22190](https://unicode-org.atlassian.net/browse/ICU-22190): `ICU 72.1 release signed by unknown key`
-	- Assigned to Craig Cornelius
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 73.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22190
-
-- [95d905a](https://github.com/unicode-org/icu/commit/95d905a9e9236dc5b9f44b2e1ba30aafa7c0db62) [ICU-22190](https://unicode-org.atlassian.net/browse/ICU-22190) `Add information about the KEYS file to the Publish document.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-03-30T14:06:15+02:00
-
-
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_19 item(s)_
+_7 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_c**: [ICU-22297](#issue-icu-22297) [ICU-22349](#issue-icu-22349)
- - **build_j**: [ICU-22324](#issue-icu-22324) [ICU-22477](#issue-icu-22477)
- - **format_date**: [ICU-22516](#issue-icu-22516) [ICU-22407](#issue-icu-22407)
- - **others**: [ICU-22323](#issue-icu-22323) [ICU-21697](#issue-icu-21697) [ICU-22322](#issue-icu-22322) [ICU-21964](#issue-icu-21964)
- - **properties**: [ICU-22404](#issue-icu-22404)
- - **team_processes_tools**: [ICU-22423](#issue-icu-22423) [ICU-22309](#issue-icu-22309) [ICU-22389](#issue-icu-22389) [ICU-22341](#issue-icu-22341) [ICU-22325](#issue-icu-22325)
- - **test_fmwk_util**: [ICU-22354](#issue-icu-22354) [ICU-22479](#issue-icu-22479)
- - **time_calc**: [ICU-22452](#issue-icu-22452)
+ - **build_j**: [ICU-22324](#issue-icu-22324)
+ - **format_date**: [ICU-22526](#issue-icu-22526) [ICU-22407](#issue-icu-22407)
+ - **others**: [ICU-22323](#issue-icu-22323) [ICU-22322](#issue-icu-22322)
+ - **team_processes_tools**: [ICU-22325](#issue-icu-22325)
+ - **test_fmwk_util**: [ICU-22479](#issue-icu-22479)
 
-
-#### Issue ICU-21697
-
-_Jira issue is open_
-- [ICU-21697](https://unicode-org.atlassian.net/browse/ICU-21697): `Initial migration of ICU Site pages to Github markdown`
-	- Assigned to Elango Cheran
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21697
-
-- [5435007](https://github.com/unicode-org/icu/commit/5435007e6a25bd8d365e8a3e560f40f14961d2b9) [ICU-21697](https://unicode-org.atlassian.net/browse/ICU-21697) `Convert ICU Site pages to markdown for Github Pages`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-05-30T16:18:32-07:00
-
-#### Issue ICU-21964
-
-_Jira issue is open_
-- [ICU-21964](https://unicode-org.atlassian.net/browse/ICU-21964): `locations of LICENSE files`
-	- Assigned to Steven R. Loomis
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): others
-
-##### Commits with Issue ICU-21964
-
-- [312bae8](https://github.com/unicode-org/icu/commit/312bae866003461bcd4022855ac7ec60546b81f7) [ICU-21964](https://unicode-org.atlassian.net/browse/ICU-21964) `use a single LICENSE file`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2023-04-12T14:36:09-05:00
-
-#### Issue ICU-22297
-
-_Jira issue is open_
-- [ICU-22297](https://unicode-org.atlassian.net/browse/ICU-22297): `Speed up azure-valgrind tests`
-	- Assigned to Frank Yung-Fong Tang
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22297
-
-- [981c182](https://github.com/unicode-org/icu/commit/981c182a7f3583fe262552d5bdea2c9f83f0d5b2) [ICU-22297](https://unicode-org.atlassian.net/browse/ICU-22297) `Speed up valgrind tests`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-04-05T16:42:32-07:00
-
-#### Issue ICU-22309
-
-_Jira issue is open_
-- [ICU-22309](https://unicode-org.atlassian.net/browse/ICU-22309): `ICU CONTRIBUTING.md updates for new unicode-org wide CLA`
-	- Assigned to Steven R. Loomis
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22309
-
-- [248b1c2](https://github.com/unicode-org/icu/commit/248b1c2a13fc7fc346e9e9419c4794df8a590ad9) [ICU-22309](https://unicode-org.atlassian.net/browse/ICU-22309) `update to LICENSE v3, Readme.md, CONTRIBUTING.md`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2023-08-21T11:48:04-05:00
-
-- [ec3aef8](https://github.com/unicode-org/icu/commit/ec3aef8feca208fa9c9c624dd591cfc982f826d2) [ICU-22309](https://unicode-org.atlassian.net/browse/ICU-22309) `update CONTRIBUTING.md for new process`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2023-04-24T13:55:48-05:00
-
-- [58c674a](https://github.com/unicode-org/icu/commit/58c674a72eca18a0883e8e0e9258107ed48e303d) [ICU-22309](https://unicode-org.atlassian.net/browse/ICU-22309) `update CONTRIBUTING.md`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2023-04-10T12:23:25-05:00
 
 #### Issue ICU-22322
 
@@ -195,6 +101,26 @@ _Jira issue is open_
 	- Component(s): build_j
 
 ##### Commits with Issue ICU-22324
+
+- [2e9d128](https://github.com/unicode-org/icu/commit/2e9d1288dd2f627227ff7a34c64905d3c92eb643) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Add docs for Maven usage`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-10-05T13:43:38-07:00
+
+- [deab8ee](https://github.com/unicode-org/icu/commit/deab8eef82c2005d7690b8dd9e95b24ca325d10b) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Update Maven migration scripts`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-10-05T13:43:31-07:00
+
+- [cc777ef](https://github.com/unicode-org/icu/commit/cc777ef48c27ae9f3c180be8354b9034118ccd6a) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Remove Ant build's `shared` directory`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-10-05T08:43:18-07:00
+
+- [623cb1a](https://github.com/unicode-org/icu/commit/623cb1acccfca1a6cbe02322a8fbd53ba3a3dd4e) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Update BRS task docs`
+	- Authored by Elango Cheran <elango@unicode.org>
+	- Committed at 2023-10-04T21:05:20-07:00
+
+- [1b5542d](https://github.com/unicode-org/icu/commit/1b5542da42a984f40f828871ad9674cadf04509d) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization: fix the with_full_javadoc profile`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2023-10-04T16:29:18-07:00
 
 - [e09adbf](https://github.com/unicode-org/icu/commit/e09adbf05a136cc2e59159300d74e0ec81401e41) [ICU-22324](https://unicode-org.atlassian.net/browse/ICU-22324) `Mavenization: removed license links (error on Windows)`
 	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
@@ -278,6 +204,18 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-22325
+
+- [597e311](https://github.com/unicode-org/icu/commit/597e3110a5a129f6ad644c8dff0f04bacd565bc5) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR 44 beta2 integration to ICU part three, source files changes`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2023-10-04T15:18:56-07:00
+
+- [72099ee](https://github.com/unicode-org/icu/commit/72099ee64cef53b326dc9941f567f4d57733f788) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR 44 beta2 integration to ICU part two, source files generated or copied from CLDR`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2023-10-04T15:18:56-07:00
+
+- [34883e9](https://github.com/unicode-org/icu/commit/34883e931c211d2f5f0db4b78a029b8d686fb935) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `CLDR 44 beta2 integration to ICU part one, binary and binary source files`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2023-10-04T15:18:56-07:00
 
 - [1651e63](https://github.com/unicode-org/icu/commit/1651e63b338a947b5979a219c5ecaa1e38e5fea5) [ICU-22325](https://unicode-org.atlassian.net/browse/ICU-22325) `BRS74 ICU4J API signature file`
 	- Authored by yumaoka <y.umaoka@gmail.com>
@@ -395,126 +333,6 @@ _Jira issue is open_
 	- Authored by Peter Edberg <pedberg@unicode.org>
 	- Committed at 2023-05-10T18:08:25-07:00
 
-#### Issue ICU-22341
-
-_Jira issue is open_
-- [ICU-22341](https://unicode-org.atlassian.net/browse/ICU-22341): `Commit checker: Split out repo, Umbrella, sort by Priority`
-	- Assigned to Steven R. Loomis
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22341
-
-- [1e60df0](https://github.com/unicode-org/icu/commit/1e60df0f8206f136fd614a97b1ec901de94117c4) [ICU-22341](https://unicode-org.atlassian.net/browse/ICU-22341) `commit checker: umbrella, explanations`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2023-04-13T12:20:12-05:00
-
-#### Issue ICU-22349
-
-_Jira issue is open_
-- [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349): `Speed pre-merge GHA and CI to less than 30 mins`
-	- Assigned to Frank Yung-Fong Tang
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22349
-
-- [e1e1c5f](https://github.com/unicode-org/icu/commit/e1e1c5feaf67652d9f124b23749a430d3278fe7b) [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349) `Use -l with make -j to limit jobs based on load average.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-05-11T00:50:59+02:00
-
-- [5be2ea8](https://github.com/unicode-org/icu/commit/5be2ea84e59e63e4d68ebcd4082996d6db3af9f0) [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349) `Bump the cygwin timeout to 50 minutes`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-04-20T19:32:34-07:00
-
-- [85fd738](https://github.com/unicode-org/icu/commit/85fd7389e0fdd89b5a0aafe07429dd2452f1d310) [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349) `Speed up pre-merge CI`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-04-19T08:06:59+05:30
-
-- [4b51550](https://github.com/unicode-org/icu/commit/4b515504fdee138bbcb5fcabb6ed7ed18f544135) [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349) `Build cygwin with -j  to run multiple cores`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-04-13T11:48:01+05:30
-
-- [cbb25bb](https://github.com/unicode-org/icu/commit/cbb25bb186595641bc2ce9dc3f35f23d33fbcf87) [ICU-22349](https://unicode-org.atlassian.net/browse/ICU-22349) `Change to use just -j value in make to "not limit the number of jobs that can run simultaneously"`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-04-12T15:47:06-07:00
-
-#### Issue ICU-22354
-
-_Jira issue is open_
-- [ICU-22354](https://unicode-org.atlassian.net/browse/ICU-22354): `Update actions and platforms in the GitHub Actions workflows`
-	- Assigned to Mohammed Keyvanzadeh
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-22354
-
-- [f1b13a8](https://github.com/unicode-org/icu/commit/f1b13a850a92557d6f6430ee0f867c3bcfbecbd5) [ICU-22354](https://unicode-org.atlassian.net/browse/ICU-22354) `Revert benchmark-action changes`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-06-27T14:53:04-07:00
-
-- [b575f7c](https://github.com/unicode-org/icu/commit/b575f7c8f5d5619c231615176671269a3de372d2) [ICU-22354](https://unicode-org.atlassian.net/browse/ICU-22354) `Update actions and platforms in GitHub Actions workflows`
-	- Authored by Mohammed Keyvanzadeh <mohammadkeyvanzade94@gmail.com>
-	- Committed at 2023-06-27T11:32:57-07:00
-
-#### Issue ICU-22389
-
-_Jira issue is open_
-- [ICU-22389](https://unicode-org.atlassian.net/browse/ICU-22389): `ICU 73.2 BRS`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Fix Version: 73.2
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22389
-
-- [e567b50](https://github.com/unicode-org/icu/commit/e567b50df853b7307d25f45f1ecf5df912b78ec9) [ICU-22389](https://unicode-org.atlassian.net/browse/ICU-22389) `Set STRIP_FROM_PATH to enable Doxygen out-of-source builds.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-06-14T15:08:59+02:00
-
-- [53e0486](https://github.com/unicode-org/icu/commit/53e04868558469dc394ac8a58c7ac58e231972f2) [ICU-22389](https://unicode-org.atlassian.net/browse/ICU-22389) `Add missing git lfs install to instructions.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2023-06-14T15:08:35+02:00
-
-#### Issue ICU-22404
-
-_Jira issue is open_
-- [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404): `Unicode 15.1`
-	- Assigned to Elango Cheran
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): properties
-
-##### Commits with Issue ICU-22404
-
-- [d8659b4](https://github.com/unicode-org/icu/commit/d8659b476d4703b18bb9ea040798c1e62ff3329e) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `new properties IDS_Unary_Operator, ID_Compat_Math_*, NFKC_SCF`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-09-16T14:41:51-07:00
-
-- [81a6edb](https://github.com/unicode-org/icu/commit/81a6edb2870abee08ecbbc7d28407081277e134f) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `Unicode 15.1 data 20230811 plus UTS46 fix`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-08-16T14:25:22-07:00
-
-- [a6fc915](https://github.com/unicode-org/icu/commit/a6fc915e05cd00252fada5c38fc29f26968c6002) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `Strip default ignorable code points in the skeleton for confusable detection`
-	- Authored by Robin Leroy <egg.robin.leroy@gmail.com>
-	- Committed at 2023-08-10T17:55:14+02:00
-
-- [86193b1](https://github.com/unicode-org/icu/commit/86193b1b982528ab1a4407e80cd3bdac2e23fc26) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `Improve documentation of segmentation rules`
-	- Authored by Robin Leroy <egg.robin.leroy@gmail.com>
-	- Committed at 2023-08-10T03:01:20+02:00
-
-- [2e45e6e](https://github.com/unicode-org/icu/commit/2e45e6ec0e84a1c01812015a254ea31b286316fb) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `Unicode 15.1 beta data files & API constants`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-07-13T19:26:14-07:00
-
-- [f423457](https://github.com/unicode-org/icu/commit/f4234577ad723ec27c251a5b88733728aad212e8) [ICU-22404](https://unicode-org.atlassian.net/browse/ICU-22404) `initial changes.txt for Unicode 15.1`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2023-06-04T20:16:39-07:00
-
 #### Issue ICU-22407
 
 _Jira issue is open_
@@ -533,55 +351,6 @@ _Jira issue is open_
 - [d511cad](https://github.com/unicode-org/icu/commit/d511cad90d3144ab7324f4368261249ff27a9f59) [ICU-22407](https://unicode-org.atlassian.net/browse/ICU-22407) `Implement Java Temporal Calendar API`
 	- Authored by Frank Tang <ftang@chromium.org>
 	- Committed at 2023-07-28T18:17:38-07:00
-
-#### Issue ICU-22423
-
-_Jira issue is open_
-- [ICU-22423](https://unicode-org.atlassian.net/browse/ICU-22423): `Add the OpenSSF Scorecards GitHub Action`
-	- Assigned to Elango Cheran
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22423
-
-- [af8dc57](https://github.com/unicode-org/icu/commit/af8dc57a1ded609b488657afa68c578835b630ac) [ICU-22423](https://unicode-org.atlassian.net/browse/ICU-22423) `Use hashes instead of version tags for GH Actions`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2023-08-31T08:13:43-07:00
-
-- [95f2583](https://github.com/unicode-org/icu/commit/95f25839f4b4bd25ceb779f885b0158b8a8ab685) [ICU-22423](https://unicode-org.atlassian.net/browse/ICU-22423) `Add scorecard.yml`
-	- Authored by Pedro Kaj Kjellerup Nacht <pnacht@google.com>
-	- Committed at 2023-08-30T15:11:50-07:00
-
-#### Issue ICU-22452
-
-_Jira issue is open_
-- [ICU-22452](https://unicode-org.atlassian.net/browse/ICU-22452): `Add API to return "primary" IANA time zone ID`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22452
-
-- [6338b70](https://github.com/unicode-org/icu/commit/6338b704ff9ed73757e11f6917cf835aee7ec0e4) [ICU-22452](https://unicode-org.atlassian.net/browse/ICU-22452) `API for resolving preferred IANA zone ID from a zone ID.`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2023-08-11T17:00:05-04:00
-
-#### Issue ICU-22477
-
-_Jira issue is open_
-- [ICU-22477](https://unicode-org.atlassian.net/browse/ICU-22477): ` icu4j-XXXperf tests are all broken after landing of PR 2570`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 74.1
-	- Component(s): build_j
-
-##### Commits with Issue ICU-22477
-
-- [d501225](https://github.com/unicode-org/icu/commit/d501225db2bfed4fee3049827d6e9076dae2d1ad) [ICU-22477](https://unicode-org.atlassian.net/browse/ICU-22477) `Fix the performance tests after the maven folder changes`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2023-08-31T19:38:20-07:00
 
 #### Issue ICU-22479
 
@@ -626,19 +395,19 @@ _Jira issue is open_
 	- Authored by Frank Tang <ftang@chromium.org>
 	- Committed at 2023-09-01T17:57:30-07:00
 
-#### Issue ICU-22516
+#### Issue ICU-22526
 
 _Jira issue is open_
-- [ICU-22516](https://unicode-org.atlassian.net/browse/ICU-22516): `icu:relative_date_time_formatter_fuzzer: Segv on unknown address in icu_74::UnicodeString::copyFrom`
+- [ICU-22526](https://unicode-org.atlassian.net/browse/ICU-22526): `Increase minimum limit for time zone offsets to -24 hours`
 	- Assigned to Frank Yung-Fong Tang
 	- Status: Accepted
 	- Fix Version: 74.1
 	- Component(s): format_date
 
-##### Commits with Issue ICU-22516
+##### Commits with Issue ICU-22526
 
-- [c1475f4](https://github.com/unicode-org/icu/commit/c1475f4bbdf230bd2ed277ad97d667869291e58b) [ICU-22516](https://unicode-org.atlassian.net/browse/ICU-22516) `Return error while the style is invalid`
+- [d82ad99](https://github.com/unicode-org/icu/commit/d82ad9975d46f901b01fd277becc0e4f458b8f7c) [ICU-22526](https://unicode-org.atlassian.net/browse/ICU-22526) `Allow GMT-23:59 time zone`
 	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2023-09-25T15:43:49-07:00
+	- Committed at 2023-10-04T14:43:36-07:00
 
 
