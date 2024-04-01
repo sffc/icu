@@ -7,107 +7,34 @@ Commit Report
 =============
 
 Environment:
-- Now: 2024-03-29T15:47:40.119258
+- Now: 2024-04-01T14:33:56.985010
 - Latest Commit: https://github.com/unicode-org/icu/commit/97335dfa7e323f41b46918bbf5cad95c5e521268
 - Jira Query: `project=ICU AND fixVersion=75.1`
-- Rev Range: `release-74-2..upstream/main`
+- Rev Range: `release-74-2..upstream/maint/maint-75`
 - Authenticated: `Yes`
 
 -----
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 22
+Total problem(s): 5
 
 ## Table Of Contents
 Note: empty categories are omitted.
-- [Closed Issues with No Commit](#closed-issues-with-no-commit) 4
+- _Closed Issues with No Commit_
 - _Closed Issues with Commit Policy Problems_
 - _Commits without Jira Issue Tag_
-- [Commits with Jira Issue Not Found](#commits-with-jira-issue-not-found) 3
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 15
+- [Commits with Jira Issue Not Found](#commits-with-jira-issue-not-found) 1
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 4
 - _Issue is under Review_
 - [Excluded Commits](#excluded-commits) 3
 
 ## Problem Categories
-### Closed Issues with No Commit
-[🔝Top](#table-of-contents)
-
-_4 item(s)_
-ICU Tip: If commits aren't expected, change the ticket type to 'Task' or 'User Guide' or set the resolution to one such as 'Fixed by other ticket' or 'Fix Non-repo'.
-CLDR Tip: Change the ticket type or set the resolution to one such as 'Fixed by other ticket' or 'Fix Non-repo' if commits aren't expected.
-
-- [ICU-22660](https://unicode-org.atlassian.net/browse/ICU-22660): `SHASUM512 information on 74.2 release is not correct`
-	- _Closed Issues with No Commit_
-	- Assigned to Craig Cornelius
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 75.1
-	- Component(s): team_processes_tools
-
-- [ICU-22575](https://unicode-org.atlassian.net/browse/ICU-22575): `AvailableFormatsSink doesn't inherit patterns from root`
-	- _Closed Issues with No Commit_
-	- Assigned to Rich Gillam
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 75.1
-	- Fix Version: 74.2
-	- Component(s): format_date
-	 - **Note: Has excluded/cherry-picked commits. Fix Version may be wrong.**
-
-- [ICU-22546](https://unicode-org.atlassian.net/browse/ICU-22546): `uloc_addLikelySubtags doc-comments don't match actual output`
-	- _Closed Issues with No Commit_
-	- Assigned to Frank Yung-Fong Tang
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 75.1
-	- Component(s): locale_id
-
-- [ICU-22258](https://unicode-org.atlassian.net/browse/ICU-22258): `dangi round trip bug in 1988/2/17 and 1958/2/18`
-	- _Closed Issues with No Commit_
-	- Assigned to Frank Yung-Fong Tang
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 75.1
-	- Component(s): time_calc
-
-
 ### Commits with Jira Issue Not Found
 [🔝Top](#table-of-contents)
 
-_3 item(s)_
+_1 item(s)_
 Tip: Check that these tickets have the correct fixVersion tag.
-
-#### Issue ICU-21991
-
-_issue was not found in `project=ICU AND fixVersion=75.1`_
-- [ICU-21991](https://unicode-org.atlassian.net/browse/ICU-21991): `Add a CI build bot that uses VS2022`
-	- Assigned to Rahul Pandey
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 74.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-21991
-
-- [bd9e5ed](https://github.com/unicode-org/icu/commit/bd9e5ed620edda29b9e00ca471c3cd4e2eef4e26) [ICU-21991](https://unicode-org.atlassian.net/browse/ICU-21991) `added VS2022 checks and changed windows SDK version`
-	- Authored by Sarvesh Arora <sarvesharora@microsoft.com>
-	- Committed at 2023-10-12T14:36:27+05:30
-
-#### Issue ICU-22482
-
-_issue was not found in `project=ICU AND fixVersion=75.1`_
-- [ICU-22482](https://unicode-org.atlassian.net/browse/ICU-22482): `Hash-pin workflow GitHub Actions`
-	- Assigned to Elango Cheran
-	- Status: Accepted
-	- Fix Version: _none_
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-22482
-
-- [80a01a4](https://github.com/unicode-org/icu/commit/80a01a475b3704b57adbf117b746c2981ef5e7f5) [ICU-22482](https://unicode-org.atlassian.net/browse/ICU-22482) `Hash-pin GHA, add dependabot to keep them updated`
-	- Authored by Pedro Kaj Kjellerup Nacht <pnacht@google.com>
-	- Committed at 2024-03-20T22:14:52-07:00
 
 #### Issue ICU-22583
 
@@ -141,19 +68,14 @@ _issue was not found in `project=ICU AND fixVersion=75.1`_
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_15 item(s)_
+_4 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
- - **build_j**: [ICU-22605](#issue-icu-22605) [ICU-22675](#issue-icu-22675)
- - **format_message**: [ICU-22690](#issue-icu-22690) [ICU-22261](#issue-icu-22261)
- - **locale_id**: [ICU-22700](#issue-icu-22700)
+ - **format_message**: [ICU-22261](#issue-icu-22261)
  - **others**: [ICU-22532](#issue-icu-22532) [ICU-22533](#issue-icu-22533)
- - **team_processes_tools**: [ICU-22481](#issue-icu-22481) [ICU-22677](#issue-icu-22677) [ICU-22534](#issue-icu-22534)
- - **test_fmwk_util**: [ICU-22482](#issue-icu-22482)
- - **textbounds**: [ICU-22666](#issue-icu-22666) [ICU-22518](#issue-icu-22518)
- - **time_calc**: [ICU-22659](#issue-icu-22659) [ICU-22620](#issue-icu-22620)
+ - **team_processes_tools**: [ICU-22534](#issue-icu-22534)
 
 
 #### Issue ICU-22261
@@ -178,51 +100,6 @@ _Jira issue is open_
 - [f7d641d](https://github.com/unicode-org/icu/commit/f7d641d5adb0460d1f58bad5947a29725870cc83) [ICU-22261](https://unicode-org.atlassian.net/browse/ICU-22261) `Add tech preview implementation for MessageFormat 2.0 to icu4c`
 	- Authored by Tim Chevalier <tjc@igalia.com>
 	- Committed at 2024-03-27T17:04:07-04:00
-
-#### Issue ICU-22481
-
-_Jira issue is open_
-- [ICU-22481](https://unicode-org.atlassian.net/browse/ICU-22481): `gendict should support toml output`
-	- Assigned to Manish मनीष Goregaokar
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22481
-
-- [74abcfe](https://github.com/unicode-org/icu/commit/74abcfe288b4b25b8255e65c9cafbe8f89319bf4) [ICU-22481](https://unicode-org.atlassian.net/browse/ICU-22481) `Add toml support to gendict`
-	- Authored by Manish Goregaokar <manishsmail@gmail.com>
-	- Committed at 2023-12-27T22:59:57-08:00
-
-#### Issue ICU-22482
-
-_Jira issue is open_
-- [ICU-22482](https://unicode-org.atlassian.net/browse/ICU-22482): `Hash-pin workflow GitHub Actions`
-	- Assigned to Elango Cheran
-	- Status: Accepted
-	- Fix Version: _none_
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-22482
-
-- [80a01a4](https://github.com/unicode-org/icu/commit/80a01a475b3704b57adbf117b746c2981ef5e7f5) [ICU-22482](https://unicode-org.atlassian.net/browse/ICU-22482) `Hash-pin GHA, add dependabot to keep them updated`
-	- Authored by Pedro Kaj Kjellerup Nacht <pnacht@google.com>
-	- Committed at 2024-03-20T22:14:52-07:00
-
-#### Issue ICU-22518
-
-_Jira issue is open_
-- [ICU-22518](https://unicode-org.atlassian.net/browse/ICU-22518): `Add a way to export segmentation monkey tests in UCD format`
-	- Assigned to Robin Leroy
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-22518
-
-- [ba1208e](https://github.com/unicode-org/icu/commit/ba1208e49b10c808651cd40bc05e0138c5291194) [ICU-22518](https://unicode-org.atlassian.net/browse/ICU-22518) `Add a flag to export the output of the reference implementation from the old segmentation monkey tests`
-	- Authored by Robin Leroy <egg.robin.leroy@gmail.com>
-	- Committed at 2024-02-08T04:54:33+01:00
 
 #### Issue ICU-22532
 
@@ -430,130 +307,6 @@ _Jira issue is open_
 	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
 	- Committed at 2023-10-06T16:49:26-07:00
 
-#### Issue ICU-22605
-
-_Jira issue is open_
-- [ICU-22605](https://unicode-org.atlassian.net/browse/ICU-22605): `The -sources.jar files in the 74.1 and 74.2 releases are (a lot) bigger than before`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): build_j
-
-##### Commits with Issue ICU-22605
-
-- [e76094c](https://github.com/unicode-org/icu/commit/e76094c55a0fe4bc6f5307102698e0fc632bf89d) [ICU-22605](https://unicode-org.atlassian.net/browse/ICU-22605) `Exclude the data files from the -sources.jar`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2023-12-15T09:08:22-08:00
-
-#### Issue ICU-22620
-
-_Jira issue is open_
-- [ICU-22620](https://unicode-org.atlassian.net/browse/ICU-22620): `IANA TZ Database 2023d updates in ICU`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22620
-
-- [dc7014f](https://github.com/unicode-org/icu/commit/dc7014fda6d6f08b3ddf468bddd62548c8c6263f) [ICU-22620](https://unicode-org.atlassian.net/browse/ICU-22620) `tz2023d updates`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-01-11T11:41:23-05:00
-
-#### Issue ICU-22659
-
-_Jira issue is open_
-- [ICU-22659](https://unicode-org.atlassian.net/browse/ICU-22659): `tzdata 2024a updates`
-	- Assigned to Yoshito Umaoka
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): time_calc
-
-##### Commits with Issue ICU-22659
-
-- [cd251ee](https://github.com/unicode-org/icu/commit/cd251ee62e08dd634162a269c54374be99b51c86) [ICU-22659](https://unicode-org.atlassian.net/browse/ICU-22659) `tzdata2024a updates in ICU repo`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-02-08T15:00:39-05:00
-
-#### Issue ICU-22666
-
-_Jira issue is open_
-- [ICU-22666](https://unicode-org.atlassian.net/browse/ICU-22666): `Update ML model to improve Japanese phrase breaking quality`
-	- Assigned to Shuhei Iitsuka
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): textbounds
-
-##### Commits with Issue ICU-22666
-
-- [37ecee3](https://github.com/unicode-org/icu/commit/37ecee3a0c80bb10108e7e6d4a91989756384a67) [ICU-22666](https://unicode-org.atlassian.net/browse/ICU-22666) `Update ML model to improve Japanese phrase breaking quality`
-	- Authored by Shuhei Iitsuka <tushuhei@gmail.com>
-	- Committed at 2024-03-11T12:00:03-07:00
-
-#### Issue ICU-22675
-
-_Jira issue is open_
-- [ICU-22675](https://unicode-org.atlassian.net/browse/ICU-22675): `Migrate from deprecated boxed primitive constructors to their replacements`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): build_j
-
-##### Commits with Issue ICU-22675
-
-- [201af46](https://github.com/unicode-org/icu/commit/201af462fc1f939f569c70e748f63bb36dd4b2a4) [ICU-22675](https://unicode-org.atlassian.net/browse/ICU-22675) `Migrate from deprecated boxed primitive constructors to their replacements`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2024-02-26T16:39:05-08:00
-
-#### Issue ICU-22677
-
-_Jira issue is open_
-- [ICU-22677](https://unicode-org.atlassian.net/browse/ICU-22677): `licensing updates (spdx, README, LICENSE, CONTRIBUTING)`
-	- Assigned to Steven R. Loomis
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22677
-
-- [ea1c6da](https://github.com/unicode-org/icu/commit/ea1c6da07fa345dd485408caee51703bc95c0454) [ICU-22677](https://unicode-org.atlassian.net/browse/ICU-22677) `update LICENSE and README.md and pom.xml`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2024-02-26T14:34:59-06:00
-
-- [6d15faa](https://github.com/unicode-org/icu/commit/6d15faab4806df96e6cba4a6bb0e9a2e67b4c630) [ICU-22677](https://unicode-org.atlassian.net/browse/ICU-22677) `update CONTRIBUTING.md`
-	- Authored by Steven R. Loomis <srl295@gmail.com>
-	- Committed at 2024-02-26T11:44:35-06:00
-
-#### Issue ICU-22690
-
-_Jira issue is open_
-- [ICU-22690](https://unicode-org.atlassian.net/browse/ICU-22690): `Update the ICU4J implementation of MessageFormatter (MFv2) to the latest spec, LDML 45`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): format_message
-
-##### Commits with Issue ICU-22690
-
-- [141e820](https://github.com/unicode-org/icu/commit/141e820f7134b67818a76a8050671e8eea42eeb2) [ICU-22690](https://unicode-org.atlassian.net/browse/ICU-22690) `Update ICU4J MessageFormatter to the latest spec, LDML 45`
-	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
-	- Committed at 2024-03-22T14:39:02-07:00
-
-#### Issue ICU-22700
-
-_Jira issue is open_
-- [ICU-22700](https://unicode-org.atlassian.net/browse/ICU-22700): `Locale name with "." and a very long tag caused very slow run time in DateFormat::create`
-	- No assignee!
-	- Status: Accepted
-	- Fix Version: 75.1
-	- Component(s): locale_id
-
-##### Commits with Issue ICU-22700
-
-- [d259da8](https://github.com/unicode-org/icu/commit/d259da81183bd2439e19dcb17cccf57cc31cf46c) [ICU-22700](https://unicode-org.atlassian.net/browse/ICU-22700) `Fix large POSIX charset name cause hang`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-03-21T11:33:52-07:00
-
 
 ### Excluded Commits
 [🔝Top](#table-of-contents)
@@ -565,12 +318,12 @@ These commits are not considered as part of current version tickets.
 	- Authored by yumaoka <y.umaoka@gmail.com>
 	- Committed at 2023-10-30T19:51:44-07:00
 	- NOTE: excluded due to already being merged to old maint
-- [bcae6f2](https://github.com/unicode-org/icu/commit/bcae6f2a437f3e58eb5afb8568f88b286a389e37) [ICU-22575](https://unicode-org.atlassian.net/browse/ICU-22575) `Change AvailableFormatsSink to allow locales to inherit availableFormats items from the root locale.`
-	- Authored by Rich Gillam <richard_gillam@apple.com>
-	- Committed at 2023-12-04T12:47:50-08:00
-	- NOTE: excluded due to already being merged to old maint
 - [da83309](https://github.com/unicode-org/icu/commit/da83309900e90509d6d559e4ad5f9a2a0a1cef6b) [ICU-22595](https://unicode-org.atlassian.net/browse/ICU-22595) `GitHub release file generation script to include javadoc for each artifact in addition to full javadoc`
 	- Authored by yumaoka <y.umaoka@gmail.com>
 	- Committed at 2023-12-07T10:37:15-08:00
+	- NOTE: excluded due to already being merged to old maint
+- [bcae6f2](https://github.com/unicode-org/icu/commit/bcae6f2a437f3e58eb5afb8568f88b286a389e37) [ICU-22575](https://unicode-org.atlassian.net/browse/ICU-22575) `Change AvailableFormatsSink to allow locales to inherit availableFormats items from the root locale.`
+	- Authored by Rich Gillam <richard_gillam@apple.com>
+	- Committed at 2023-12-04T12:47:50-08:00
 	- NOTE: excluded due to already being merged to old maint
 
