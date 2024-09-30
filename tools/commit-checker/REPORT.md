@@ -7,8 +7,8 @@ Commit Report
 =============
 
 Environment:
-- Now: 2024-09-18T16:25:45.619468
-- Latest Commit: https://github.com/unicode-org/icu/commit/09c5aa1b7449fce136adf42a22ad13f0acb98aac
+- Now: 2024-09-30T10:02:00.843068
+- Latest Commit: https://github.com/unicode-org/icu/commit/8bdb3066b16558c1de32e830cb2ce78db5084c4c
 - Jira Query: `project=ICU AND fixVersion=76.1`
 - Rev Range: `release-75-1..upstream/main`
 - Authenticated: `Yes`
@@ -17,87 +17,39 @@ Environment:
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 26
+Total problem(s): 16
 
 ## Table Of Contents
 Note: empty categories are omitted.
-- [Closed Issues with No Commit](#closed-issues-with-no-commit) 1
+- _Closed Issues with No Commit_
 - _Closed Issues with Commit Policy Problems_
 - _Commits without Jira Issue Tag_
 - _Commits with Jira Issue Not Found_
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 25
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 16
 - _Issue is under Review_
 - _Excluded Commits_
 
 ## Problem Categories
-### Closed Issues with No Commit
-[🔝Top](#table-of-contents)
-
-_1 item(s)_
-ICU Tip: If commits aren't expected, change the ticket type to 'Task' or 'User Guide' or set the resolution to one such as 'Fixed by other ticket' or 'Fix Non-repo'.
-CLDR Tip: Change the ticket type or set the resolution to one such as 'Fixed by other ticket' or 'Fix Non-repo' if commits aren't expected.
-
-- [ICU-22394](https://unicode-org.atlassian.net/browse/ICU-22394): ``uloc_getLanguage()` doesn't obey `ULOC_LANG_CAPACITY``
-	- _Closed Issues with No Commit_
-	- Assigned to Markus Scherer
-	- Status: Done
-	- Resolution: Fixed
-	- Fix Version: 76.1
-	- Component(s): collation locale_id parser
-
-
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_25 item(s)_
+_16 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
  - **api_for_locale_data**: [ICU-22374](#issue-icu-22374)
- - **build_c**: [ICU-22787](#issue-icu-22787) [ICU-22873](#issue-icu-22873) [ICU-22764](#issue-icu-22764)
+ - **build_c**: [ICU-22764](#issue-icu-22764)
  - **build_j**: [ICU-22606](#issue-icu-22606)
  - **conversion**: [ICU-22596](#issue-icu-22596)
- - **data_loading_rb_svc**: [ICU-21809](#issue-icu-21809)
- - **format_message**: [ICU-22834](#issue-icu-22834) [ICU-22893](#issue-icu-22893) [ICU-22794](#issue-icu-22794)
  - **format_number**: [ICU-22800](#issue-icu-22800)
- - **locale_id**: [ICU-22696](#issue-icu-22696) [ICU-22877](#issue-icu-22877)
  - **normalization**: [ICU-22642](#issue-icu-22642)
- - **others**: [ICU-22793](#issue-icu-22793) [ICU-22722](#issue-icu-22722) [ICU-22721](#issue-icu-22721)
+ - **others**: [ICU-22721](#issue-icu-22721) [ICU-22722](#issue-icu-22722)
  - **strings**: [ICU-22843](#issue-icu-22843)
- - **team_processes_tools**: [ICU-22745](#issue-icu-22745) [ICU-22723](#issue-icu-22723) [ICU-22724](#issue-icu-22724)
- - **test_fmwk_util**: [ICU-21205](#issue-icu-21205) [ICU-22716](#issue-icu-22716) [ICU-22814](#issue-icu-22814) [ICU-22801](#issue-icu-22801)
+ - **team_processes_tools**: [ICU-22724](#issue-icu-22724) [ICU-22745](#issue-icu-22745) [ICU-22723](#issue-icu-22723)
+ - **test_fmwk_util**: [ICU-22814](#issue-icu-22814) [ICU-22801](#issue-icu-22801)
+ - **time_calc**: [ICU-22730](#issue-icu-22730) [ICU-22896](#issue-icu-22896)
 
-
-#### Issue ICU-21205
-
-_Jira issue is open_
-- [ICU-21205](https://unicode-org.atlassian.net/browse/ICU-21205): `Deduplicate C & Java testdata to a common directory`
-	- No assignee!
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-21205
-
-- [40189ff](https://github.com/unicode-org/icu/commit/40189ffe575c66e2acef294765acbf23e653fe76) [ICU-21205](https://unicode-org.atlassian.net/browse/ICU-21205) `Fix Eclipse failing to import the icu4j maven project`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2024-08-16T13:38:56-07:00
-
-#### Issue ICU-21809
-
-_Jira issue is open_
-- [ICU-21809](https://unicode-org.atlassian.net/browse/ICU-21809): `Possible memory leak in ures_swap`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): data_loading_rb_svc
-
-##### Commits with Issue ICU-21809
-
-- [f48944e](https://github.com/unicode-org/icu/commit/f48944e06297bb5b3ac4ebfa122d3ebceccab51d) [ICU-21809](https://unicode-org.atlassian.net/browse/ICU-21809) `Possible memory leak of tempTable.resFlags`
-	- Authored by Makoto Kato <m_kato@ga2.so-net.ne.jp>
-	- Committed at 2024-06-18T13:49:23-07:00
 
 #### Issue ICU-22374
 
@@ -140,6 +92,10 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-22606
 
+- [22fe3a1](https://github.com/unicode-org/icu/commit/22fe3a14ab58973815fcc05dad6686a33d08725f) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Point the Maven Central link to license to a versioned one`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2024-09-23T09:54:41-07:00
+
 - [edbf020](https://github.com/unicode-org/icu/commit/edbf02094f6105f45873947a3509ebcbc43ddf14) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Correct urls in the scm entry; fix JCite styles in javadoc`
 	- Authored by Mihai Nita <mnita@google.com>
 	- Committed at 2024-08-31T15:37:10-07:00
@@ -163,96 +119,6 @@ _Jira issue is open_
 	- Authored by Frank Tang <ftang@chromium.org>
 	- Committed at 2024-06-06T12:48:59+02:00
 
-#### Issue ICU-22696
-
-_Jira issue is open_
-- [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696): `Improve memory management in the locale code (ICU 76)`
-	- Assigned to Fredrik Roubert
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): locale_id
-
-##### Commits with Issue ICU-22696
-
-- [bae2aa6](https://github.com/unicode-org/icu/commit/bae2aa65d8e99efbd4643ddb2da3cc71701e5070) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Avoid unnecessary copies of already NUL terminated strings.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-08-13T21:15:26+02:00
-
-- [7ffbe77](https://github.com/unicode-org/icu/commit/7ffbe77e12d109b8624037994959adba8bb6f6c8) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Update ulocimp_setKeywordValue() to use std::string_view.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-08-13T14:03:18+02:00
-
-- [8a6d59e](https://github.com/unicode-org/icu/commit/8a6d59ec80b5229ac2bfa1c3c4202106e2b821f1) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Update ulocimp_to*{Key,Type}() to use std::string_view.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-08-07T14:14:23+02:00
-
-- [dd65ee3](https://github.com/unicode-org/icu/commit/dd65ee3f0b3995ba1b7efcfa0b3bcfe944c0b1fa) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Update ulocimp_getKeywordValue() to use std::string_view.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-07-31T15:39:15+02:00
-
-- [10fe2a6](https://github.com/unicode-org/icu/commit/10fe2a6110dfcdf160e95161cb9142bbb0883e8f) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Add uhash support for std::string_view.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-07-30T06:45:43+02:00
-
-- [8891c07](https://github.com/unicode-org/icu/commit/8891c070bddedb626569cb9b432bf2e11d9ab1bd) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Add implicit conversion from StringPiece to std::string_view.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-07-30T06:45:33+02:00
-
-- [5d7cbdb](https://github.com/unicode-org/icu/commit/5d7cbdbc025160a51d96118450c7d1ea1a34e4d8) [ICU-22696](https://unicode-org.atlassian.net/browse/ICU-22696) `Delete unused code.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-07-29T22:03:10+02:00
-
-#### Issue ICU-22716
-
-_Jira issue is open_
-- [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716): `improve fuzzer coverage for ICU 76`
-	- Assigned to Frank Yung-Fong Tang
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): test_fmwk_util
-
-##### Commits with Issue ICU-22716
-
-- [70caba0](https://github.com/unicode-org/icu/commit/70caba0027cbe381565db174184514c667a93b8a) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Turn on message_formatter_fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-12T14:53:01-07:00
-
-- [36555b7](https://github.com/unicode-org/icu/commit/36555b780029f2a739c527505dc66ac24f98fc08) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Temp turn off message_formatter_fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-11T12:12:36-07:00
-
-- [4f246ab](https://github.com/unicode-org/icu/commit/4f246ab17fdab0299bd07f7511f6bae60bdd0246) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Test VTimeZone in fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-10T22:51:12-07:00
-
-- [1c3bf0b](https://github.com/unicode-org/icu/commit/1c3bf0bf820c51ee80e575a7803a62ba47637954) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Extend Collator fuzzing`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-10T22:51:00-07:00
-
-- [3a74fcf](https://github.com/unicode-org/icu/commit/3a74fcf052fee4c89ff92107cf3f22f8ae3bea03) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Test more number format`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-10T22:50:47-07:00
-
-- [266a2b8](https://github.com/unicode-org/icu/commit/266a2b8de2220ba9af789d6e9960616174c68dc6) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Add MessageFormat fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-10T22:50:33-07:00
-
-- [4ef5832](https://github.com/unicode-org/icu/commit/4ef58328d04633ad90fa89e7f7cbbd89e2d16b2e) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Reduce the data size to test calendar fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-09-05T11:17:07-07:00
-
-- [cf7ff1b](https://github.com/unicode-org/icu/commit/cf7ff1b0a508c216c57b61badfa44681cf0978fc) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Set smaller timeout limit for uregex_match_fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-06-24T14:06:08-07:00
-
-- [86add69](https://github.com/unicode-org/icu/commit/86add69c928141d69d8138da43012720b283dc53) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Set timeout limit for uregex_match_fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-06-21T11:49:55-07:00
-
-- [e5b8660](https://github.com/unicode-org/icu/commit/e5b8660a463821f2c4880cabdfd96f1c0395f24f) [ICU-22716](https://unicode-org.atlassian.net/browse/ICU-22716) `Add uregex_match_fuzzer`
-	- Authored by Frank Tang <ftang@chromium.org>
-	- Committed at 2024-06-17T20:06:41-07:00
-
 #### Issue ICU-22721
 
 _Jira issue is open_
@@ -264,6 +130,30 @@ _Jira issue is open_
 	- Component(s): others
 
 ##### Commits with Issue ICU-22721
+
+- [9fb6dca](https://github.com/unicode-org/icu/commit/9fb6dca1f918f2f8a8009d83851d3b9a5f4156ed) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `Have the testdata folder trigger CI actions for both icu4c & icu4j`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2024-09-24T12:44:29-07:00
+
+- [0334d92](https://github.com/unicode-org/icu/commit/0334d92394abd17006c9cc61d54822b06cbe92f8) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `simpler check for platforms that dont have char16_t`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2024-09-24T10:56:14-07:00
+
+- [36061cc](https://github.com/unicode-org/icu/commit/36061ccee26bd54b2e72e11e0c662034e8f4511c) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `Comment (back) some code generation method`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2024-09-23T21:43:22-07:00
+
+- [ed68cff](https://github.com/unicode-org/icu/commit/ed68cff34e0d2827a9488e4fa772263227fc15c9) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `extend char16_t workaround to cygwin less than 3.5`
+	- Authored by jeremyd2019 <github@jdrake.com>
+	- Committed at 2024-09-23T19:52:51-07:00
+
+- [60d6bd7](https://github.com/unicode-org/icu/commit/60d6bd71efc0cde8f861b109ff87dbbf9fc96586) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `Update filtration_test for Python 3.13`
+	- Authored by Yaakov Selkowitz <yselkowi@redhat.com>
+	- Committed at 2024-09-23T18:41:34-07:00
+
+- [e3e74bd](https://github.com/unicode-org/icu/commit/e3e74bdd7272b17073fdd66f767b7758e3bfa372) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `Fix trivial slip-up in ICU4J TimeZone.java`
+	- Authored by rqu <33589083+rqu@users.noreply.github.com>
+	- Committed at 2024-09-19T10:17:49-07:00
 
 - [33a788b](https://github.com/unicode-org/icu/commit/33a788b35382028f9e8ab95321060a18388a474f) [ICU-22721](https://unicode-org.atlassian.net/browse/ICU-22721) `Set delay for CI enforce checks job to allow other jobs to init`
 	- Authored by Elango Cheran <elango@unicode.org>
@@ -368,6 +258,10 @@ _Jira issue is open_
 
 ##### Commits with Issue ICU-22722
 
+- [0924c72](https://github.com/unicode-org/icu/commit/0924c725b0a1d0de314a48d2ded3dd5b7dbe6488) [ICU-22722](https://unicode-org.atlassian.net/browse/ICU-22722) `update PR template for ICU 77`
+	- Authored by Markus Scherer <markus.icu@gmail.com>
+	- Committed at 2024-09-25T14:31:10-07:00
+
 - [3205630](https://github.com/unicode-org/icu/commit/32056302fc9a462d74e0694eac532f5d1ab428c9) [ICU-22722](https://unicode-org.atlassian.net/browse/ICU-22722) `Add example code for UnicodeString and the standard library.`
 	- Authored by Fredrik Roubert <roubert@google.com>
 	- Committed at 2024-09-18T18:08:24+02:00
@@ -442,6 +336,46 @@ _Jira issue is open_
 	- Component(s): team_processes_tools
 
 ##### Commits with Issue ICU-22723
+
+- [8bdb306](https://github.com/unicode-org/icu/commit/8bdb3066b16558c1de32e830cb2ce78db5084c4c) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS76 Add ICU4J API signature file`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2024-09-30T11:51:47-04:00
+
+- [dbb71b7](https://github.com/unicode-org/icu/commit/dbb71b7c319cb86c30623506f7c1322252fd96b1) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS76 Update ICU4J serialization test data`
+	- Authored by yumaoka <y.umaoka@gmail.com>
+	- Committed at 2024-09-30T09:27:21-04:00
+
+- [de86b32](https://github.com/unicode-org/icu/commit/de86b3269ec395f5a5c0595017259a2357975f53) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 3, source files`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2024-09-27T22:38:13-07:00
+
+- [17687bf](https://github.com/unicode-org/icu/commit/17687bf58e03ca22ce62f7ef89cafa0363d9122e) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 2, data files`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2024-09-27T22:38:13-07:00
+
+- [3776dac](https://github.com/unicode-org/icu/commit/3776dac38e4223c7d046854ec4743ff9eff092b4) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 1, binary files`
+	- Authored by DraganBesevic <dragan@unicode.org>
+	- Committed at 2024-09-27T22:38:13-07:00
+
+- [109008d](https://github.com/unicode-org/icu/commit/109008da3be2a796a26c812193d5998a6bd6a210) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `ICU76: Update known issue references to cloned reports. BRS #27`
+	- Authored by Craig <ccornelius@google.com>
+	- Committed at 2024-09-25T15:46:23-07:00
+
+- [5889a53](https://github.com/unicode-org/icu/commit/5889a536b937180d38021a405ba9a36a5e822e38) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `RC API change reports for C/J`
+	- Authored by Craig <ccornelius@google.com>
+	- Committed at 2024-09-24T14:30:38-07:00
+
+- [30efee0](https://github.com/unicode-org/icu/commit/30efee0d3affad339ef9b259c9a67a373bb1cde7) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS_76_RC: Update version number to 76.1-SNAPSHOT`
+	- Authored by Rahul Pandey <rp9.next@gmail.com>
+	- Committed at 2024-09-19T21:49:13+05:30
+
+- [eec5082](https://github.com/unicode-org/icu/commit/eec5082ddb9e5cf85ebe7cd38a10b206c1eb062f) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Improve documentation for running exhaustive tests`
+	- Authored by Rahul Pandey <103115900+rp9-next@users.noreply.github.com>
+	- Committed at 2024-09-19T12:16:19+05:30
+
+- [f19e598](https://github.com/unicode-org/icu/commit/f19e598155325ecb1413dcdb4ed56a680ddde9bf) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Frontload ICU4J change report 75-76`
+	- Authored by Craig <ccornelius@google.com>
+	- Committed at 2024-09-18T16:36:12-07:00
 
 - [c92bf3d](https://github.com/unicode-org/icu/commit/c92bf3dfecc90a59cf2de55285e98c7587ce25b9) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Frontload ICU4J API promotions (BRS #18)`
 	- Authored by Craig <ccornelius@google.com>
@@ -566,6 +500,33 @@ _Jira issue is open_
 	- Authored by Mihai Nita <mnita@google.com>
 	- Committed at 2024-04-18T16:57:47-07:00
 
+#### Issue ICU-22730
+
+_Jira issue is open_
+- [ICU-22730](https://unicode-org.atlassian.net/browse/ICU-22730): `Integer-overflow in Calendar code (for 76)`
+	- Assigned to Frank Yung-Fong Tang
+	- Status: Accepted
+	- Fix Version: 76.1
+	- Component(s): time_calc
+
+##### Commits with Issue ICU-22730
+
+- [48cc878](https://github.com/unicode-org/icu/commit/48cc8785f21c973608af545c5a6acbb2cc0d8e0d) [ICU-22730](https://unicode-org.atlassian.net/browse/ICU-22730) `Fix int32_t overflow in Persian calendar`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2024-09-20T10:24:22-07:00
+
+- [752da73](https://github.com/unicode-org/icu/commit/752da7303fa2e55a5f358400674bb3c00429b83a) [ICU-22730](https://unicode-org.atlassian.net/browse/ICU-22730) `Fix int overflow inside CE Calendar`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2024-09-11T22:07:01-07:00
+
+- [6ac6fdd](https://github.com/unicode-org/icu/commit/6ac6fdda74948d0a2ddd51ee81a672baa5c2bf35) [ICU-22730](https://unicode-org.atlassian.net/browse/ICU-22730) `propagate error avoid overflow`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2024-05-16T00:27:14-07:00
+
+- [29b1141](https://github.com/unicode-org/icu/commit/29b1141f79eac6f5178f75f1d6d62c8e7a5cede4) [ICU-22730](https://unicode-org.atlassian.net/browse/ICU-22730) `Fix Japanese extended year int32 overflow`
+	- Authored by Frank Tang <ftang@chromium.org>
+	- Committed at 2024-04-10T22:17:01-07:00
+
 #### Issue ICU-22745
 
 _Jira issue is open_
@@ -596,51 +557,6 @@ _Jira issue is open_
 - [23bf38f](https://github.com/unicode-org/icu/commit/23bf38f10f146d5b637922321119926b5e60bf03) [ICU-22764](https://unicode-org.atlassian.net/browse/ICU-22764) `Fix gendict memory safety in toml uchars mode`
 	- Authored by Shane F. Carr <shane@unicode.org>
 	- Committed at 2024-05-03T11:02:29-07:00
-
-#### Issue ICU-22787
-
-_Jira issue is open_
-- [ICU-22787](https://unicode-org.atlassian.net/browse/ICU-22787): `genccode generates invalid object file with ClangCL compilation on Windows`
-	- Assigned to Stefan Stojanovic
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22787
-
-- [66ba099](https://github.com/unicode-org/icu/commit/66ba09973a4231711b6de0de042f4e532b1873e5) [ICU-22787](https://unicode-org.atlassian.net/browse/ICU-22787) `Fix ClangCL compilation on Windows`
-	- Authored by StefanStojanovic <stefan.stojanovic@janeasystems.com>
-	- Committed at 2024-08-09T10:54:21+05:30
-
-#### Issue ICU-22793
-
-_Jira issue is open_
-- [ICU-22793](https://unicode-org.atlassian.net/browse/ICU-22793): `Replace C style casts with C++ style casts`
-	- Assigned to Fredrik Roubert
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): others
-
-##### Commits with Issue ICU-22793
-
-- [0178a07](https://github.com/unicode-org/icu/commit/0178a07a26fa7dd827a49048104b4089aa7e2b84) [ICU-22793](https://unicode-org.atlassian.net/browse/ICU-22793) `Clang-Tidy: google-readability-casting`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-07-04T22:32:12+02:00
-
-#### Issue ICU-22794
-
-_Jira issue is open_
-- [ICU-22794](https://unicode-org.atlassian.net/browse/ICU-22794): `Deduplicate C & Java test data for MF2`
-	- Assigned to Tim Chevalier
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): format_message
-
-##### Commits with Issue ICU-22794
-
-- [57ed0a2](https://github.com/unicode-org/icu/commit/57ed0a2a53cc1ed5ed61bec6d0cbbc139e1b4542) [ICU-22794](https://unicode-org.atlassian.net/browse/ICU-22794) `MF2: Move .json files for tests into top-level testdata/ directory`
-	- Authored by Tim Chevalier <tjc@igalia.com>
-	- Committed at 2024-08-08T09:14:44-07:00
 
 #### Issue ICU-22800
 
@@ -691,21 +607,6 @@ _Jira issue is open_
 	- Authored by Frank Yung-Fong Tang <ftang@google.com>
 	- Committed at 2024-07-19T15:53:12-07:00
 
-#### Issue ICU-22834
-
-_Jira issue is open_
-- [ICU-22834](https://unicode-org.atlassian.net/browse/ICU-22834): `MF2 data-driven tests don't match schema`
-	- Assigned to Tim Chevalier
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): format_message
-
-##### Commits with Issue ICU-22834
-
-- [747d5ee](https://github.com/unicode-org/icu/commit/747d5eef3b049538b926a3f45ca854da7ea62359) [ICU-22834](https://unicode-org.atlassian.net/browse/ICU-22834) `Update tests to reflect MF2 schema in conformance repo`
-	- Authored by Tim Chevalier <tjc@igalia.com>
-	- Committed at 2024-09-18T07:46:29-07:00
-
 #### Issue ICU-22843
 
 _Jira issue is open_
@@ -745,53 +646,19 @@ _Jira issue is open_
 	- Authored by Markus Scherer <markus.icu@gmail.com>
 	- Committed at 2024-08-13T09:10:01-07:00
 
-#### Issue ICU-22873
+#### Issue ICU-22896
 
 _Jira issue is open_
-- [ICU-22873](https://unicode-org.atlassian.net/browse/ICU-22873): `[GHA Migration] Unable to build Linux/clang | c++20 with -Werror`
-	- Assigned to Rahul Pandey
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): build_c
-
-##### Commits with Issue ICU-22873
-
-- [6020a98](https://github.com/unicode-org/icu/commit/6020a98fbbbfd57415c36c1c710a328e99ef675d) [ICU-22873](https://unicode-org.atlassian.net/browse/ICU-22873) `Update configure files from configure.ac using autoreconf.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-09-17T15:06:39+05:30
-
-- [e53f1df](https://github.com/unicode-org/icu/commit/e53f1df472b3795afa5ad0f82b0a69e20c63073b) [ICU-22873](https://unicode-org.atlassian.net/browse/ICU-22873) `Make configure log versions of the compilers used.`
-	- Authored by Fredrik Roubert <roubert@google.com>
-	- Committed at 2024-09-17T15:06:39+05:30
-
-#### Issue ICU-22877
-
-_Jira issue is open_
-- [ICU-22877](https://unicode-org.atlassian.net/browse/ICU-22877): `Locale documentation implies only two letter region codes are valid`
+- [ICU-22896](https://unicode-org.atlassian.net/browse/ICU-22896): `update time zone data to 2024b`
 	- Assigned to Chris Chapman
 	- Status: Accepted
 	- Fix Version: 76.1
-	- Component(s): locale_id
+	- Component(s): time_calc
 
-##### Commits with Issue ICU-22877
+##### Commits with Issue ICU-22896
 
-- [46712bf](https://github.com/unicode-org/icu/commit/46712bff3dd2be6e3def01be97eb4050f054cda7) [ICU-22877](https://unicode-org.atlassian.net/browse/ICU-22877) `revised "Region code" (formerly "Country code") section`
+- [1c2a1c5](https://github.com/unicode-org/icu/commit/1c2a1c50b70be5bf34ece49b43165653c4aecb0a) [ICU-22896](https://unicode-org.atlassian.net/browse/ICU-22896) `updating tzdata to 2024b`
 	- Authored by Chris Chapman <cjchapman@unicode.org>
-	- Committed at 2024-09-05T15:23:33-07:00
-
-#### Issue ICU-22893
-
-_Jira issue is open_
-- [ICU-22893](https://unicode-org.atlassian.net/browse/ICU-22893): `MF2, ICU4J: Remove support for Unsupported, Private & Reserved constructs`
-	- Assigned to Mihai Nita
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): format_message
-
-##### Commits with Issue ICU-22893
-
-- [09c5aa1](https://github.com/unicode-org/icu/commit/09c5aa1b7449fce136adf42a22ad13f0acb98aac) [ICU-22893](https://unicode-org.atlassian.net/browse/ICU-22893) `Remove support for Unsupported, Private & Reserved constructs`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2024-09-18T16:12:54-07:00
+	- Committed at 2024-09-20T15:20:39-07:00
 
 
