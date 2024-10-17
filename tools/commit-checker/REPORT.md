@@ -7,17 +7,17 @@ Commit Report
 =============
 
 Environment:
-- Now: 2024-09-30T11:15:29.451638
-- Latest Commit: https://github.com/unicode-org/icu/commit/8bdb3066b16558c1de32e830cb2ce78db5084c4c
+- Now: 2024-10-17T12:43:52.696423
+- Latest Commit: https://github.com/unicode-org/icu/commit/42c2b39c14bd3ddd96638eaafc50f5a74113c2e2
 - Jira Query: `project=ICU AND fixVersion=76.1`
-- Rev Range: `release-75-1..upstream/main`
+- Rev Range: `release-75-1..upstream/maint/maint-76`
 - Authenticated: `Yes`
 
 -----
 -----
 _(anything between the above two lines is an error)_
 
-Total problem(s): 5
+Total problem(s): 4
 
 ## Table Of Contents
 Note: empty categories are omitted.
@@ -25,7 +25,7 @@ Note: empty categories are omitted.
 - _Closed Issues with Commit Policy Problems_
 - _Commits without Jira Issue Tag_
 - _Commits with Jira Issue Not Found_
-- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 5
+- [Commits with Open Jira Issue](#commits-with-open-jira-issue) 4
 - _Issue is under Review_
 - _Excluded Commits_
 
@@ -33,14 +33,14 @@ Note: empty categories are omitted.
 ### Commits with Open Jira Issue
 [🔝Top](#table-of-contents)
 
-_5 item(s)_
+_4 item(s)_
 Tip: Consider closing the ticket if it is fixed.
 
 #### Open Issues by Component
 
  - **build_j**: [ICU-22606](#issue-icu-22606)
  - **others**: [ICU-22721](#issue-icu-22721) [ICU-22722](#issue-icu-22722)
- - **team_processes_tools**: [ICU-22724](#issue-icu-22724) [ICU-22723](#issue-icu-22723)
+ - **team_processes_tools**: [ICU-22724](#issue-icu-22724)
 
 
 #### Issue ICU-22606
@@ -53,6 +53,26 @@ _Jira issue is open_
 	- Component(s): build_j
 
 ##### Commits with Issue ICU-22606
+
+- [73626da](https://github.com/unicode-org/icu/commit/73626da0ca673eff9f51a5664b5348cd4c3cfac5) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Create full release from CI - review feedback`
+	- Authored by Mihai Nita <mnita@google.com>
+	- Committed at 2024-09-30T13:44:26-07:00
+
+- [3c0d242](https://github.com/unicode-org/icu/commit/3c0d242cf748e35f5add1cd5d258badcb9c9e410) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Create full release from CI - update docs`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2024-09-30T13:44:26-07:00
+
+- [ae7159d](https://github.com/unicode-org/icu/commit/ae7159dbb93cbf73ef1dea4250dcbed58c15cd0d) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Create full release from CI - update icu4c`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2024-09-30T13:44:26-07:00
+
+- [0bb0b8e](https://github.com/unicode-org/icu/commit/0bb0b8e364475eb1460909c06fdf30625a0ca686) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Create full release from CI - workflow files`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2024-09-30T13:44:26-07:00
+
+- [5bc0b45](https://github.com/unicode-org/icu/commit/5bc0b4506e2c11d0af5177c9e1ace7bf786462dd) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Create full release from CI - rename`
+	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
+	- Committed at 2024-09-30T13:44:26-07:00
 
 - [22fe3a1](https://github.com/unicode-org/icu/commit/22fe3a14ab58973815fcc05dad6686a33d08725f) [ICU-22606](https://unicode-org.atlassian.net/browse/ICU-22606) `Point the Maven Central link to license to a versioned one`
 	- Authored by Mihai Nita <nmihai_2000@yahoo.com>
@@ -272,165 +292,6 @@ _Jira issue is open_
 - [943b0ca](https://github.com/unicode-org/icu/commit/943b0ca31b38f5c7ba8d58c5f3d88d34c4ebff8d) [ICU-22722](https://unicode-org.atlassian.net/browse/ICU-22722) `Fix Readme CI badge link`
 	- Authored by Elango Cheran <elango@unicode.org>
 	- Committed at 2024-04-05T08:31:47-07:00
-
-#### Issue ICU-22723
-
-_Jira issue is open_
-- [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723): `ICU 76rc BRS`
-	- Assigned to Markus Scherer
-	- Status: Accepted
-	- Fix Version: 76.1
-	- Component(s): team_processes_tools
-
-##### Commits with Issue ICU-22723
-
-- [8bdb306](https://github.com/unicode-org/icu/commit/8bdb3066b16558c1de32e830cb2ce78db5084c4c) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS76 Add ICU4J API signature file`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-09-30T11:51:47-04:00
-
-- [dbb71b7](https://github.com/unicode-org/icu/commit/dbb71b7c319cb86c30623506f7c1322252fd96b1) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS76 Update ICU4J serialization test data`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-09-30T09:27:21-04:00
-
-- [de86b32](https://github.com/unicode-org/icu/commit/de86b3269ec395f5a5c0595017259a2357975f53) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 3, source files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-27T22:38:13-07:00
-
-- [17687bf](https://github.com/unicode-org/icu/commit/17687bf58e03ca22ce62f7ef89cafa0363d9122e) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 2, data files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-27T22:38:13-07:00
-
-- [3776dac](https://github.com/unicode-org/icu/commit/3776dac38e4223c7d046854ec4743ff9eff092b4) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta3, part 1, binary files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-27T22:38:13-07:00
-
-- [109008d](https://github.com/unicode-org/icu/commit/109008da3be2a796a26c812193d5998a6bd6a210) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `ICU76: Update known issue references to cloned reports. BRS #27`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2024-09-25T15:46:23-07:00
-
-- [5889a53](https://github.com/unicode-org/icu/commit/5889a536b937180d38021a405ba9a36a5e822e38) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `RC API change reports for C/J`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2024-09-24T14:30:38-07:00
-
-- [30efee0](https://github.com/unicode-org/icu/commit/30efee0d3affad339ef9b259c9a67a373bb1cde7) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `BRS_76_RC: Update version number to 76.1-SNAPSHOT`
-	- Authored by Rahul Pandey <rp9.next@gmail.com>
-	- Committed at 2024-09-19T21:49:13+05:30
-
-- [eec5082](https://github.com/unicode-org/icu/commit/eec5082ddb9e5cf85ebe7cd38a10b206c1eb062f) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Improve documentation for running exhaustive tests`
-	- Authored by Rahul Pandey <103115900+rp9-next@users.noreply.github.com>
-	- Committed at 2024-09-19T12:16:19+05:30
-
-- [f19e598](https://github.com/unicode-org/icu/commit/f19e598155325ecb1413dcdb4ed56a680ddde9bf) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Frontload ICU4J change report 75-76`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2024-09-18T16:36:12-07:00
-
-- [c92bf3d](https://github.com/unicode-org/icu/commit/c92bf3dfecc90a59cf2de55285e98c7587ce25b9) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Frontload ICU4J API promotions (BRS #18)`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2024-09-18T15:09:03-07:00
-
-- [feca6ee](https://github.com/unicode-org/icu/commit/feca6eea68b79920fe0fde8ef47bda1b936958c1) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Frontload ICU4C change report 75 -> 76`
-	- Authored by Craig <ccornelius@google.com>
-	- Committed at 2024-09-18T14:56:40-07:00
-
-- [ce4b90e](https://github.com/unicode-org/icu/commit/ce4b90e4843ebaaa7a6982f1685f235b2c44bfbe) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta1, part 3, source files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-18T10:41:49-07:00
-
-- [c7fe255](https://github.com/unicode-org/icu/commit/c7fe2558be37dd2935dfcbe8b087ca3edd1f3945) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta1, part 2, data and test files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-18T10:41:49-07:00
-
-- [6c6186e](https://github.com/unicode-org/icu/commit/6c6186efba1d507e7ee095db0f60b876f4e62f58) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release beta1, part 1, binary files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-09-18T10:41:49-07:00
-
-- [fda2223](https://github.com/unicode-org/icu/commit/fda22239525b92b49ba34ebaeb98cd1e554fd6ab) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Regenerated urename.h.`
-	- Authored by Rich Gillam <richard_gillam@apple.com>
-	- Committed at 2024-09-11T14:42:46-07:00
-
-- [d0fb2d5](https://github.com/unicode-org/icu/commit/d0fb2d54b3f8d16d24a446ea6d20aa8f25ce3f14) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Promoted all @draft ICU 74 APIs to @stable ICU 74`
-	- Authored by Rich Gillam <richard_gillam@apple.com>
-	- Committed at 2024-09-11T14:06:45-07:00
-
-- [937f4ad](https://github.com/unicode-org/icu/commit/937f4adba50a1e4a952862297bda10941aae2791) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Update BRS task doc for JDK TZ check`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-09-10T12:31:48-04:00
-
-- [74d5e6d](https://github.com/unicode-org/icu/commit/74d5e6d2580fd0f888d2533033229490492d77fb) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Update currency numeric code mapping data.`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-09-09T09:25:02-04:00
-
-- [7e05196](https://github.com/unicode-org/icu/commit/7e05196abbb34695b9280d94f3de8b5445308841) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Organize import statements.`
-	- Authored by yumaoka <y.umaoka@gmail.com>
-	- Committed at 2024-09-09T09:22:42-04:00
-
-- [5faea99](https://github.com/unicode-org/icu/commit/5faea996b088158d464e51706ae30811ca2ac08b) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Update double-conversion`
-	- Authored by Shane F. Carr <shane@unicode.org>
-	- Committed at 2024-09-03T14:00:55-07:00
-
-- [7c66c5c](https://github.com/unicode-org/icu/commit/7c66c5cc4a69013226d22d51db3a9175e9d698cf) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `start ICU 76 download page`
-	- Authored by Markus Scherer <markus.icu@gmail.com>
-	- Committed at 2024-08-25T16:00:31-07:00
-
-- [aabadf7](https://github.com/unicode-org/icu/commit/aabadf728944e290c6e47ba73c7485fefa036548) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha2, part 5, exclude failing unit tests for exhaust tests; spaces <-> tabs`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-22T08:22:56-07:00
-
-- [18ff73e](https://github.com/unicode-org/icu/commit/18ff73e239235b0bc8907d1bf29c7b6e6b562587) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 cleaning`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-22T08:22:56-07:00
-
-- [ebceedd](https://github.com/unicode-org/icu/commit/ebceedde217f085f733cc3f79b2aad16de3c6932) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha0, part 3, source files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-22T08:22:56-07:00
-
-- [c231237](https://github.com/unicode-org/icu/commit/c2312370c2ad7e4b666e831c13b52c378e681209) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha2, part 2, data and test files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-22T08:22:56-07:00
-
-- [c4daf67](https://github.com/unicode-org/icu/commit/c4daf676f333cddd1e15447efb7dfdb12f3886ab) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha2, part 1, binary files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-22T08:22:56-07:00
-
-- [045350e](https://github.com/unicode-org/icu/commit/045350e7c1e21861d9a664a586a33ad70a7ad387) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha0, part 4, fixes for exausting tests`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-14T17:09:35-07:00
-
-- [d041548](https://github.com/unicode-org/icu/commit/d04154833c44b55257f365072234a58eb599ef77) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha0, part 3, source files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-14T17:09:35-07:00
-
-- [b865f26](https://github.com/unicode-org/icu/commit/b865f26876a5cb74f59b1a67311436c654b4614f) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha0, part 2, data files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-14T17:09:35-07:00
-
-- [24966d7](https://github.com/unicode-org/icu/commit/24966d7a216e5b48d0bb5cdb11cca9ad0fb64883) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release alpha0, part 1, binary files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-08-14T17:09:35-07:00
-
-- [699fb1d](https://github.com/unicode-org/icu/commit/699fb1dbc4cfbae6f78ff0b28570f44a20a7b149) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release m0, part 3, source files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-05-24T11:32:57-07:00
-
-- [d6657ad](https://github.com/unicode-org/icu/commit/d6657adc4a244e7ba4cdecc56213d5418bf2210a) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release m0, part 2, data and files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-05-24T11:32:57-07:00
-
-- [aa5fc99](https://github.com/unicode-org/icu/commit/aa5fc99b337f3573e57bc78ec7d9ab81bcb91798) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Integrate CLDR 46 release m0, part 1, binary files`
-	- Authored by DraganBesevic <dragan@unicode.org>
-	- Committed at 2024-05-24T11:32:57-07:00
-
-- [75ef0d9](https://github.com/unicode-org/icu/commit/75ef0d97e158492731604d600fbeeff8a0158ddd) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Add line number info to icuexportdata handleError`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2024-05-13T11:58:09-07:00
-
-- [f133a0b](https://github.com/unicode-org/icu/commit/f133a0bd9bc6567a5ae943a5e4aaeda1cad04628) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Cleanup: remove the icu4j/maven-migration/ folder`
-	- Authored by Mihai Nita <mnita@google.com>
-	- Committed at 2024-05-08T14:17:44-07:00
-
-- [617b094](https://github.com/unicode-org/icu/commit/617b094df3eb853a35f1227472178836ce625cff) [ICU-22723](https://unicode-org.atlassian.net/browse/ICU-22723) `Update PR template help text for next version's ticket numbers`
-	- Authored by Elango Cheran <elango@unicode.org>
-	- Committed at 2024-04-15T22:22:46-04:00
 
 #### Issue ICU-22724
 
